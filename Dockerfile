@@ -8,6 +8,4 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 COPY build/libs/*.jar app.jar
 
-USER ubuntu
-
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
