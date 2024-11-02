@@ -13,8 +13,7 @@ public class GoogleSheetProperties {
 	private String spreadsheetId;
 	private SheetCalendar calendar;
 
-	@Getter
-	@Setter
+	@Getter @Setter
 	public static class SheetCalendar {
 		private List<String> dayList;
 		private List<String> dayCode;

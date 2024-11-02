@@ -9,6 +9,7 @@ import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class GoogleSheetAPIImpl {
+public class GoogleSheetAPIImpl implements GoogleSheetAPI {
 
 	private final GoogleSheetProperties googleSheetProperties;
 	private static final String APPLICATION_NAME = "Google Sheets API";
@@ -54,7 +55,17 @@ public class GoogleSheetAPIImpl {
 				.build();
 	}
 
-	public List<List<Object>> getSheetData(String sheetName, String start, String end) throws IOException {
+
+	/**
+	 * 구글시트에서 데이터 가져옴
+	 * ',' 이나 '\n' 등 포함
+	 * @param sheetName
+	 * @param start
+	 * @param end
+	 * @return 있는 그대로 가져온 List
+	 * @throws IOException
+	 */
+	private List<List<Object>> getSheetData(String sheetName, String start, String end) throws IOException {
 		StringBuilder range = new StringBuilder();
 		range.append(sheetName).append("!").append(start).append(":").append(end);
 
@@ -64,7 +75,6 @@ public class GoogleSheetAPIImpl {
 				.get(googleSheetProperties.getSpreadsheetId(), range.toString())
 				.execute();
 
-		log.info("response : {}", response.getValues());
 		return response.getValues();
 	}
 

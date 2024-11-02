@@ -1,6 +1,6 @@
 package com.hk_music_cop.demo.schedule.application;
 
-import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetAPIImpl;
+import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetAPI;
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetProperties;
 import com.hk_music_cop.demo.external.jandi.application.JandiMessageConverter;
 import com.hk_music_cop.demo.external.jandi.dto.request.JandiWebhookRequest;
@@ -21,9 +21,8 @@ import java.util.List;
 public class ScheduleServiceImpl implements ScheduleService {
 
 	private final GoogleSheetProperties googleSheetProperties;
-	private final GoogleSheetAPIImpl googleSheetAPIImpl;
+	private final GoogleSheetAPI googleSheetAPI;
 	private final JandiMessageConverter jandiMessageConverter;
-
 
 	@Override
 	public JSONObject registTodo(String name, String todo) {
@@ -57,7 +56,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 		// 해당 주의 금요일 코드
 		String endCode = googleSheetProperties.getCalendar().getDayCode().get(4) + sheetNum;
 
-		return googleSheetAPIImpl.getSheetDataParse(sheetName, startCode, endCode, true);
+		return googleSheetAPI.getSheetDataParse(sheetName, startCode, endCode, true);
 	}
 
 	@Override
@@ -83,7 +82,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 		int nthWeek = getNthWeek(now) - 1;
 
 		String code = googleSheetProperties.getCalendar().getDayCode().get(day - 1) + googleSheetProperties.getCalendar().getSheetNumbers().get(nthWeek);
-		return googleSheetAPIImpl.getSheetDataParse(sheetName, code, code, true);
+		return googleSheetAPI.getSheetDataParse(sheetName, code, code, true);
 	}
 
 	@Override

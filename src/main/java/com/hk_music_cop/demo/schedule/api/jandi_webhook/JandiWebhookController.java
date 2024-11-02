@@ -1,7 +1,5 @@
 package com.hk_music_cop.demo.schedule.api.jandi_webhook;
 
-
-import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetAPIImpl;
 import com.hk_music_cop.demo.external.jandi.dto.request.JandiWebhookRequest;
 import com.hk_music_cop.demo.external.jandi.dto.response.JandiWebhookResponse;
 import com.hk_music_cop.demo.lottery.application.LotteryService;
@@ -12,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Controller
@@ -22,8 +19,6 @@ public class JandiWebhookController {
 	private final ScheduleService scheduleService;
 	private final JandiMessageConverter jandiMessageConverter;
 	private final LotteryService lotteryService;
-
-	RestTemplate restTemplate = new RestTemplate();
 
 	@GetMapping("/jandi")
 	public String jandi() {

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hk_music_cop.demo.member.repository.MemberRepository">
+
+    <select id="findAll" resultType="MemberResponse">
+        SELECT "member_id", "user_id", "password", "name", "created_date" FROM members
+    </select>
+
+    <select id="findByMemberId" parameterType="Long" resultType="MemberResponse">
+        SELECT "member_id", "user_id", "password", "name", "created_date" FROM members WHERE member_id = #{userId}
+    </select>
+
+    <select id="findByUserId" parameterType="String" resultType="MemberResponse">
+        SELECT "member_id", "user_id", "password", "name", "created_date" FROM members WHERE user_id = #{userId}
+    </select>
+
+<!--    <select id="join" parameterType="MemberRequest" resultType="java.lang.Long">-->
+<!--        INSERT INTO members (user_id, password, name)-->
+<!--        VALUES (#{userId}, #{password}, #{name})-->
+<!--        RETURNING member_id-->
+<!--    </select>-->
+
+    <select id="join" parameterType="MemberRequest" resultType="Long">
+        INSERT INTO members (user_id, password, name)
+        VALUES (#{userId}, #{password}, #{name})
+        RETURNING member_id
+    </select>
+
+</mapper>
