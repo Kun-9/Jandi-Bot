@@ -29,14 +29,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 		return null;
 	}
 
-	private int getNthWeek(LocalDate today) {
-
-		// WeekFields 인스턴스 생성 (주의 시작을 일요일로 설정)
-		WeekFields weekFields = WeekFields.of(DayOfWeek.SUNDAY, 1);
-
-		return today.get(weekFields.weekOfMonth());
-	}
-
 	@Override
 	public List<List<String>> getWeekTodoData(String title, String color) {
 		LocalDate now = LocalDate.now();
@@ -70,7 +62,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 	@Override
 	public List<List<String>> getTodayTodoData(String title, String color) {
-
 		LocalDate now = LocalDate.now();
 		int year = now.getYear();
 		int month = now.getMonthValue();
@@ -97,6 +88,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 		StringBuilder sheetName = new StringBuilder();
 		sheetName.append(year).append(".").append(month).append(" ").append("월간 캘린더");
 		return sheetName;
+	}
+
+	// 날짜를 기준으로 몇번째 주인지 계산
+	private int getNthWeek(LocalDate today) {
+		// WeekFields 인스턴스 생성 (주의 시작을 일요일로 설정)
+		WeekFields weekFields = WeekFields.of(DayOfWeek.SUNDAY, 1);
+
+		return today.get(weekFields.weekOfMonth());
 	}
 
 	private LocalDate getMonday(LocalDate now) {

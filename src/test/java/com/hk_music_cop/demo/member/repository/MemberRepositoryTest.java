@@ -128,7 +128,7 @@ class MemberRepositoryTest {
 		assertThat(findData)
 				.extracting("name", "userId", "password")
 				.contains(
-						exceptedValues.toArray(exceptedValues.toArray(new Tuple[0]))
+						exceptedValues.toArray(new Tuple[0])
 				);
 
 	}

@@ -1,17 +1,9 @@
 package com.hk_music_cop.demo.external.google_cloud.google_sheet;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,7 +19,6 @@ class GoogleSheetAPIImplTest {
 	GoogleSheetProperties googleSheetProperties;
 
 	String sheetName;
-
 	String startCode;
 	String endCode;
 
@@ -47,7 +38,7 @@ class GoogleSheetAPIImplTest {
 	}
 
 	@Test
-	void getSheetDataParse() throws IOException {
+	void getSheetDataParse() {
 		// given
 		// setup 에서 값 세팅
 		List<List<String>> expectedValue = Arrays.asList(

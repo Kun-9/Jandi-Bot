@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hk_music_cop.demo.lottery.repository.LotteryRepository">
+
+    <select id="findAll" resultType="LotteryResponse">
+        SELECT "lottery_id", "member_id", "name", "position", "created_date" FROM lottery
+    </select>
+
+    <select id="findByLotteryId" parameterType="Long" resultType="LotteryResponse">
+        SELECT "lottery_id", member_id as createdMemberId, "name", "position", "created_date" FROM lottery
+        WHERE lottery_id = #{lotteryId}
+    </select>
+
+    <select id="findByName" parameterType="String" resultType="LotteryResponse">
+        SELECT lottery_id, member_id as createdMemberId, name, position, created_date FROM lottery WHERE name = #{name}
+    </select>
+
+    <select id="createLottery" parameterType="LotteryRequest" resultType="Long">
+        INSERT INTO lottery ("member_id", "name", "position")
+        VALUES (#{memberId}, #{name}, #{position})
+        RETURNING lottery_id
+    </select>
+
+    <delete id="deleteLottery" parameterType="Long">
+        DELETE FROM lottery
+        WHERE lottery_id = #{lotteryId}
+    </delete>
+
+    <update id="editLottery">
+        UPDATE lottery
+        SET name = #{lotteryRequest.name},
+            position = #{lotteryRequest.position}
+        where lottery_id = #{lotteryId}
+    </update>
+
+</mapper>
