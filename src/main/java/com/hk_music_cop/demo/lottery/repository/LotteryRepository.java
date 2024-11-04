@@ -6,19 +6,24 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface LotteryRepository {
 
 	Long createLottery(LotteryRequest lotteryRequest);
 
-	LotteryResponse findByLotteryId(Long lotteryId);
+	Optional<LotteryResponse> findByLotteryId(Long lotteryId);
 
-	LotteryResponse findByName(String name);
+	Optional<LotteryResponse> findByName(String name);
 
 	int editLottery(@Param("lotteryId") Long lotteryId, @Param("lotteryRequest") LotteryRequest lotteryRequest);
 
 	int deleteLottery(Long lotteryId);
 
 	List<LotteryResponse> findAll();
+
+	boolean existsByName(String name);
+
+	boolean isCreatedBy(@Param("memberId") Long memberId, @Param("lotteryId") Long lotteryId);
 }

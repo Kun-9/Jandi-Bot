@@ -6,7 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Getter @Setter @ToString
-public class JandiWebhookResponse {
+public class JandiWebhookRequest {
 
 	private String token;
 	private String teamName;

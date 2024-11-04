@@ -3,7 +3,7 @@ package com.hk_music_cop.demo.schedule.application;
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetAPI;
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetProperties;
 import com.hk_music_cop.demo.external.jandi.application.JandiMessageConverter;
-import com.hk_music_cop.demo.external.jandi.dto.request.JandiWebhookRequest;
+import com.hk_music_cop.demo.external.jandi.dto.request.JandiWebhookResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -30,15 +30,15 @@ public class ScheduleServiceImpl implements ScheduleService {
 	}
 
 	@Override
-	public List<List<String>> getWeekTodoData(String title, String color) {
-		LocalDate now = LocalDate.now();
-		int year = now.getYear();
-		int month = now.getMonthValue();
+	public List<List<String>> getWeekTodoData(String title, String color, LocalDate date) {
+
+		int year = date.getYear();
+		int month = date.getMonthValue();
 
 		String sheetName = generateSheetName(year, month).toString();
 
 		// 오늘이 몇번째 주인지 구하기
-		int nthWeek = getNthWeek(now) - 1;
+		int nthWeek = getNthWeek(date) - 1;
 
 		Integer sheetNum = googleSheetProperties.getCalendar().getSheetNumbers().get(nthWeek);
 
@@ -50,39 +50,39 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 		return googleSheetAPI.getSheetDataParse(sheetName, startCode, endCode, true);
 	}
+//
+//	@Override
+//	public JSONObject getWeekTodo(String title, String color, LocalDate date) {
+//		List<List<String>> weekTodoData = getWeekTodoData(title, color, date);
+//		JandiWebhookResponse jandiWebhookResponse = jandiMessageConverter.parseScheduleListToRequestForm(title, color, weekTodoData);
+//
+//		return jandiMessageConverter.createJandiSendMessage(jandiWebhookResponse);
+//	}
 
+//
 	@Override
-	public JSONObject getWeekTodo(String title, String color) {
-		List<List<String>> weekTodoData = getWeekTodoData(title, color);
-		JandiWebhookRequest jandiWebhookRequest = jandiMessageConverter.parseToRequestForm(title, color, weekTodoData);
+	public List<List<String>> getDayTodoData(String title, String color, LocalDate date) {
 
-		return jandiMessageConverter.createJandiSendMessage(jandiWebhookRequest);
-	}
-
-
-	@Override
-	public List<List<String>> getTodayTodoData(String title, String color) {
-		LocalDate now = LocalDate.now();
-		int year = now.getYear();
-		int month = now.getMonthValue();
-		int day = now.getDayOfWeek().getValue();
+		int year = date.getYear();
+		int month = date.getMonthValue();
+		int day = date.getDayOfWeek().getValue();
 
 		String sheetName = generateSheetName(year, month).toString();
 
 		// 오늘이 몇번째 주인지 구하기
-		int nthWeek = getNthWeek(now) - 1;
+		int nthWeek = getNthWeek(date) - 1;
 
 		String code = googleSheetProperties.getCalendar().getDayCode().get(day - 1) + googleSheetProperties.getCalendar().getSheetNumbers().get(nthWeek);
 		return googleSheetAPI.getSheetDataParse(sheetName, code, code, true);
 	}
 
-	@Override
-	public JSONObject getTodayTodo(String title, String color) {
-		List<List<String>> todayTodoData = getTodayTodoData(title, color);
-		JandiWebhookRequest jandiWebhookRequest = jandiMessageConverter.parseToRequestForm(title, color, todayTodoData);
-
-		return jandiMessageConverter.createJandiSendMessage(jandiWebhookRequest);
-	}
+//	@Override
+//	public JSONObject getTodayTodo(String title, String color) {
+//		List<List<String>> todayTodoData = getTodayTodoData(title, color);
+//		JandiWebhookResponse jandiWebhookResponse = jandiMessageConverter.parseScheduleListToRequestForm(title, color, todayTodoData);
+//
+//		return jandiMessageConverter.createJandiSendMessage(jandiWebhookResponse);
+//	}
 
 	private static StringBuilder generateSheetName(int year, int month) {
 		StringBuilder sheetName = new StringBuilder();

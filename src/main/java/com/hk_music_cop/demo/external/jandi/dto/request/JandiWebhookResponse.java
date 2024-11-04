@@ -1,20 +1,18 @@
 package com.hk_music_cop.demo.external.jandi.dto.request;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Getter @Setter @ToString
-public class JandiWebhookRequest {
+public class JandiWebhookResponse {
 	private String body;
 	private String connectColor;
 	private List<ConnectInfo> connectInfoList;
 
-	public JandiWebhookRequest(String body, String connectColor) {
+	public JandiWebhookResponse(String body, String connectColor) {
 		this.body = body;
 		this.connectColor = connectColor;
 		this.connectInfoList = new ArrayList<>();

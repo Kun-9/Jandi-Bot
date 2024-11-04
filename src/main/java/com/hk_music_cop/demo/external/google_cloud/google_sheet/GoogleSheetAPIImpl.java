@@ -9,6 +9,7 @@ import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -41,7 +42,6 @@ public class GoogleSheetAPIImpl implements GoogleSheetAPI {
 
 		GoogleCredentials credentials = ServiceAccountCredentials.fromStream(credentialsStream)
 				.createScoped(Collections.singleton(SheetsScopes.SPREADSHEETS_READONLY));
-
 
 //		GoogleCredentials credentials = ServiceAccountCredentials.fromStream(
 //						new FileInputStream("/Users/kun/Downloads/sheet.json"));
@@ -103,9 +103,9 @@ public class GoogleSheetAPIImpl implements GoogleSheetAPI {
 		} catch (Exception e) {
 			log.error("구글 시트 요청 실패");
 			e.printStackTrace();
+//			throw new BadRequestException("");
 		}
 
 		return result;
 	}
-
 }

@@ -1,19 +1,20 @@
 package com.hk_music_cop.demo.external.jandi.application;
 
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetProperties;
-import com.hk_music_cop.demo.external.jandi.dto.request.JandiWebhookRequest;
+import com.hk_music_cop.demo.external.jandi.dto.request.JandiWebhookResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class JandiMessageConverterImpl implements JandiMessageConverter {
 
@@ -21,23 +22,23 @@ public class JandiMessageConverterImpl implements JandiMessageConverter {
 
 
 	@Override
-	public JSONObject createJandiSendMessage(JandiWebhookRequest jandiWebhookRequest) {
+	public JSONObject createJandiSendMessage(JandiWebhookResponse jandiWebhookResponse) {
 
 		// JSON 응답 메시지 생성
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("body", jandiWebhookRequest.getBody());
+		jsonObject.put("body", jandiWebhookResponse.getBody());
 
-		if (jandiWebhookRequest.getConnectColor() != null)
-			jsonObject.put("connectColor", jandiWebhookRequest.getConnectColor());
+		if (jandiWebhookResponse.getConnectColor() != null)
+			jsonObject.put("connectColor", jandiWebhookResponse.getConnectColor());
 
-		JSONArray connectInfoJson = setConnectInfo(jandiWebhookRequest);
+		JSONArray connectInfoJson = setConnectInfo(jandiWebhookResponse);
 		jsonObject.put("connectInfo", connectInfoJson);
 
 		return jsonObject;
 	}
 
 	@Override
-	public HttpEntity<String> createJandiRequestMessageEntity(String webhookURL, JandiWebhookRequest JandiWebhookRequest) {
+	public HttpEntity<String> createJandiRequestMessageEntity(String webhookURL, JandiWebhookResponse JandiWebhookResponse) {
 
 		RestTemplate restTemplate = new RestTemplate();
 
@@ -47,7 +48,7 @@ public class JandiMessageConverterImpl implements JandiMessageConverter {
 		headers.set("Accept", "application/vnd.tosslab.jandi-v2+json");
 
 		// Json 응답 생성
-		JSONObject jsonMessageObject = createJandiSendMessage(JandiWebhookRequest);
+		JSONObject jsonMessageObject = createJandiSendMessage(JandiWebhookResponse);
 
 
 		// Http 엔티티 생성
@@ -56,12 +57,12 @@ public class JandiMessageConverterImpl implements JandiMessageConverter {
 		return restTemplate.postForEntity(webhookURL, entity, String.class);
 	}
 
-	private static JSONArray setConnectInfo(JandiWebhookRequest jandiWebhookRequest) {
+	private static JSONArray setConnectInfo(JandiWebhookResponse jandiWebhookResponse) {
 		JSONArray connectInfoJson = new JSONArray();
 
-		for (int i = 0; i < jandiWebhookRequest.getConnectInfoList().size(); i++) {
+		for (int i = 0; i < jandiWebhookResponse.getConnectInfoList().size(); i++) {
 			JSONObject object = new JSONObject();
-			JandiWebhookRequest.ConnectInfo connectInfo = jandiWebhookRequest.getConnectInfoList().get(i);
+			JandiWebhookResponse.ConnectInfo connectInfo = jandiWebhookResponse.getConnectInfoList().get(i);
 
 			if (connectInfo.getTitle() != null)
 				object.put("title", connectInfo.getTitle());
@@ -75,8 +76,8 @@ public class JandiMessageConverterImpl implements JandiMessageConverter {
 		return connectInfoJson;
 	}
 
-	public JandiWebhookRequest parseToRequestForm(String title, String color, List<List<String>> result) {
-		JandiWebhookRequest jandiWebhookRequest = new JandiWebhookRequest(title, color);
+	public JandiWebhookResponse parseScheduleListToRequestForm(String title, String color, List<List<String>> result) {
+		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(title, color);
 
 		int i = 0;
 		int cnt = 0;
@@ -90,7 +91,7 @@ public class JandiMessageConverterImpl implements JandiMessageConverter {
 
 				String content = sb.toString().trim();
 
-				jandiWebhookRequest.addConnectInfo(new JandiWebhookRequest.ConnectInfo(googleSheetProperties.getCalendar().getDayList().get(i) + "요일", content, null));
+				jandiWebhookResponse.addConnectInfo(new JandiWebhookResponse.ConnectInfo(googleSheetProperties.getCalendar().getDayList().get(i) + "요일", content, null));
 
 //				// 주간조회일 때
 //				if (Boolean.FALSE.equals(isDay)) {
@@ -104,10 +105,10 @@ public class JandiMessageConverterImpl implements JandiMessageConverter {
 		}
 
 		if (cnt == 0) {
-			jandiWebhookRequest.setConnectColor("#FE6188");
-			jandiWebhookRequest.addConnectInfo(new JandiWebhookRequest.ConnectInfo("일정이 없어요", null, null));
+			jandiWebhookResponse.setConnectColor("#FE6188");
+			jandiWebhookResponse.addConnectInfo(new JandiWebhookResponse.ConnectInfo("일정이 없어요", null, null));
 		}
 
-		return jandiWebhookRequest;
+		return jandiWebhookResponse;
 	}
 }

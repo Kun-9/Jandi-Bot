@@ -1,10 +1,15 @@
 package com.hk_music_cop.demo.lottery.application;
 
-import org.apache.http.HttpEntity;
-import org.json.JSONObject;
+import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
+
 
 public interface LotteryService {
-	JSONObject getRandomPerson(String title, String color);
+	LotteryResponse chooseLotteryWinner(String title, String color, String imgURL);
 
-	HttpEntity registPerson(String name);
+	Long registPerson(LotteryRequest request);
+
+	boolean deletePerson(Long memberId, String name);
+
+	boolean updatePerson(Long memberId, Long lotteryId, LotteryRequest lotteryRequest);
 }

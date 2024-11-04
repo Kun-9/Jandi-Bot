@@ -1,13 +1,11 @@
 package com.hk_music_cop.demo.lottery.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter @Setter @AllArgsConstructor @ToString
+@Getter @Setter @ToString @AllArgsConstructor
 public class LotteryRequest {
 	private Long memberId;
 	private String name;
 	private String position;
+
 }
