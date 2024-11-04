@@ -12,8 +12,6 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -28,24 +26,24 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 
 	@Override
 	public JSONObject scheduleWeekMessage(LocalDate date) {
-		String title = jandiProperties.getTitle().getWeekScheduleTitle();
-		String color = jandiProperties.getColor().getSuccessColor();
+		String title = jandiProperties.title().weekScheduleTitle();
+		String color = jandiProperties.color().successColor();
 
 		return createJandiMessage(createScheduleWeekResponse(title, color, date));
 	}
 
 	@Override
 	public JSONObject scheduleDayMessage(LocalDate date) {
-		String title = jandiProperties.getTitle().getDayScheduleTitle();
-		String color = jandiProperties.getColor().getSuccessColor();
+		String title = jandiProperties.title().dayScheduleTitle();
+		String color = jandiProperties.color().successColor();
 
 		return createJandiMessage(createScheduleDayResponse(title,color,date));
 	}
 
 	@Override
 	public JSONObject lotteryMessage(String imgURL) {
-		String title = jandiProperties.getTitle().getLotteryTitle();
-		String color = jandiProperties.getColor().getSuccessColor();
+		String title = jandiProperties.title().lotteryTitle();
+		String color = jandiProperties.color().successColor();
 
 		LotteryResponse winner = lotteryService.chooseLotteryWinner(title, color, imgURL);
 
@@ -58,7 +56,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	public JSONObject errorMessage(String message) {
 		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(
 				message,
-				jandiProperties.getColor().getWarningColor()
+				jandiProperties.color().warningColor()
 		);
 
 		return createJandiMessage(jandiWebhookResponse);
@@ -66,8 +64,8 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 
 	@Override
 	public JSONObject infoMessage(JandiWebhookRequest jandiWebhookRequest) {
-		String title = jandiProperties.getTitle().getInfoTitle();
-		String color = jandiProperties.getColor().getSuccessColor();
+		String title = jandiProperties.title().infoTitle();
+		String color = jandiProperties.color().successColor();
 
 		String content = getWriterInfo(jandiWebhookRequest).toString();
 

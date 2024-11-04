@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Getter @Setter @ToString @Builder
+@Getter @Setter @ToString
 public class JandiWebhookResponse {
 	private String body;
 	private String connectColor;

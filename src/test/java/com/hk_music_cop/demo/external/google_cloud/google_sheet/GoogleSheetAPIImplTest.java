@@ -30,11 +30,11 @@ class GoogleSheetAPIImplTest {
 
 		sheetName = year + "." + month + " " + "월간 캘린더";
 
-		Integer sheetNum = googleSheetProperties.getCalendar().getSheetNumbers().get(nthWeek);
+		Integer sheetNum = googleSheetProperties.calendar().sheetNumbers().get(nthWeek);
 		// 해당 주의 월요일 코드
-		startCode = googleSheetProperties.getCalendar().getDayCode().get(0) + sheetNum;
+		startCode = googleSheetProperties.calendar().dayCode().get(0) + sheetNum;
 		// 해당 주의 금요일 코드
-		endCode = googleSheetProperties.getCalendar().getDayCode().get(4) + sheetNum;
+		endCode = googleSheetProperties.calendar().dayCode().get(4) + sheetNum;
 	}
 
 	@Test

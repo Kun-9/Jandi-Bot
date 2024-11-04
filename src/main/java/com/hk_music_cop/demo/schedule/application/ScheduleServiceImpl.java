@@ -39,13 +39,13 @@ public class ScheduleServiceImpl implements ScheduleService {
 		// 오늘이 몇번째 주인지 구하기
 		int nthWeek = getNthWeek(date) - 1;
 
-		Integer sheetNum = googleSheetProperties.getCalendar().getSheetNumbers().get(nthWeek);
+		Integer sheetNum = googleSheetProperties.calendar().sheetNumbers().get(nthWeek);
 
 		// 해당 주의 월요일 코드
-		String startCode = googleSheetProperties.getCalendar().getDayCode().get(0) + sheetNum;
+		String startCode = googleSheetProperties.calendar().dayCode().get(0) + sheetNum;
 
 		// 해당 주의 금요일 코드
-		String endCode = googleSheetProperties.getCalendar().getDayCode().get(4) + sheetNum;
+		String endCode = googleSheetProperties.calendar().dayCode().get(4) + sheetNum;
 
 		return googleSheetAPI.getSheetDataParse(sheetName, startCode, endCode, true);
 	}
@@ -71,7 +71,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 		// 오늘이 몇번째 주인지 구하기
 		int nthWeek = getNthWeek(date) - 1;
 
-		String code = googleSheetProperties.getCalendar().getDayCode().get(day - 1) + googleSheetProperties.getCalendar().getSheetNumbers().get(nthWeek);
+		String code = googleSheetProperties.calendar().dayCode().get(day - 1) + googleSheetProperties.calendar().sheetNumbers().get(nthWeek);
 		return googleSheetAPI.getSheetDataParse(sheetName, code, code, true);
 	}
 

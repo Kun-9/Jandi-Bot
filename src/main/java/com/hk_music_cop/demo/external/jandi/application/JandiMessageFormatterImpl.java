@@ -90,7 +90,7 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 
 				String content = sb.toString().trim();
 
-				jandiWebhookResponse.addConnectInfo(new JandiWebhookResponse.ConnectInfo(googleSheetProperties.getCalendar().getDayList().get(i) + "요일", content, null));
+				jandiWebhookResponse.addConnectInfo(new JandiWebhookResponse.ConnectInfo(googleSheetProperties.calendar().dayList().get(i) + "요일", content, null));
 
 //				// 주간조회일 때
 //				if (Boolean.FALSE.equals(isDay)) {

@@ -8,6 +8,7 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
+import com.hk_music_cop.demo.global.error.rest.ApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
@@ -71,7 +72,7 @@ public class GoogleSheetAPIImpl implements GoogleSheetAPI {
 		log.info("range : {}", range);
 
 		ValueRange response = sheetsService.spreadsheets().values()
-				.get(googleSheetProperties.getSpreadsheetId(), range.toString())
+				.get(googleSheetProperties.spreadsheetId(), range.toString())
 				.execute();
 
 		return response.getValues();
@@ -101,9 +102,7 @@ public class GoogleSheetAPIImpl implements GoogleSheetAPI {
 				}
 			}
 		} catch (Exception e) {
-			log.error("구글 시트 요청 실패");
-			e.printStackTrace();
-//			throw new BadRequestException("");
+			throw new ApiException("sheet 불러오기 실패");
 		}
 
 		return result;

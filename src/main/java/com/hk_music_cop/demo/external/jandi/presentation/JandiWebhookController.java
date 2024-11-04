@@ -1,7 +1,6 @@
-package com.hk_music_cop.demo.external.jandi.api;
+package com.hk_music_cop.demo.external.jandi.presentation;
 
 import com.hk_music_cop.demo.external.jandi.application.JandiCommandService;
-import com.hk_music_cop.demo.external.jandi.application.JandiMessageFactory;
 import com.hk_music_cop.demo.external.jandi.dto.request.JandiWebhookResponse;
 import com.hk_music_cop.demo.external.jandi.dto.response.JandiWebhookRequest;
 import com.hk_music_cop.demo.external.jandi.application.JandiMessageFormatter;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class JandiWebhookController {
 
 	private final JandiMessageFormatter jandiMessageFormatter;
-	private final JandiMessageFactory jandiMessageFactory;
 	private final JandiCommandService jandiCommandService;
 
 	@PostMapping("/jandi/message")
