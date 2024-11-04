@@ -21,7 +21,7 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 
 
 	@Override
-	public JSONObject createJandiSendMessage(JandiWebhookResponse jandiWebhookResponse) {
+	public JSONObject createResponseMessage(JandiWebhookResponse jandiWebhookResponse) {
 
 		// JSON 응답 메시지 생성
 		JSONObject jsonObject = new JSONObject();
@@ -37,7 +37,7 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 	}
 
 	@Override
-	public HttpEntity<String> createJandiRequestMessageEntity(String webhookURL, JandiWebhookResponse JandiWebhookResponse) {
+	public HttpEntity<String> createResponseEntity(String webhookURL, JandiWebhookResponse JandiWebhookResponse) {
 
 		RestTemplate restTemplate = new RestTemplate();
 
@@ -47,7 +47,7 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 		headers.set("Accept", "application/vnd.tosslab.jandi-v2+json");
 
 		// Json 응답 생성
-		JSONObject jsonMessageObject = createJandiSendMessage(JandiWebhookResponse);
+		JSONObject jsonMessageObject = createResponseMessage(JandiWebhookResponse);
 
 
 		// Http 엔티티 생성
@@ -75,7 +75,7 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 		return connectInfoJson;
 	}
 
-	public JandiWebhookResponse parseScheduleListToRequestForm(String title, String color, List<List<String>> result) {
+	public JandiWebhookResponse parseScheduleListToResponse(String title, String color, List<List<String>> result) {
 		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(title, color);
 
 		int i = 0;

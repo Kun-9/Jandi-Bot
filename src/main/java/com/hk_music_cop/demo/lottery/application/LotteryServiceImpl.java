@@ -34,24 +34,24 @@ public class LotteryServiceImpl implements LotteryService {
 
 	@Override
 	@Transactional
-	public Long registPerson(LotteryRequest lotteryRequest) {
+	public boolean registerLottery(LotteryRequest lotteryRequest) {
 
 		validateDuplicateName(lotteryRequest.getName());
 
-		return lotteryRepository.createLottery(lotteryRequest);
+		return lotteryRepository.createLottery(lotteryRequest) == 1;
 	}
 
 
 	@Override
-	public boolean deletePerson(Long memberId, String name) {
+	public boolean deleteLottery(Long memberId, String name) {
 		LotteryResponse targetLottery = validateExistByName(name);
 		validCreator(memberId, targetLottery.getLotteryId());
 
-		return lotteryRepository.deleteLottery(targetLottery.getLotteryId()) > 0;
+		return lotteryRepository.deleteLottery(targetLottery.getLotteryId()) == 1;
 	}
 
 	@Override
-	public boolean updatePerson(Long memberId, Long lotteryId, LotteryRequest lotteryRequest) {
+	public boolean updateLottery(Long memberId, Long lotteryId, LotteryRequest lotteryRequest) {
 
 		// 타겟 lottery 존재 확인
 		validateExistById(lotteryId);
@@ -62,7 +62,7 @@ public class LotteryServiceImpl implements LotteryService {
 		// 바꿀 이름 존재 여부 확인 :: 동시성 고려?
 		validateDuplicateName(lotteryRequest.getName());
 
-		return lotteryRepository.editLottery(lotteryId, lotteryRequest) > 0;
+		return lotteryRepository.editLottery(lotteryId, lotteryRequest) == 1;
 	}
 
 	private LotteryResponse validateExistByName(String name) {

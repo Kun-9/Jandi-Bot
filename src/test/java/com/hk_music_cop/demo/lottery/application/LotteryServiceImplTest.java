@@ -28,15 +28,15 @@ class LotteryServiceImplTest {
 	}
 
 	@Test
-	void registPerson() {
+	void registerLottery() {
 
 	}
 
 	@Test
-	void deletePerson() {
+	void deleteLottery() {
 	}
 
 	@Test
-	void updatePerson() {
+	void updateLottery() {
 	}
 }

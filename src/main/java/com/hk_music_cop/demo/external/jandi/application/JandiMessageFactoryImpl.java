@@ -4,6 +4,7 @@ import com.hk_music_cop.demo.external.jandi.JandiProperties;
 import com.hk_music_cop.demo.external.jandi.dto.request.JandiWebhookResponse;
 import com.hk_music_cop.demo.external.jandi.dto.response.JandiWebhookRequest;
 import com.hk_music_cop.demo.lottery.application.LotteryService;
+import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.schedule.application.ScheduleService;
 import lombok.RequiredArgsConstructor;
@@ -41,22 +42,20 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	}
 
 	@Override
-	public JSONObject lotteryMessage(String imgURL) {
+	public JSONObject chooseLotteryMessage(String imgURL) {
 		String title = jandiProperties.title().lotteryTitle();
 		String color = jandiProperties.color().successColor();
 
 		LotteryResponse winner = lotteryService.chooseLotteryWinner(title, color, imgURL);
 
-		JandiWebhookResponse lotteryMessage = createLotteryResponse(title, color, winner, imgURL);
-
-		return createJandiMessage(lotteryMessage);
+		return createJandiMessage(createLotteryResponse(title, color, winner, imgURL));
 	}
 
 	@Override
 	public JSONObject errorMessage(String message) {
 		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(
 				message,
-				jandiProperties.color().warningColor()
+				jandiProperties.color().failColor()
 		);
 
 		return createJandiMessage(jandiWebhookResponse);
@@ -74,6 +73,49 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 		return createJandiMessage(myInfoResponse);
 	}
 
+	@Override
+	public JSONObject registerLotteryMessage(LotteryRequest lotteryRequest) {
+		boolean result = lotteryService.registerLottery(lotteryRequest);
+
+		JandiWebhookResponse response = createResultResponse(result);
+
+		return createJandiMessage(response);
+	}
+
+	@Override
+	public JSONObject deleteLotteryMessage(LotteryRequest lotteryRequest) {
+		boolean result = lotteryService.deleteLottery(lotteryRequest.getMemberId(), lotteryRequest.getName());
+
+		JandiWebhookResponse response = createResultResponse(result);
+
+		return createJandiMessage(response);
+	}
+
+	@Override
+	public JSONObject updateLotteryMessage(Long targetLotteryId, LotteryRequest lotteryRequest) {
+		boolean result = lotteryService.updateLottery(lotteryRequest.getMemberId(), targetLotteryId, lotteryRequest);
+
+		JandiWebhookResponse response = createResultResponse(result);
+
+		return createJandiMessage(response);
+	}
+
+	private JandiWebhookResponse createResultResponse(boolean result) {
+		String title;
+		String color;
+
+		if (result) {
+			title = jandiProperties.title().successTitle();
+			color = jandiProperties.color().successColor();
+		} else {
+			title = jandiProperties.title().failTitle();
+			color = jandiProperties.color().failColor();
+		}
+
+		return new JandiWebhookResponse(title, color);
+	}
+
+
 	private JandiWebhookResponse createLotteryResponse(String title, String color, LotteryResponse person, String imgURL) {
 		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(title, color);
 		jandiWebhookResponse.addConnectInfo(new JandiWebhookResponse.ConnectInfo("결과", "'" + person.getName() + " " + person.getPosition() +  "'님 당첨되었습니다.\n축하합니다~!", imgURL));
@@ -82,16 +124,16 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 
 	private JandiWebhookResponse createScheduleWeekResponse(String title, String color, LocalDate date) {
 		List<List<String>> weekTodoData = scheduleService.getWeekTodoData(title, color, date);
-		return jandiMessageFormatter.parseScheduleListToRequestForm(title, color, weekTodoData);
+		return jandiMessageFormatter.parseScheduleListToResponse(title, color, weekTodoData);
 	}
 
 	private JandiWebhookResponse createScheduleDayResponse(String title, String color, LocalDate date) {
 		List<List<String>> dayTodoData = scheduleService.getDayTodoData(title, color, date);
-		return jandiMessageFormatter.parseScheduleListToRequestForm(title, color, dayTodoData);
+		return jandiMessageFormatter.parseScheduleListToResponse(title, color, dayTodoData);
 	}
 
 	private JSONObject createJandiMessage(JandiWebhookResponse jandiWebhookResponse) {
-		return jandiMessageFormatter.createJandiSendMessage(jandiWebhookResponse);
+		return jandiMessageFormatter.createResponseMessage(jandiWebhookResponse);
 	}
 
 	private JandiWebhookResponse createMyInfoResponse(String title, String color, String content) {
@@ -118,4 +160,6 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 				.append("플랫폼 : ").append(jandiWebhookRequest.getPlatform()).append("\n");
 		return writerInfo;
 	}
+
+
 }

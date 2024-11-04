@@ -39,12 +39,12 @@ class JandiMessageFactoryImplTest {
 	}
 
 	@Test
-	void lotteryMessage() {
+	void chooseLotteryMessage() {
 		//
 
 
 		//
-		JSONObject message = jandiMessageFactory.lotteryMessage(null);
+		JSONObject message = jandiMessageFactory.chooseLotteryMessage(null);
 
 
 		//

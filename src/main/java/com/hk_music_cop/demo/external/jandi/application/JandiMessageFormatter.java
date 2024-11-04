@@ -10,29 +10,29 @@ import java.util.List;
 public interface JandiMessageFormatter {
 
 	/**
-	 * 잔디 request 메시지 엔티티 생성
+	 * 잔디 response 메시지 엔티티 생성
 	 * @param webhookURL 웹훅 URL
 	 * @param JandiWebhookResponse 잔디 요청 DTO
-	 * @return Request Entity
+	 * @return Response Entity
 	 */
-	HttpEntity<String> createJandiRequestMessageEntity(String webhookURL, JandiWebhookResponse JandiWebhookResponse);
+	HttpEntity<String> createResponseEntity(String webhookURL, JandiWebhookResponse JandiWebhookResponse);
 
 	/**
-	 * 잔디 request 메시지 생성
+	 * 잔디 response 메시지 생성
 	 * @param jandiWebhookResponse 잔디 요청 DTO
-	 * @return Request JSON
+	 * @return Response JSON
 	 */
-	JSONObject createJandiSendMessage(JandiWebhookResponse jandiWebhookResponse);
+	JSONObject createResponseMessage(JandiWebhookResponse jandiWebhookResponse);
 
 
 	/**
-	 * 잔디 RequestDTO로 파싱
+	 * 잔디 ResponseDTO로 파싱
 	 * @param title 잔디 메시지 제목
 	 * @param color 잔디 메시지 색상
 	 * @param result 잔디 응답 메시지 배열
-	 * @return JandiWebhookRequest DTO
+	 * @return JandiWebhookResponse DTO
 	 */
-	JandiWebhookResponse parseScheduleListToRequestForm(String title, String color, List<List<String>> result);
+	JandiWebhookResponse parseScheduleListToResponse(String title, String color, List<List<String>> result);
 
 
 

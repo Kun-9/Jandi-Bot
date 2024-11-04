@@ -31,7 +31,7 @@ public class JandiWebhookController {
 		// web hook url 설정
 		webhookURL = "https://wh.jandi.com/connect-api/webhook/23002156/ad2476253597a22daaecdb0961fd25bd";
 
-		jandiMessageFormatter.createJandiRequestMessageEntity(webhookURL, jandiWebhookResponse);
+		jandiMessageFormatter.createResponseEntity(webhookURL, jandiWebhookResponse);
 
 //		ResponseEntity<String> response = restTemplate.postForEntity(webhookURL, entity, String.class);
 

@@ -2,7 +2,6 @@ package com.hk_music_cop.demo.schedule.application;
 
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetAPI;
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetProperties;
-import com.hk_music_cop.demo.external.jandi.application.JandiMessageFormatter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -21,7 +20,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 	private final GoogleSheetProperties googleSheetProperties;
 	private final GoogleSheetAPI googleSheetAPI;
-	private final JandiMessageFormatter jandiMessageFormatter;
 
 	@Override
 	public JSONObject registTodo(String name, String todo) {
@@ -49,16 +47,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 		return googleSheetAPI.getSheetDataParse(sheetName, startCode, endCode, true);
 	}
-//
-//	@Override
-//	public JSONObject getWeekTodo(String title, String color, LocalDate date) {
-//		List<List<String>> weekTodoData = getWeekTodoData(title, color, date);
-//		JandiWebhookResponse jandiWebhookResponse = jandiMessageConverter.parseScheduleListToRequestForm(title, color, weekTodoData);
-//
-//		return jandiMessageConverter.createJandiSendMessage(jandiWebhookResponse);
-//	}
 
-//
 	@Override
 	public List<List<String>> getDayTodoData(String title, String color, LocalDate date) {
 
@@ -74,14 +63,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 		String code = googleSheetProperties.calendar().dayCode().get(day - 1) + googleSheetProperties.calendar().sheetNumbers().get(nthWeek);
 		return googleSheetAPI.getSheetDataParse(sheetName, code, code, true);
 	}
-
-//	@Override
-//	public JSONObject getTodayTodo(String title, String color) {
-//		List<List<String>> todayTodoData = getTodayTodoData(title, color);
-//		JandiWebhookResponse jandiWebhookResponse = jandiMessageConverter.parseScheduleListToRequestForm(title, color, todayTodoData);
-//
-//		return jandiMessageConverter.createJandiSendMessage(jandiWebhookResponse);
-//	}
 
 	private static StringBuilder generateSheetName(int year, int month) {
 		StringBuilder sheetName = new StringBuilder();

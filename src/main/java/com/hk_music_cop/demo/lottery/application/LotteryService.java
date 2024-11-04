@@ -7,9 +7,9 @@ import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 public interface LotteryService {
 	LotteryResponse chooseLotteryWinner(String title, String color, String imgURL);
 
-	Long registPerson(LotteryRequest request);
+	boolean registerLottery(LotteryRequest lotteryRequest);
 
-	boolean deletePerson(Long memberId, String name);
+	boolean deleteLottery(Long memberId, String name);
 
-	boolean updatePerson(Long memberId, Long lotteryId, LotteryRequest lotteryRequest);
+	boolean updateLottery(Long memberId, Long lotteryId, LotteryRequest lotteryRequest);
 }
