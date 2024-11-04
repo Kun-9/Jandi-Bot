@@ -2,8 +2,7 @@ package com.hk_music_cop.demo.schedule.application;
 
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetAPI;
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetProperties;
-import com.hk_music_cop.demo.external.jandi.application.JandiMessageConverter;
-import com.hk_music_cop.demo.external.jandi.dto.request.JandiWebhookResponse;
+import com.hk_music_cop.demo.external.jandi.application.JandiMessageFormatter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -22,7 +21,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 	private final GoogleSheetProperties googleSheetProperties;
 	private final GoogleSheetAPI googleSheetAPI;
-	private final JandiMessageConverter jandiMessageConverter;
+	private final JandiMessageFormatter jandiMessageFormatter;
 
 	@Override
 	public JSONObject registTodo(String name, String todo) {

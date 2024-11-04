@@ -1,11 +1,9 @@
 package com.hk_music_cop.demo.external.jandi.dto.response;
 
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter @Setter @ToString
+@Getter @ToString @NoArgsConstructor @AllArgsConstructor
 public class JandiWebhookRequest {
 
 	private String token;
@@ -19,15 +17,11 @@ public class JandiWebhookRequest {
 	private String platform;
 	private String ip;
 
-	// Getters and setters
-
-	@Getter @Setter @ToString
+	@Getter @ToString @NoArgsConstructor @AllArgsConstructor
 	public static class Writer {
 		private String id;
 		private String name;
 		private String email;
 		private String phoneNumber;
-
-		// Getters and setters
 	}
 }

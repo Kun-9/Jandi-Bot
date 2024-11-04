@@ -4,8 +4,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@Getter @Setter @ToString
+
+@Getter @ToString @AllArgsConstructor @NoArgsConstructor
 public class MemberResponse {
 	private Long memberId;
 	private String userId;

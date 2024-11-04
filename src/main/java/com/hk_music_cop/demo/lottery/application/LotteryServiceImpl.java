@@ -1,15 +1,13 @@
 package com.hk_music_cop.demo.lottery.application;
 
-import com.hk_music_cop.demo.config.error.DuplicatedNameException;
-import com.hk_music_cop.demo.config.error.NotFoundException;
-import com.hk_music_cop.demo.external.jandi.application.JandiMessageConverter;
-import com.hk_music_cop.demo.external.jandi.dto.request.JandiWebhookResponse;
+import com.hk_music_cop.demo.global.error.jandi.JandiDuplicatedNameException;
+import com.hk_music_cop.demo.global.error.jandi.JandiNotFoundException;
+import com.hk_music_cop.demo.global.error.jandi.JandiUnauthorizedException;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.lottery.repository.LotteryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,17 +23,9 @@ public class LotteryServiceImpl implements LotteryService {
 	private final LotteryRepository lotteryRepository;
 
 	public LotteryResponse chooseLotteryWinner(String title, String color, String imgURL) {
-
 		List<LotteryResponse> personList = lotteryRepository.findAll();
 
-		log.info(personList.toString());
-
 		return getRandom(personList);
-	}
-
-	// message 만드는곳으로 옮겨야함
-	private JandiWebhookResponse.ConnectInfo createConnectInfoForLottery(LotteryResponse person, String imgURL) {
-		return new JandiWebhookResponse.ConnectInfo("결과", "'" + person.getName() + " " + person.getPosition() + "'님 당첨되었습니다.\n축하합니다~!", imgURL);
 	}
 
 	private LotteryResponse getRandom(List<LotteryResponse> personList) {
@@ -51,22 +41,13 @@ public class LotteryServiceImpl implements LotteryService {
 		return lotteryRepository.createLottery(lotteryRequest);
 	}
 
-	private void validateDuplicateName(String name) {
-		if (lotteryRepository.existsByName(name)) {
-			throw new DuplicatedNameException();
-		}
-	}
-
 
 	@Override
 	public boolean deletePerson(Long memberId, String name) {
-
 		LotteryResponse targetLottery = validateExistByName(name);
-		validateAuthorized(memberId, targetLottery.getLotteryId());
+		validCreator(memberId, targetLottery.getLotteryId());
 
-		lotteryRepository.deleteLottery(targetLottery.getLotteryId());
-
-		return true;
+		return lotteryRepository.deleteLottery(targetLottery.getLotteryId()) > 0;
 	}
 
 	@Override
@@ -76,7 +57,7 @@ public class LotteryServiceImpl implements LotteryService {
 		validateExistById(lotteryId);
 
 		// 권한 확인 (요청자가 생성자인지)
-		validateAuthorized(memberId, lotteryId);
+		validCreator(memberId, lotteryId);
 
 		// 바꿀 이름 존재 여부 확인 :: 동시성 고려?
 		validateDuplicateName(lotteryRequest.getName());
@@ -86,15 +67,22 @@ public class LotteryServiceImpl implements LotteryService {
 
 	private LotteryResponse validateExistByName(String name) {
 		return lotteryRepository.findByName(name)
-				.orElseThrow(() -> new NotFoundException(name));
+				.orElseThrow(() -> new JandiNotFoundException(name));
 	}
 
-	private LotteryResponse validateExistById(Long lotteryId) {
-		return lotteryRepository.findByLotteryId(lotteryId)
-				.orElseThrow(NotFoundException::new);
+	private void validateExistById(Long lotteryId) {
+		lotteryRepository.findByLotteryId(lotteryId)
+				.orElseThrow(JandiNotFoundException::new);
 	}
 
-	private void validateAuthorized(Long memberId, Long lotteryId) {
-		lotteryRepository.isCreatedBy(memberId, lotteryId);
+	private void validCreator(Long memberId, Long lotteryId) {
+		boolean isCreator = lotteryRepository.isCreatedBy(memberId, lotteryId);
+		if (!isCreator) throw new JandiUnauthorizedException();
+	}
+
+	private void validateDuplicateName(String name) {
+		if (lotteryRepository.existsByName(name)) {
+			throw new JandiDuplicatedNameException();
+		}
 	}
 }

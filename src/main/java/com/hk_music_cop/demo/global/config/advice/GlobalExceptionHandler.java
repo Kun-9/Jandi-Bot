@@ -1,4 +1,4 @@
-package com.hk_music_cop.demo.config.advice;
+package com.hk_music_cop.demo.global.config.advice;
 
 import org.apache.ibatis.javassist.bytecode.DuplicateMemberException;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,5 @@ public class GlobalExceptionHandler {
 				.badRequest()
 				.body(errorResponse);
 	}
-
-
-
 }
+

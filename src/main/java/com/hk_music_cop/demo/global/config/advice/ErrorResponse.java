@@ -1,4 +1,4 @@
-package com.hk_music_cop.demo.config.advice;
+package com.hk_music_cop.demo.global.config.advice;
 
 import lombok.Getter;
 

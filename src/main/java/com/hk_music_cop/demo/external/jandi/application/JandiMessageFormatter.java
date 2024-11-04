@@ -7,7 +7,7 @@ import org.springframework.http.HttpEntity;
 import java.util.List;
 
 
-public interface JandiMessageConverter {
+public interface JandiMessageFormatter {
 
 	/**
 	 * 잔디 request 메시지 엔티티 생성

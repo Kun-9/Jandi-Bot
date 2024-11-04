@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Getter @Setter @ToString
+@Getter @Setter @ToString @Builder
 public class JandiWebhookResponse {
 	private String body;
 	private String connectColor;
@@ -18,11 +18,12 @@ public class JandiWebhookResponse {
 		this.connectInfoList = new ArrayList<>();
 	}
 
-	public void addConnectInfo(ConnectInfo info) {
+	public JandiWebhookResponse addConnectInfo(ConnectInfo info) {
 		this.connectInfoList.add(info);
+		return this;
 	}
 
-	@Getter @Setter @ToString
+	@Getter @ToString @NoArgsConstructor
 	public static class ConnectInfo {
 		public ConnectInfo(String title, String description, String imageUrl) {
 			this.title = title;

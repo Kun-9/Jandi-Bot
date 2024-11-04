@@ -1,12 +1,13 @@
 package com.hk_music_cop.demo.schedule.api.jandi_webhook;
 
 import com.hk_music_cop.demo.external.jandi.JandiProperties;
-import com.hk_music_cop.demo.external.jandi.application.JandiMessageService;
+import com.hk_music_cop.demo.external.jandi.application.JandiMessageFactory;
 import com.hk_music_cop.demo.external.jandi.dto.request.JandiWebhookResponse;
 import com.hk_music_cop.demo.external.jandi.dto.response.JandiWebhookRequest;
+import com.hk_music_cop.demo.global.error.jandi.JandiUndefinedCommand;
 import com.hk_music_cop.demo.lottery.application.LotteryService;
 import com.hk_music_cop.demo.schedule.application.ScheduleService;
-import com.hk_music_cop.demo.external.jandi.application.JandiMessageConverter;
+import com.hk_music_cop.demo.external.jandi.application.JandiMessageFormatter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -21,10 +22,10 @@ import java.time.LocalDate;
 public class JandiWebhookController {
 
 	private final ScheduleService scheduleService;
-	private final JandiMessageConverter jandiMessageConverter;
+	private final JandiMessageFormatter jandiMessageFormatter;
 	private final LotteryService lotteryService;
 	private final JandiProperties jandiProperties;
-	private final JandiMessageService jandiMessageService;
+	private final JandiMessageFactory jandiMessageFactory;
 
 	@PostMapping("/jandi/message")
 	public String sendMessage(String webhookURL, String content, String color, String title, String description) {
@@ -40,7 +41,7 @@ public class JandiWebhookController {
 		// web hook url 설정
 		webhookURL = "https://wh.jandi.com/connect-api/webhook/23002156/ad2476253597a22daaecdb0961fd25bd";
 
-		jandiMessageConverter.createJandiRequestMessageEntity(webhookURL, jandiWebhookResponse);
+		jandiMessageFormatter.createJandiRequestMessageEntity(webhookURL, jandiWebhookResponse);
 
 //		ResponseEntity<String> response = restTemplate.postForEntity(webhookURL, entity, String.class);
 
@@ -69,62 +70,33 @@ public class JandiWebhookController {
 			case "내 정보":
 				return myInfo(jandiWebhookRequest);
 			default:
-//				throw new IllegalArgumentException("알 수 없는 명령");
-				return errorMessage();
+				throw new JandiUndefinedCommand(keyword);
 		}
 	}
 
-	private String errorMessage() {
-		return jandiMessageService.errorMessage().toString();
-	}
 
 
 	private String weekSchedule() {
 		LocalDate date = LocalDate.now();
 
-		String title = "이번주 일정";
-		String color = jandiProperties.getColor().getSuccessColor();
-		return jandiMessageService.scheduleWeekMessage(date).toString();
+		return jandiMessageFactory.scheduleWeekMessage(date).toString();
 	}
 
 
 	private String todaySchedule() {
 		LocalDate date = LocalDate.now();
 
-		String title = "오늘 일정";
-		String color = jandiProperties.getColor().getSuccessColor();
-		return jandiMessageService.scheduleDayMessage(date).toString();
+		return jandiMessageFactory.scheduleDayMessage(date).toString();
 	}
 
 	private String lotteryResult() {
-		String title = "랜덤 추첨";
-		String color = jandiProperties.getColor().getSuccessColor();
-		return lotteryService.chooseLotteryWinner(title, color, null).toString();
+		String imgURL = null;
+
+		return jandiMessageFactory.lotteryMessage(imgURL).toString();
 	}
 
 	private String myInfo(JandiWebhookRequest jandiWebhookRequest) {
-		String title = "내 정보";
-		String color = jandiProperties.getColor().getSuccessColor();
 
 		return null;
-	}
-
-	private static StringBuilder getWriterInfo(JandiWebhookRequest jandiWebhookRequest) {
-		StringBuilder writerInfo = new StringBuilder();
-		writerInfo
-				.append("일자 : ").append(jandiWebhookRequest.getCreatedAt()).append("\n")
-				.append("ID : ").append(jandiWebhookRequest.getWriter().getId()).append("\n")
-				.append("이름 : ").append(jandiWebhookRequest.getWriter().getName()).append("\n")
-				.append("E-Mail : ").append(jandiWebhookRequest.getWriter().getEmail()).append("\n")
-				.append("TEL : ").append(jandiWebhookRequest.getWriter().getPhoneNumber()).append("\n")
-				.append("키워드 : ").append(jandiWebhookRequest.getKeyword()).append("\n")
-				.append("IP : ").append(jandiWebhookRequest.getIp()).append("\n")
-				.append("요청 방 이름 : ").append(jandiWebhookRequest.getRoomName()).append("\n")
-				.append("팀 이름 : ").append(jandiWebhookRequest.getTeamName()).append("\n")
-				.append("DATA : ").append(jandiWebhookRequest.getData()).append("\n")
-				.append("TEXT : ").append(jandiWebhookRequest.getText()).append("\n")
-				.append("토큰 : ").append(jandiWebhookRequest.getToken()).append("\n")
-				.append("플랫폼 : ").append(jandiWebhookRequest.getPlatform()).append("\n");
-		return writerInfo;
 	}
 }
