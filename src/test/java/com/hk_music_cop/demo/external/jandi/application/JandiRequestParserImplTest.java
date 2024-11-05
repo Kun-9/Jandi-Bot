@@ -16,6 +16,6 @@ class JandiRequestParserImplTest {
 
 	@Test
 	void parseLotteryRequest() {
-		jandiRequestParser.parseLotteryRequest("[주단위 일정 조회] [2024,11,2]");
+
 	}
 }

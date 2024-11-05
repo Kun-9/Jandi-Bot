@@ -2,10 +2,9 @@ package com.hk_music_cop.demo.external.jandi.application;
 
 import com.hk_music_cop.demo.external.jandi.dto.response.JandiWebhookRequest;
 import com.hk_music_cop.demo.global.error.jandi.JandiUndefinedCommand;
-import com.hk_music_cop.demo.global.error.jandi.LotteryNotFoundException;
+import com.hk_music_cop.demo.lottery.application.LotteryService;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
-import com.hk_music_cop.demo.lottery.repository.LotteryRepository;
 import com.hk_music_cop.demo.member.application.MemberService;
 import com.hk_music_cop.demo.member.dto.request.MemberRequest;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
@@ -13,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,10 +22,10 @@ import static com.hk_music_cop.demo.external.jandi.domain.JandiRequestData.*;
 @Service
 public class JandiCommandService {
 
-	private final LotteryRepository lotteryRepository;
-	JandiMessageFactory jandiMessageFactory;
-	JandiRequestParser jandiRequestParser;
-	MemberService memberService;
+	private final LotteryService lotteryService;
+	private final JandiMessageFactory jandiMessageFactory;
+	private final JandiRequestParser jandiRequestParser;
+	private final MemberService memberService;
 
 
 	public JSONObject executeCommand(JandiWebhookRequest request) {
@@ -59,20 +59,21 @@ public class JandiCommandService {
 			case "오늘 일정" -> response = jandiMessageFactory.scheduleDayMessage(LocalDate.now());
 			case "일단위 일정 조회" -> {
 				List<String> param = parameters.get(0);
-				response = jandiMessageFactory.scheduleDayMessage(
-						LocalDate.of(
-								Integer.parseInt(param.get(0)),
-								Integer.parseInt(param.get(1)),
-								Integer.parseInt(param.get(2))
-						)
+
+				LocalDate date = LocalDate.of(
+						Integer.parseInt(param.get(0)),
+						Integer.parseInt(param.get(1)),
+						Integer.parseInt(param.get(2))
 				);
+
+				response = jandiMessageFactory.scheduleDayMessage(date);
 			}
 			case "주단위 일정 조회" -> {
 				List<String> param = parameters.get(0);
 				response = jandiMessageFactory.scheduleWeekMessage(LocalDate.of(
 						Integer.parseInt(param.get(0)),
 						Integer.parseInt(param.get(1)),
-						Integer.parseInt(param.get(2))
+						(Integer.parseInt(param.get(2)) - 1) * 7 + 1
 				));
 			}
 			case "추첨" -> response = jandiMessageFactory.chooseLotteryMessage(null);
@@ -87,14 +88,13 @@ public class JandiCommandService {
 			}
 			case "추첨 수정" -> {
 				String targetName = parameters.get(0).get(0);
-				LotteryResponse lotteryResponse = lotteryRepository.findByName(targetName).orElseThrow(
-						() -> new LotteryNotFoundException(targetName)
-				);
+
+				LotteryResponse lotteryResponse = lotteryService.validateExistByName(targetName);
 
 				List<String> updateParam = parameters.get(1);
 				response = jandiMessageFactory.updateLotteryMessage(lotteryResponse.getLotteryId(), new LotteryRequest(memberId, updateParam.get(0), updateParam.get(1)));
 			}
-			default -> throw new JandiUndefinedCommand(request.getData());
+			default -> throw new JandiUndefinedCommand(params.getCommand());
 		}
 
 		return response;

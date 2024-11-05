@@ -1,6 +1,8 @@
 package com.hk_music_cop.demo.global.config.advice;
 
+import com.hk_music_cop.demo.external.jandi.application.JandiCommandService;
 import com.hk_music_cop.demo.external.jandi.application.JandiMessageFactory;
+import com.hk_music_cop.demo.external.jandi.presentation.JandiWebhookController;
 import com.hk_music_cop.demo.global.error.jandi.JandiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,21 +12,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+@RestControllerAdvice(assignableTypes = {JandiWebhookController.class})
 @RequiredArgsConstructor
 @Slf4j
 public class JandiExceptionHandler {
 
-	JandiMessageFactory jandiMessageFactory;
+	private final JandiMessageFactory jandiMessageFactory;
 
-	@ExceptionHandler(JandiException.class)
-	public ResponseEntity<JSONObject> handelJandiException(JandiException e) {
+	@ExceptionHandler(RuntimeException.class)
+	public String handelJandiException(RuntimeException e) {
 
 		log.error(e.getMessage(), e);
 
-		return ResponseEntity
-				.status(HttpStatus.BAD_REQUEST)
-				.body(jandiMessageFactory.errorMessage(e.toString()));
+		return jandiMessageFactory.errorMessage(e.getMessage()).toString();
 	}
 }
 

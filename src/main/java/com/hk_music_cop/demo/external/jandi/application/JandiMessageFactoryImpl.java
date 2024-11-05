@@ -79,6 +79,8 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 
 		JandiWebhookResponse response = createResultResponse(result);
 
+		log.info("response: {}", response);
+
 		return createJandiMessage(response);
 	}
 
@@ -101,6 +103,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	}
 
 	private JandiWebhookResponse createResultResponse(boolean result) {
+
 		String title;
 		String color;
 

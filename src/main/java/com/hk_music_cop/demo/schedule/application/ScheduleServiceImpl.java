@@ -2,6 +2,7 @@ package com.hk_music_cop.demo.schedule.application;
 
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetAPI;
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetProperties;
+import com.hk_music_cop.demo.global.error.jandi.JandiUndefinedCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -48,8 +49,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 		return googleSheetAPI.getSheetDataParse(sheetName, startCode, endCode, true);
 	}
 
+
 	@Override
 	public List<List<String>> getDayTodoData(String title, String color, LocalDate date) {
+		// 주말 검증
+		validateHoliday(date);
 
 		int year = date.getYear();
 		int month = date.getMonthValue();
@@ -64,9 +68,24 @@ public class ScheduleServiceImpl implements ScheduleService {
 		return googleSheetAPI.getSheetDataParse(sheetName, code, code, true);
 	}
 
+	@Override
+	public void validateHoliday(LocalDate date) {
+		DayOfWeek dayOfWeek = date.getDayOfWeek();
+
+		if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
+			throw new JandiUndefinedCommand("주말은 쉬는날입니다.");
+		}
+	}
+
 	private static StringBuilder generateSheetName(int year, int month) {
+		String monthName = String.valueOf(month);
+
+		if (month < 10) {
+			monthName = "0" + month;
+		}
+
 		StringBuilder sheetName = new StringBuilder();
-		sheetName.append(year).append(".").append(month).append(" ").append("월간 캘린더");
+		sheetName.append(year).append(".").append(monthName).append(" ").append("월간 캘린더");
 		return sheetName;
 	}
 

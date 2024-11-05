@@ -42,7 +42,9 @@ class ScheduleServiceImplTest {
 	@Test
 	@DisplayName("주간 일정 데이터 잔디 메시지 변환")
 	void getDayTodoData() {
-		LocalDate date = LocalDate.now().minusWeeks(2);
+
+
+		LocalDate date = LocalDate.of(2024, 10, 13);
 
 		// given
 		String title = "testTitle";

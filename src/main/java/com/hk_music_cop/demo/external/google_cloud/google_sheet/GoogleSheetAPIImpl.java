@@ -102,7 +102,7 @@ public class GoogleSheetAPIImpl implements GoogleSheetAPI {
 				}
 			}
 		} catch (Exception e) {
-			throw new ApiException("sheet 불러오기 실패");
+			throw new ApiException("입력 값을 확인해주세요.");
 		}
 
 		return result;

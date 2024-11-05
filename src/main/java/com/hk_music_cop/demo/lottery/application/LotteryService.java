@@ -12,4 +12,15 @@ public interface LotteryService {
 	boolean deleteLottery(Long memberId, String name);
 
 	boolean updateLottery(Long memberId, Long lotteryId, LotteryRequest lotteryRequest);
+
+	LotteryResponse validateExistByName(String name);
+
+	void validateExistById(Long lotteryId);
+
+	void validCreator(Long memberId, Long lotteryId);
+
+	void validateDuplicateName(String name);
+
+	void validateNotExist(String name);
+
 }

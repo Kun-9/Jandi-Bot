@@ -50,4 +50,12 @@ class JandiMessageFactoryImplTest {
 		//
 
 	}
+
+	@Test
+	void errorMessage() {
+
+
+		JSONObject message = jandiMessageFactory.errorMessage("msg");
+
+	}
 }
