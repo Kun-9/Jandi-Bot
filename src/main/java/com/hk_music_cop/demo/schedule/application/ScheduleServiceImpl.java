@@ -2,7 +2,7 @@ package com.hk_music_cop.demo.schedule.application;
 
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetAPI;
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetProperties;
-import com.hk_music_cop.demo.global.error.jandi.JandiUndefinedCommand;
+import com.hk_music_cop.demo.global.error.common.CustomUndefinedCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -73,7 +73,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 		DayOfWeek dayOfWeek = date.getDayOfWeek();
 
 		if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
-			throw new JandiUndefinedCommand("주말은 쉬는날입니다.");
+			throw new CustomUndefinedCommand("주말은 쉬는날입니다.");
 		}
 	}
 

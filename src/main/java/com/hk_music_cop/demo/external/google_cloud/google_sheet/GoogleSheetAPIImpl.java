@@ -1,70 +1,23 @@
 package com.hk_music_cop.demo.external.google_cloud.google_sheet;
 
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.sheets.v4.Sheets;
-import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
-import com.google.auth.http.HttpCredentialsAdapter;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.auth.oauth2.ServiceAccountCredentials;
-import com.hk_music_cop.demo.global.error.rest.ApiException;
+import com.hk_music_cop.demo.global.error.common.CustomApiException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class GoogleSheetAPIImpl implements GoogleSheetAPI {
-
 	private final GoogleSheetProperties googleSheetProperties;
-	private static final String APPLICATION_NAME = "Google Sheets API";
-	private static Sheets sheetsService;
+	private final Sheets sheetsService;
 
-	public GoogleSheetAPIImpl(GoogleSheetProperties googleSheetProperties) throws IOException, GeneralSecurityException {
-		this.googleSheetProperties = googleSheetProperties;
-		initializeSheetsService();
-	}
-
-	private void initializeSheetsService() throws IOException, GeneralSecurityException {
-		InputStream credentialsStream = getClass().getResourceAsStream("/sheet.json");
-		if (credentialsStream == null) {
-			log.error("경로 오류");
-			throw new FileNotFoundException("이 경로에서 파일을 찾을 수 없습니다.");
-		}
-
-		GoogleCredentials credentials = ServiceAccountCredentials.fromStream(credentialsStream)
-				.createScoped(Collections.singleton(SheetsScopes.SPREADSHEETS_READONLY));
-
-//		GoogleCredentials credentials = ServiceAccountCredentials.fromStream(
-//						new FileInputStream("/Users/kun/Downloads/sheet.json"));
-
-		sheetsService = new Sheets.Builder(
-				GoogleNetHttpTransport.newTrustedTransport(),
-				JacksonFactory.getDefaultInstance(),
-				new HttpCredentialsAdapter(credentials))
-				.setApplicationName(APPLICATION_NAME)
-				.build();
-	}
-
-
-	/**
-	 * 구글시트에서 데이터 가져옴
-	 * ',' 이나 '\n' 등 포함
-	 * @param sheetName
-	 * @param start
-	 * @param end
-	 * @return 있는 그대로 가져온 List
-	 * @throws IOException
-	 */
 	private List<List<Object>> getSheetData(String sheetName, String start, String end) throws IOException {
 		StringBuilder range = new StringBuilder();
 		range.append(sheetName).append("!").append(start).append(":").append(end);
@@ -102,7 +55,7 @@ public class GoogleSheetAPIImpl implements GoogleSheetAPI {
 				}
 			}
 		} catch (Exception e) {
-			throw new ApiException("입력 값을 확인해주세요.");
+			throw new CustomApiException("입력 값을 확인해주세요.");
 		}
 
 		return result;

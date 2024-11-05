@@ -1,16 +1,15 @@
 package com.hk_music_cop.demo.lottery.application;
 
-import com.hk_music_cop.demo.global.error.jandi.JandiDuplicatedNameException;
-import com.hk_music_cop.demo.global.error.jandi.JandiNotFoundException;
-import com.hk_music_cop.demo.global.error.jandi.JandiUnauthorizedException;
-import com.hk_music_cop.demo.global.error.jandi.LotteryNotFoundException;
+import com.hk_music_cop.demo.global.error.common.CustomDuplicatedNameException;
+import com.hk_music_cop.demo.global.error.common.CustomNotFoundException;
+import com.hk_music_cop.demo.global.error.common.CustomUnauthorizedException;
+import com.hk_music_cop.demo.global.error.common.CustomLotteryNotFoundException;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.lottery.repository.LotteryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -70,32 +69,32 @@ public class LotteryServiceImpl implements LotteryService {
 	@Override
 	public LotteryResponse validateExistByName(String name) {
 		return lotteryRepository.findByName(name)
-				.orElseThrow(() -> new JandiNotFoundException(name));
+				.orElseThrow(() -> new CustomNotFoundException(name));
 	}
 
 	@Override
 	public void validateExistById(Long lotteryId) {
 		lotteryRepository.findByLotteryId(lotteryId)
-				.orElseThrow(JandiNotFoundException::new);
+				.orElseThrow(CustomNotFoundException::new);
 	}
 
 	@Override
 	public void validCreator(Long memberId, Long lotteryId) {
 		boolean isCreator = lotteryRepository.isCreatedBy(memberId, lotteryId);
-		if (!isCreator) throw new JandiUnauthorizedException();
+		if (!isCreator) throw new CustomUnauthorizedException();
 	}
 
 	@Override
 	public void validateDuplicateName(String name) {
 		if (lotteryRepository.existsByName(name)) {
-			throw new JandiDuplicatedNameException(name);
+			throw new CustomDuplicatedNameException(name);
 		}
 	}
 
 	@Override
 	public void validateNotExist(String name) {
 		if (!lotteryRepository.existsByName(name)) {
-			throw new LotteryNotFoundException(name);
+			throw new CustomLotteryNotFoundException(name);
 		}
 	}
 }

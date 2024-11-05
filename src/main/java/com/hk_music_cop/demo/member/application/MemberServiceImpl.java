@@ -1,8 +1,8 @@
 package com.hk_music_cop.demo.member.application;
 
-import com.hk_music_cop.demo.global.error.jandi.DuplicatedUserIdException;
-import com.hk_music_cop.demo.global.error.jandi.IncorrectPasswordException;
-import com.hk_music_cop.demo.global.error.jandi.UnkownMemberException;
+import com.hk_music_cop.demo.global.error.common.CustomDuplicatedUserIdException;
+import com.hk_music_cop.demo.global.error.common.CustomIncorrectPasswordException;
+import com.hk_music_cop.demo.global.error.common.CustomUnknownMemberException;
 import com.hk_music_cop.demo.member.dto.request.MemberRequest;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import com.hk_music_cop.demo.member.repository.MemberRepository;
@@ -22,7 +22,7 @@ public class MemberServiceImpl implements MemberService {
 
 		// 이미 존재할 때
 		if (isUserIdExist(userId)) {
-			throw new DuplicatedUserIdException(userId);
+			throw new CustomDuplicatedUserIdException(userId);
 		}
 
 		return memberRepository.join(memberRequest);
@@ -34,14 +34,14 @@ public class MemberServiceImpl implements MemberService {
 
 		// 존재하지 않으면
 		if (!isUserIdExist(userId)) {
-			throw new UnkownMemberException(userId);
+			throw new CustomUnknownMemberException(userId);
 		}
 
 		MemberResponse findMember = findByUserId(userId);
 
 		// 비밀번호가 같지 않으면
 		if (!findMember.getPassword().equals(memberRequest.getPassword())) {
-			throw new IncorrectPasswordException();
+			throw new CustomIncorrectPasswordException();
 		}
 
 		return findMember;
@@ -65,7 +65,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void validateUserIdExist(String userId) {
 		if (memberRepository.userIdExistValidation(userId)) {
-			throw new DuplicatedUserIdException(userId);
+			throw new CustomDuplicatedUserIdException(userId);
 		}
 	}
 }

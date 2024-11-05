@@ -1,5 +1,6 @@
 package com.hk_music_cop.demo.external.jandi.application;
 
+import com.hk_music_cop.demo.jandi.application.JandiMessageFactory;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

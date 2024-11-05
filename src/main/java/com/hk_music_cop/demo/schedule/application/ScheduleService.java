@@ -1,9 +1,7 @@
 package com.hk_music_cop.demo.schedule.application;
 
-import com.hk_music_cop.demo.global.error.jandi.JandiUndefinedCommand;
 import org.json.JSONObject;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
