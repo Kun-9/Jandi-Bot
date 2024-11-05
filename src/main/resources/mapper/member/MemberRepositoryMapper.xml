@@ -26,4 +26,10 @@
         RETURNING member_id
     </select>
 
+    <select id="userIdExistValidation" parameterType="String" resultType="boolean">
+        select count(*) > 0 as isExist
+        from members
+        WHERE user_id = #{userId};
+    </select>
+
 </mapper>

@@ -37,4 +37,7 @@ public interface MemberRepository {
 	 */
 	List<MemberResponse> findAll();
 
+
+
+	boolean userIdExistValidation(String userId);
 }
