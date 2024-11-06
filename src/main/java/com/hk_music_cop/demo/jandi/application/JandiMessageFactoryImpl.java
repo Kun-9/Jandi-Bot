@@ -54,8 +54,12 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	@Override
 	public JSONObject errorMessage(String message) {
 		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(
-				message,
+				null,
 				jandiProperties.color().failColor()
+		);
+
+		jandiWebhookResponse.addConnectInfo(
+				new JandiWebhookResponse.ConnectInfo(message, null, null)
 		);
 
 		return createJandiMessage(jandiWebhookResponse);
@@ -99,7 +103,6 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	}
 
 	private JandiWebhookResponse createResultResponse(boolean result) {
-
 		String title;
 		String color;
 
@@ -111,7 +114,8 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 			color = jandiProperties.color().failColor();
 		}
 
-		return new JandiWebhookResponse(title, color);
+		return new JandiWebhookResponse(null, color)
+				.addConnectInfo(new JandiWebhookResponse.ConnectInfo(title, null, null));
 	}
 
 

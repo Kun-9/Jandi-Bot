@@ -1,6 +1,7 @@
 package com.hk_music_cop.demo.jandi.application;
 
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetProperties;
+import com.hk_music_cop.demo.jandi.JandiProperties;
 import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
@@ -19,6 +20,7 @@ import java.util.List;
 public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 
 	private final GoogleSheetProperties googleSheetProperties;
+	private final JandiProperties jandiProperties;
 
 
 	@Override
@@ -107,8 +109,10 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 		}
 
 		if (cnt == 0) {
-			jandiWebhookResponse.setConnectColor("#FE6188");
-			jandiWebhookResponse.addConnectInfo(new JandiWebhookResponse.ConnectInfo("일정이 없어요", null, null));
+			return new JandiWebhookResponse(null, jandiProperties.color().failColor())
+					.addConnectInfo(new JandiWebhookResponse.ConnectInfo(
+							"일정이 없어요", null, null
+					));
 		}
 
 		return jandiWebhookResponse;
