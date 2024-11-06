@@ -56,6 +56,13 @@ dependencies {
 	// JSON 관련
 	implementation group: 'org.json', name: 'json', version: '20231013' // JSONObject
 	implementation 'com.fasterxml.jackson.core:jackson-core:2.14.2'
+
+//	implementation('org.springframework.boot:spring-boot-starter-web') {
+//		exclude group: 'com.vaadin.external.google', module: 'android-json'
+//	}
+//	implementation('org.springframework.boot:spring-boot-starter-test') {
+//		exclude group: 'com.vaadin.external.google', module: 'android-json'
+//	}
 }
 
 tasks.named('test') {

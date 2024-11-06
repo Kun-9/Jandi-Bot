@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.Base64;
 import java.util.Collections;
@@ -28,7 +29,7 @@ public class GoogleSheetConfig {
 	public Sheets sheetService(GoogleSheetProperties googleSheetProperties) {
 
 		InputStream credentialsStream = new ByteArrayInputStream(
-				Base64.getDecoder().decode(googleSheetProperties.config().key())
+				googleSheetProperties.config().key().getBytes(StandardCharsets.UTF_8)
 		);
 
 		GoogleCredentials credentials;
