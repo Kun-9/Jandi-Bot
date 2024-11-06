@@ -7,49 +7,44 @@ import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
+import com.hk_music_cop.demo.global.error.common.CustomApiException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
+import java.util.Base64;
 import java.util.Collections;
 
 @Slf4j
-@Component
+@Configuration
 public class GoogleSheetConfig {
 
-	private static final String APPLICATION_NAME = "Google Sheets API";
-	private static Sheets sheetsService;
+	@Bean
+	public Sheets sheetService(GoogleSheetProperties googleSheetProperties) {
 
-	public GoogleSheetConfig() throws IOException, GeneralSecurityException {
-		initializeSheetsService();
-	}
+		InputStream credentialsStream = new ByteArrayInputStream(
+				Base64.getDecoder().decode(googleSheetProperties.config().key())
+		);
 
-	private void initializeSheetsService() throws IOException, GeneralSecurityException {
-		InputStream credentialsStream = getClass().getResourceAsStream("/sheet.json");
-		if (credentialsStream == null) {
-			log.error("경로 오류");
-			throw new FileNotFoundException("이 경로에서 파일을 찾을 수 없습니다.");
+		GoogleCredentials credentials;
+		try {
+			credentials = ServiceAccountCredentials.fromStream(credentialsStream)
+					.createScoped(Collections.singleton(SheetsScopes.SPREADSHEETS_READONLY));
+
+
+			return new Sheets.Builder(
+					GoogleNetHttpTransport.newTrustedTransport(),
+					JacksonFactory.getDefaultInstance(),
+					new HttpCredentialsAdapter(credentials))
+					.setApplicationName(googleSheetProperties.config().serviceName())
+					.build();
+		} catch (GeneralSecurityException | IOException e) {
+			throw new CustomApiException("API 호출 오류");
 		}
-
-		GoogleCredentials credentials = ServiceAccountCredentials.fromStream(credentialsStream)
-				.createScoped(Collections.singleton(SheetsScopes.SPREADSHEETS_READONLY));
-
-//		GoogleCredentials credentials = ServiceAccountCredentials.fromStream(
-//						new FileInputStream("/Users/kun/Downloads/sheet.json"));
-
-		sheetsService = new Sheets.Builder(
-				GoogleNetHttpTransport.newTrustedTransport(),
-				JacksonFactory.getDefaultInstance(),
-				new HttpCredentialsAdapter(credentials))
-				.setApplicationName(APPLICATION_NAME)
-				.build();
-
-	}
-
-	public Sheets getSheetsService() {
-		return sheetsService;
 	}
 }

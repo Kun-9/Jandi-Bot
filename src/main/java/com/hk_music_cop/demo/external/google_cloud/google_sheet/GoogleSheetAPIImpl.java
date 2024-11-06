@@ -30,7 +30,6 @@ public class GoogleSheetAPIImpl implements GoogleSheetAPI {
 			response = sheetsService.spreadsheets().values()
 					.get(googleSheetProperties.spreadsheetId(), range.toString())
 					.execute();
-
 		} catch (IOException e) {
 			throw new CustomApiException("입력 값을 확인해주세요.");
 		}

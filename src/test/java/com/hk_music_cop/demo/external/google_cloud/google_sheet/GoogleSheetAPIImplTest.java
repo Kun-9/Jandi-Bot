@@ -4,7 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -52,14 +55,30 @@ class GoogleSheetAPIImplTest {
 		// 2024 10월 4번째 주 일정 조회
 		List<List<String>> sheetDataParse = googleSheetAPI.getSheetData(sheetName, startCode, endCode, true);
 
-		System.out.println(sheetDataParse.toString());
-
-		System.out.println(googleSheetAPI.getSheetData(sheetName, startCode, endCode, false));
-
 		//then
 		assertThat(sheetDataParse)
 				.contains(
 						expectedValue.get(0), expectedValue.get(1), expectedValue.get(2)
 				);
 	}
+
+
+	@Test
+	void test() {
+
+		byte[] decode = Base64.getDecoder().decode(googleSheetProperties.config().key());
+
+//		String key = googleSheetProperties.config().key();
+		String s = new String(decode, StandardCharsets.UTF_8);
+
+		System.out.println(s);
+	}
+
+	@Test
+	void checkBase64Decoding() {
+		String encoded = googleSheetProperties.config().key();
+		String decoded = new String(Base64.getDecoder().decode(encoded));
+		System.out.println(decoded);  // 실제 JSON 형식인지 확인
+	}
+
 }
