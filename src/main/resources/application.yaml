@@ -6,6 +6,13 @@ spring:
     url: ${DB_URL}
     username: ${DB_USER_NAME}
     password: ${DB_PASSWORD}
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force-request: true
+      force-response: true
+      enabled: true
 
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml # mapper 경로 설정
