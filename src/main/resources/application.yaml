@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: demo
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USER_NAME}
+    password: ${DB_PASSWORD}
+#  profiles:
+#    active: local
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml # mapper 경로 설정
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.hk_music_cop.demo.**.domain, com.hk_music_cop.demo.**.dto # 도메인 폴더 설정
+
+jandi:
+  color:
+    success-color: '#68BB6C'
+    fail-color: '#FF6188'
+  title:
+    info-title: '내 정보 조회'
+    week-schedule-title: '주 일정 조회'
+    day-schedule-title: '일 일정 조회'
+    lottery-title: '추첨 결과'
+    success-title: '성공적으로 반영되었습니다.'
+    fail-title: '요청에 실패하였습니다'
+
+#  구글시트 설정
+#  월요일 시작 알파벳 C 끝나는 알파벳 G
+#  1주차부터 10, 12, 14, 16, 18
+google-sheet:
+#  spreadsheet_id: 1p2uwnIego132vx-S9y9lwc-VGNIOnJL8Q4_bs1G2ovE
+#  spreadsheet_id: 1eyJopPJRUolcU_KOk5TWFXndD4j7-fn2hiV8c8wkDmQ
+  spreadsheet_id: ${SPREAD_SHEET_ID}
+  calendar:
+    day-list: [월,화,수,목,금]
+    day-code: [C,D,E,F,G]
+    sheet-numbers: [10,12,14,16,18]
+  config:
+    key: ${GOOGLE_SHEET_JSON}
+#    key: GOOGLE_SHEET_JSON
+    serviceName: '일정관리 시스템'
