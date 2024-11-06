@@ -6,8 +6,6 @@ spring:
     url: ${DB_URL}
     username: ${DB_USER_NAME}
     password: ${DB_PASSWORD}
-#  profiles:
-#    active: local
 
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml # mapper 경로 설정
