@@ -76,11 +76,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	@Override
 	public JSONObject registerLotteryMessage(LotteryRequest lotteryRequest) {
 		boolean result = lotteryService.registerLottery(lotteryRequest);
-
 		JandiWebhookResponse response = createResultResponse(result);
-
-		log.info("response: {}", response);
-
 		return createJandiMessage(response);
 	}
 
@@ -126,12 +122,12 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	}
 
 	private JandiWebhookResponse createScheduleWeekResponse(String title, String color, LocalDate date) {
-		List<List<String>> weekTodoData = scheduleService.getWeekTodoData(title, color, date);
+		List<List<String>> weekTodoData = scheduleService.getWeekTodo(date);
 		return jandiMessageFormatter.parseScheduleListToResponse(title, color, weekTodoData);
 	}
 
 	private JandiWebhookResponse createScheduleDayResponse(String title, String color, LocalDate date) {
-		List<List<String>> dayTodoData = scheduleService.getDayTodoData(title, color, date);
+		List<List<String>> dayTodoData = scheduleService.getDayTodo(date);
 		return jandiMessageFormatter.parseScheduleListToResponse(title, color, dayTodoData);
 	}
 

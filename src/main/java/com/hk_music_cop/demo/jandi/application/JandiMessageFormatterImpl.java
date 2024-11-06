@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -80,6 +81,7 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 
 		int i = 0;
 		int cnt = 0;
+
 		for (List<String> strings : result) {
 			if (strings != null) {
 				StringBuilder sb = new StringBuilder();
@@ -90,14 +92,15 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 
 				String content = sb.toString().trim();
 
-				jandiWebhookResponse.addConnectInfo(new JandiWebhookResponse.ConnectInfo(googleSheetProperties.calendar().dayList().get(i) + "요일", content, null));
+				int dayOfWeekValue = i;
 
-//				// 주간조회일 때
-//				if (Boolean.FALSE.equals(isDay)) {
-//					jandiWebhookRequest.addConnectInfo(new JandiSendForm.ConnectInfo(monday.plusDays(i).getMonthValue() + "일 " + dayList[i] + "요일", content, null));
-//				} else {
-//					jandiWebhookRequest.addConnectInfo(new JandiSendForm.ConnectInfo(now.getDayOfMonth() + "일 " + dayList[i] + "요일", content, null));
-//				}
+				if (result.size() == 1)
+					dayOfWeekValue = LocalDate.now().getDayOfWeek().getValue();
+
+				String dayName = getDayName(dayOfWeekValue);
+
+				jandiWebhookResponse.addConnectInfo(new JandiWebhookResponse.ConnectInfo(dayName, content, null));
+
 				cnt++;
 			}
 			i++;
@@ -109,5 +112,9 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 		}
 
 		return jandiWebhookResponse;
+	}
+
+	private String getDayName(int dayOfWeekValue) {
+		return googleSheetProperties.calendar().dayList().get(dayOfWeekValue) + "요일";
 	}
 }

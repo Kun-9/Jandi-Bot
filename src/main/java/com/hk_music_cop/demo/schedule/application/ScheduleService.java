@@ -10,11 +10,11 @@ public interface ScheduleService {
 
 //	JSONObject getWeekTodo(String title, String color, LocalDate date);
 
-	List<List<String>> getWeekTodoData(String title, String color, LocalDate date);
+	List<List<String>> getWeekTodo(LocalDate date);
 
 //	JSONObject getTodayTodo(String title, String color);
 //
-	List<List<String>> getDayTodoData(String title, String color, LocalDate date);
+	List<List<String>> getDayTodo(LocalDate date);
 
 	void validateHoliday(LocalDate date);
 

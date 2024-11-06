@@ -1,7 +1,5 @@
 package com.hk_music_cop.demo.schedule.application;
 
-import org.assertj.core.api.Assertions;
-import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +21,13 @@ class ScheduleServiceImplTest {
 
 	@Test
 	@DisplayName("주간 일정 데이터 조회")
-	void getWeekTodoData() {
-		LocalDate date = LocalDate.now().minusWeeks(2);
-
+	void getWeekTodo() {
 		// given
-		String title = "testTitle";
-		String color = "#2E2A2E";
+		LocalDate date = LocalDate.now().minusWeeks(2);
 
 
 		// when
-		List<List<String>> weekTodoData = scheduleService.getWeekTodoData(title, color, date);
+		List<List<String>> weekTodoData = scheduleService.getWeekTodo(date);
 
 		// then
 		// 비어있을 수 있는 데이터
@@ -41,17 +36,12 @@ class ScheduleServiceImplTest {
 
 	@Test
 	@DisplayName("주간 일정 데이터 잔디 메시지 변환")
-	void getDayTodoData() {
-
-
-		LocalDate date = LocalDate.of(2024, 10, 13);
-
-		// given
-		String title = "testTitle";
-		String color = "#2E2A2E";
+	void getDayTodo() {
+		//given
+		LocalDate date = LocalDate.of(2024, 10, 10);
 
 		// when
-		List<List<String>> dayTodoData = scheduleService.getDayTodoData(title, color, date);
+		List<List<String>> dayTodoData = scheduleService.getDayTodo(date);
 
 		// then
 		System.out.println(dayTodoData);

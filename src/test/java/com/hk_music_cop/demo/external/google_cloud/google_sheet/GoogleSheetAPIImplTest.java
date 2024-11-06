@@ -50,7 +50,11 @@ class GoogleSheetAPIImplTest {
 
 		// when
 		// 2024 10월 4번째 주 일정 조회
-		List<List<String>> sheetDataParse = googleSheetAPI.getSheetDataParse(sheetName, startCode, endCode, true);
+		List<List<String>> sheetDataParse = googleSheetAPI.getSheetData(sheetName, startCode, endCode, true);
+
+		System.out.println(sheetDataParse.toString());
+
+		System.out.println(googleSheetAPI.getSheetData(sheetName, startCode, endCode, false));
 
 		//then
 		assertThat(sheetDataParse)

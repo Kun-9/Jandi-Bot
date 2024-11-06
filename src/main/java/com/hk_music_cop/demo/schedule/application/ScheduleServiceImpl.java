@@ -28,7 +28,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 	}
 
 	@Override
-	public List<List<String>> getWeekTodoData(String title, String color, LocalDate date) {
+	public List<List<String>> getWeekTodo(LocalDate date) {
 
 		int year = date.getYear();
 		int month = date.getMonthValue();
@@ -46,12 +46,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 		// 해당 주의 금요일 코드
 		String endCode = googleSheetProperties.calendar().dayCode().get(4) + sheetNum;
 
-		return googleSheetAPI.getSheetDataParse(sheetName, startCode, endCode, true);
+		return googleSheetAPI.getSheetData(sheetName, startCode, endCode, false);
 	}
 
 
 	@Override
-	public List<List<String>> getDayTodoData(String title, String color, LocalDate date) {
+	public List<List<String>> getDayTodo(LocalDate date) {
 		// 주말 검증
 		validateHoliday(date);
 
@@ -65,7 +65,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 		int nthWeek = getNthWeek(date) - 1;
 
 		String code = googleSheetProperties.calendar().dayCode().get(day - 1) + googleSheetProperties.calendar().sheetNumbers().get(nthWeek);
-		return googleSheetAPI.getSheetDataParse(sheetName, code, code, true);
+		return googleSheetAPI.getSheetData(sheetName, code, code, true);
 	}
 
 	@Override
