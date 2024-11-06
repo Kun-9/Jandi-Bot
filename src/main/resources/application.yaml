@@ -36,5 +36,5 @@ google-sheet:
     sheet-numbers: [10,12,14,16,18]
   config:
     key: ${GOOGLE_SHEET_JSON}
-#    key: GOOGLE_SHEET_JSON
     serviceName: '일정관리 시스템'
+
