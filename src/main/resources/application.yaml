@@ -29,8 +29,6 @@ jandi:
 #  월요일 시작 알파벳 C 끝나는 알파벳 G
 #  1주차부터 10, 12, 14, 16, 18
 google-sheet:
-#  spreadsheet_id: 1p2uwnIego132vx-S9y9lwc-VGNIOnJL8Q4_bs1G2ovE
-#  spreadsheet_id: 1eyJopPJRUolcU_KOk5TWFXndD4j7-fn2hiV8c8wkDmQ
   spreadsheet_id: ${SPREAD_SHEET_ID}
   calendar:
     day-list: [월,화,수,목,금]
