@@ -17,9 +17,6 @@ public class JandiExceptionHandler {
 
 	@ExceptionHandler(CustomException.class)
 	public String handelJandiException(CustomException e) {
-
-		log.error(e.getMessage(), e);
-
 		return jandiMessageFactory.errorMessage(e.getMessage()).toString();
 	}
 }

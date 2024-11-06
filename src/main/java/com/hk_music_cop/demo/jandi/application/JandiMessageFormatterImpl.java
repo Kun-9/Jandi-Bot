@@ -109,7 +109,7 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 		}
 
 		if (cnt == 0) {
-			return new JandiWebhookResponse(null, jandiProperties.color().failColor())
+			return new JandiWebhookResponse(title, jandiProperties.color().failColor())
 					.addConnectInfo(new JandiWebhookResponse.ConnectInfo(
 							"일정이 없어요", null, null
 					));
