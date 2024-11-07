@@ -94,6 +94,10 @@ public class JandiCommandService {
 				List<String> updateParam = parameters.get(1);
 				response = jandiMessageFactory.updateLotteryMessage(lotteryResponse.getLotteryId(), new LotteryRequest(memberId, updateParam.get(0), updateParam.get(1)));
 			}
+			case "추첨 리스트 조회" -> {
+				List<LotteryResponse> allLottery = lotteryService.getAllLottery();
+				response = jandiMessageFactory.lotteryListMessage(allLottery);
+			}
 			default -> throw new CustomUndefinedCommand(params.getCommand());
 		}
 		return response;

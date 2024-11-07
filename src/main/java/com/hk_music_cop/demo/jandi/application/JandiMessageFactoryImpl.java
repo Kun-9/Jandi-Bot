@@ -121,6 +121,17 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 				.addConnectInfo(new JandiWebhookResponse.ConnectInfo(title, null, null));
 	}
 
+	@Override
+	public JSONObject lotteryListMessage(List<LotteryResponse> lotteryResponseList) {
+		JandiWebhookResponse response = new JandiWebhookResponse("리스트 조회", jandiProperties.color().successColor());
+		for (LotteryResponse lotteryResponse : lotteryResponseList) {
+			response.addConnectInfo(new JandiWebhookResponse.ConnectInfo(
+					lotteryResponse.getName() + " " + lotteryResponse.getPosition(), null, null
+					)
+			);
+		}
+		return createJandiMessage(response);
+	}
 
 	private JandiWebhookResponse createLotteryResponse(String title, String color, LotteryResponse person, String imgURL) {
 		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(title, color);

@@ -25,6 +25,10 @@ public class LotteryServiceImpl implements LotteryService {
 	public LotteryResponse chooseLotteryWinner(String title, String color, String imgURL) {
 		List<LotteryResponse> personList = lotteryRepository.findAll();
 
+		if (personList.isEmpty()) {
+			throw new CustomLotteryNotFoundException("추첨리스트가 존재하지 않습니다.");
+		}
+
 		return getRandom(personList);
 	}
 
@@ -96,5 +100,14 @@ public class LotteryServiceImpl implements LotteryService {
 		if (!lotteryRepository.existsByName(name)) {
 			throw new CustomLotteryNotFoundException(name);
 		}
+	}
+
+	@Override
+	public List<LotteryResponse> getAllLottery() {
+		List<LotteryResponse> list = lotteryRepository.findAll();
+		if (list.isEmpty()) {
+			throw new CustomNotFoundException("추첨 리스트가 존재하지 않습니다.");
+		}
+		return list;
 	}
 }
