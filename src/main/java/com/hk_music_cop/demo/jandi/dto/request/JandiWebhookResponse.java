@@ -3,19 +3,25 @@ package com.hk_music_cop.demo.jandi.dto.request;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
-@Getter @Setter @ToString
+@Getter @ToString
 public class JandiWebhookResponse {
-	private String body;
-	private String connectColor;
-	private List<ConnectInfo> connectInfoList;
+	private final String body;
+	private final String connectColor;
+	private final List<ConnectInfo> connectInfoList;
 
-	public JandiWebhookResponse(String body, String connectColor) {
+	public JandiWebhookResponse(String body, String connectColor, List<ConnectInfo> connectInfoList) {
 		this.body = body;
 		this.connectColor = connectColor;
-		this.connectInfoList = new ArrayList<>();
+		this.connectInfoList = connectInfoList;
+	}
+
+	public JandiWebhookResponse(String body, String connectColor, ConnectInfo connectInfo) {
+		this(body, connectColor, Collections.singletonList(connectInfo));
 	}
 
 	public JandiWebhookResponse addConnectInfo(ConnectInfo info) {

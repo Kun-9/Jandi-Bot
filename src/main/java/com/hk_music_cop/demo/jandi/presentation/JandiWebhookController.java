@@ -25,8 +25,12 @@ public class JandiWebhookController {
 //		String title = "test title";
 //		String description = "test description";
 
-		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(content, color);
-		jandiWebhookResponse.addConnectInfo(new JandiWebhookResponse.ConnectInfo(title, description, null));
+		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(
+				content,
+				color,
+				new JandiWebhookResponse.ConnectInfo(title, description, null)
+		);
+
 
 		// web hook url 설정
 		webhookURL = "https://wh.jandi.com/connect-api/webhook/23002156/ad2476253597a22daaecdb0961fd25bd";

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse.*;
+
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -38,7 +40,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 		String title = jandiProperties.title().dayScheduleTitle();
 		String color = jandiProperties.color().successColor();
 
-		return createJandiMessage(createScheduleDayResponse(title,color,date));
+		return createJandiMessage(createScheduleDayResponse(title, color, date));
 	}
 
 	@Override
@@ -55,12 +57,10 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	public JSONObject errorMessage(String message) {
 		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(
 				"ERROR MESSAGE",
-				jandiProperties.color().failColor()
+				jandiProperties.color().failColor(),
+				new ConnectInfo(message, null, null)
 		);
 
-		jandiWebhookResponse.addConnectInfo(
-				new JandiWebhookResponse.ConnectInfo(message, null, null)
-		);
 
 		return createJandiMessage(jandiWebhookResponse);
 	}
@@ -117,26 +117,43 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 			color = jandiProperties.color().failColor();
 		}
 
-		return new JandiWebhookResponse(mainTitle, color)
-				.addConnectInfo(new JandiWebhookResponse.ConnectInfo(title, null, null));
+		return new JandiWebhookResponse(
+				mainTitle,
+				color,
+				new ConnectInfo(title, null, null)
+		);
+
 	}
 
 	@Override
 	public JSONObject lotteryListMessage(List<LotteryResponse> lotteryResponseList) {
-		JandiWebhookResponse response = new JandiWebhookResponse("리스트 조회", jandiProperties.color().successColor());
-		for (LotteryResponse lotteryResponse : lotteryResponseList) {
-			response.addConnectInfo(new JandiWebhookResponse.ConnectInfo(
-					lotteryResponse.getName() + " " + lotteryResponse.getPosition(), null, null
-					)
-			);
-		}
+
+
+		List<ConnectInfo> connectInfoList = lotteryResponseList.stream()
+				.map(lotteryResponse ->
+						new ConnectInfo(
+								lotteryResponse.getName() + " " + lotteryResponse.getPosition(),
+								null,
+								null
+						)
+				).toList();
+
+		JandiWebhookResponse response = new JandiWebhookResponse(
+				"리스트 조회",
+				jandiProperties.color().successColor(),
+				connectInfoList
+		);
+
+
 		return createJandiMessage(response);
 	}
 
 	private JandiWebhookResponse createLotteryResponse(String title, String color, LotteryResponse person, String imgURL) {
-		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(title, color);
-		jandiWebhookResponse.addConnectInfo(new JandiWebhookResponse.ConnectInfo("결과", "'" + person.getName() + " " + person.getPosition() +  "'님 당첨되었습니다.\n축하합니다~!", imgURL));
-		return jandiWebhookResponse;
+		return new JandiWebhookResponse(
+				title,
+				color,
+				new ConnectInfo("결과", "'" + person.getName() + " " + person.getPosition() + "'님 당첨되었습니다.\n축하합니다~!", imgURL)
+		);
 	}
 
 	private JandiWebhookResponse createScheduleWeekResponse(String title, String color, LocalDate date) {
@@ -154,8 +171,11 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	}
 
 	private JandiWebhookResponse createMyInfoResponse(String title, String color, String content) {
-		return new JandiWebhookResponse(title, color)
-				.addConnectInfo(new JandiWebhookResponse.ConnectInfo("정보", content, null));
+		return new JandiWebhookResponse(
+				title,
+				color,
+				new ConnectInfo("정보", content, null)
+		);
 	}
 
 	// 여기 있으면 안됨

@@ -15,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse.*;
+
 @Component
 @RequiredArgsConstructor
 public class JandiMessageFormatterImpl implements JandiMessageFormatter {
@@ -64,7 +66,7 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 
 		for (int i = 0; i < jandiWebhookResponse.getConnectInfoList().size(); i++) {
 			JSONObject object = new JSONObject();
-			JandiWebhookResponse.ConnectInfo connectInfo = jandiWebhookResponse.getConnectInfoList().get(i);
+			ConnectInfo connectInfo = jandiWebhookResponse.getConnectInfoList().get(i);
 
 			if (connectInfo.getTitle() != null)
 				object.put("title", connectInfo.getTitle());
@@ -79,7 +81,7 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 	}
 
 	public JandiWebhookResponse parseScheduleListToResponse(String title, String color, List<List<String>> result) {
-		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(title, color);
+		JandiWebhookResponse jandiWebhookResponse = null;
 
 		int i = 0;
 		int cnt = 0;
@@ -101,7 +103,9 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 
 				String dayName = getDayName(dayOfWeekValue);
 
-				jandiWebhookResponse.addConnectInfo(new JandiWebhookResponse.ConnectInfo(dayName, content, null));
+				ConnectInfo connectInfo = new ConnectInfo(dayName, content, null);
+				jandiWebhookResponse = new JandiWebhookResponse(title, color, connectInfo);
+
 
 				cnt++;
 			}
@@ -109,10 +113,12 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 		}
 
 		if (cnt == 0) {
-			return new JandiWebhookResponse(title, jandiProperties.color().failColor())
-					.addConnectInfo(new JandiWebhookResponse.ConnectInfo(
-							"일정이 없어요", null, null
-					));
+			return new JandiWebhookResponse(title, jandiProperties.color().failColor(),
+						new ConnectInfo(
+								"일정이 없어요", null, null
+						)
+					);
+
 		}
 
 		return jandiWebhookResponse;

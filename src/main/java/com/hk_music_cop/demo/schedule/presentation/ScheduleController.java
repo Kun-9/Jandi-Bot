@@ -1,7 +1,6 @@
 package com.hk_music_cop.demo.schedule.presentation;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hk_music_cop.demo.schedule.application.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +22,6 @@ import java.util.List;
 public class ScheduleController {
 
 	private final ScheduleService scheduleService;
-	ObjectMapper objectMapper = new ObjectMapper();
 
 	@GetMapping("/day/{date}")
 	public ResponseEntity<List<List<String>>> day(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
