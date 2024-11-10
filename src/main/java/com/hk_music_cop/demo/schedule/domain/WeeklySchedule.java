@@ -20,7 +20,7 @@ public class WeeklySchedule {
 			List<String> todos = rawSchedules.get(i);
 
 			if (todos == null) continue;
-			if (rawSchedules.size() == 1) dayOfWeek = null;
+//			if (rawSchedules.size() == 1) dayOfWeek = null;
 
 			dailySchedules.add(new DailySchedule(dayOfWeek, todos));
 		}
@@ -31,7 +31,7 @@ public class WeeklySchedule {
 		return dailySchedules.isEmpty();
 	}
 
-	public boolean isDaySchedule() {
+	public boolean isDailySchedule() {
 		return dailySchedules.size() == 1;
 	}
 }

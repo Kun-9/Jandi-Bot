@@ -50,8 +50,6 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 		int cnt = 0;
 		List <ConnectInfo> connectInfoList = new ArrayList<>();
 
-
-
 		for (DailySchedule dailySchedule : weeklySchedule.getDailySchedules()) {
 			if (dailySchedule != null) {
 				StringBuilder sb = new StringBuilder();
@@ -62,8 +60,14 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 
 				String content = sb.toString().trim();
 
-				String dayName = dailySchedule.getDayName();
-				if (weeklySchedule.isDaySchedule()) dayName = null;
+				String dayName;
+
+				if (weeklySchedule.isDailySchedule()) {
+					dayName = null;
+				} else {
+					dayName = dailySchedule.getDayName();
+					System.out.println("JandiMessageFormatterImpl.parseScheduleListToResponse");
+				}
 
 				connectInfoList.add(new ConnectInfo(dayName, content, null));
 
@@ -82,6 +86,8 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 					);
 
 		}
+
+		System.out.println(jandiWebhookResponse);
 
 		return jandiWebhookResponse;
 	}

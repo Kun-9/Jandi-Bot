@@ -28,7 +28,10 @@ public class JandiRequestData {
 			case "추첨 수정" -> isValid = (parameters.size() == 2) && (parameters.get(0).size() == 1) && (parameters.get(1).size() == 2);
 			case "추첨 삭제" -> isValid = (parameters.size() == 1) && (parameters.get(0).size() == 1);
 		    case "일단위 일정 조회" -> isValid = (parameters.size() == 1) && (parameters.get(0).size() == 3);
-            case "주단위 일정 조회" -> isValid = (parameters.size() == 1) && (parameters.get(0).size() == 3);
+            case "주단위 일정 조회" -> {
+	            int weekNth = Integer.parseInt(parameters.get(0).get(2));
+	            isValid = (parameters.size() == 1) && (parameters.get(0).size() == 3) && (weekNth <= 4) && (weekNth >= 0);
+            }
 			case "추첨", "추첨 리스트 조회" -> isValid = (parameters.isEmpty());
 		}
 
