@@ -22,7 +22,7 @@ public class LotteryServiceImpl implements LotteryService {
 	private final Random rand = new Random();
 	private final LotteryRepository lotteryRepository;
 
-	public LotteryResponse chooseLotteryWinner(String title, String color, String imgURL) {
+	public LotteryResponse chooseLotteryWinner() {
 		List<LotteryResponse> personList = lotteryRepository.findAll();
 
 		if (personList.isEmpty()) {

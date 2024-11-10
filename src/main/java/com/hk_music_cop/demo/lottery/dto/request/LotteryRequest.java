@@ -7,5 +7,4 @@ public class LotteryRequest {
 	private Long memberId;
 	private String name;
 	private String position;
-
 }

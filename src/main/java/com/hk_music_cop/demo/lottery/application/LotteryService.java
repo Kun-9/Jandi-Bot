@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public interface LotteryService {
-	LotteryResponse chooseLotteryWinner(String title, String color, String imgURL);
+	LotteryResponse chooseLotteryWinner();
 
 	boolean registerLottery(LotteryRequest lotteryRequest);
 

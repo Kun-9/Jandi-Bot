@@ -7,6 +7,7 @@ import com.hk_music_cop.demo.lottery.application.LotteryService;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.schedule.application.ScheduleService;
+import com.hk_music_cop.demo.schedule.domain.WeeklySchedule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -48,7 +49,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 		String title = jandiProperties.title().lotteryTitle();
 		String color = jandiProperties.color().successColor();
 
-		LotteryResponse winner = lotteryService.chooseLotteryWinner(title, color, imgURL);
+		LotteryResponse winner = lotteryService.chooseLotteryWinner();
 
 		return createJandiMessage(createLotteryResponse(title, color, winner, imgURL));
 	}
@@ -157,13 +158,13 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	}
 
 	private JandiWebhookResponse createScheduleWeekResponse(String title, String color, LocalDate date) {
-		List<List<String>> weekTodoData = scheduleService.getWeekTodo(date);
+		WeeklySchedule weekTodoData = scheduleService.getWeekTodo(date);
 		return jandiMessageFormatter.parseScheduleListToResponse(title, color, weekTodoData);
 	}
 
 	private JandiWebhookResponse createScheduleDayResponse(String title, String color, LocalDate date) {
-		List<List<String>> dayTodoData = scheduleService.getDayTodo(date);
-		return jandiMessageFormatter.parseScheduleListToResponse(title, color, dayTodoData);
+		WeeklySchedule dayTodo = scheduleService.getDayTodo(date);
+		return jandiMessageFormatter.parseScheduleListToResponse(title, color, dayTodo);
 	}
 
 	private JSONObject createJandiMessage(JandiWebhookResponse jandiWebhookResponse) {

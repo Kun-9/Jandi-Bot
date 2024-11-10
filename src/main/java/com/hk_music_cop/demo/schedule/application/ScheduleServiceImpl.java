@@ -3,6 +3,7 @@ package com.hk_music_cop.demo.schedule.application;
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetAPI;
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetProperties;
 import com.hk_music_cop.demo.global.error.common.CustomUndefinedCommand;
+import com.hk_music_cop.demo.schedule.domain.WeeklySchedule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -12,7 +13,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -28,7 +28,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 	}
 
 	@Override
-	public List<List<String>> getWeekTodo(LocalDate date) {
+	public WeeklySchedule getWeekTodo(LocalDate date) {
 
 		int year = date.getYear();
 		int month = date.getMonthValue();
@@ -46,12 +46,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 		// 해당 주의 금요일 코드
 		String endCode = googleSheetProperties.calendar().dayCode().get(4) + sheetNum;
 
-		return googleSheetAPI.getSheetData(sheetName, startCode, endCode, false);
+		return WeeklySchedule.from(googleSheetAPI.getSheetData(sheetName, startCode, endCode, false));
 	}
 
 
 	@Override
-	public List<List<String>> getDayTodo(LocalDate date) {
+	public WeeklySchedule getDayTodo(LocalDate date) {
 		// 주말 검증
 		validateHoliday(date);
 
@@ -65,7 +65,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 		int nthWeek = getNthWeek(date) - 1;
 
 		String code = googleSheetProperties.calendar().dayCode().get(day - 1) + googleSheetProperties.calendar().sheetNumbers().get(nthWeek);
-		return googleSheetAPI.getSheetData(sheetName, code, code, true);
+
+		return WeeklySchedule.from(googleSheetAPI.getSheetData(sheetName, code, code, true));
 	}
 
 	@Override

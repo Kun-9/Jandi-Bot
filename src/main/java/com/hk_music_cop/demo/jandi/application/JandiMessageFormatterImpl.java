@@ -3,6 +3,9 @@ package com.hk_music_cop.demo.jandi.application;
 import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetProperties;
 import com.hk_music_cop.demo.jandi.JandiProperties;
 import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
+import com.hk_music_cop.demo.schedule.domain.DailySchedule;
+import com.hk_music_cop.demo.schedule.domain.Todo;
+import com.hk_music_cop.demo.schedule.domain.WeeklySchedule;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,7 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse.*;
@@ -41,8 +44,50 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 		return jsonObject;
 	}
 
+	public JandiWebhookResponse parseScheduleListToResponse(String title, String color, WeeklySchedule weeklySchedule) {
+		JandiWebhookResponse jandiWebhookResponse;
+
+		int cnt = 0;
+		List <ConnectInfo> connectInfoList = new ArrayList<>();
+
+
+
+		for (DailySchedule dailySchedule : weeklySchedule.getDailySchedules()) {
+			if (dailySchedule != null) {
+				StringBuilder sb = new StringBuilder();
+
+				for (Todo todo : dailySchedule.getTodos()) {
+					sb.append(todo.getTask()).append("\n");
+				}
+
+				String content = sb.toString().trim();
+
+				String dayName = dailySchedule.getDayName();
+				if (weeklySchedule.isDaySchedule()) dayName = null;
+
+				connectInfoList.add(new ConnectInfo(dayName, content, null));
+
+				cnt++;
+			}
+		}
+
+		jandiWebhookResponse = new JandiWebhookResponse(title, color, connectInfoList);
+
+
+		if (weeklySchedule.isEmpty()) {
+			return new JandiWebhookResponse(title, jandiProperties.color().failColor(),
+						new ConnectInfo(
+								"일정이 없어요", null, null
+						)
+					);
+
+		}
+
+		return jandiWebhookResponse;
+	}
+
 	@Override
-	public HttpEntity<String> createResponseEntity(String webhookURL, JandiWebhookResponse JandiWebhookResponse) {
+	public HttpEntity<String> sendWebhookRequest(String webhookURL, JandiWebhookResponse JandiWebhookResponse) {
 
 		RestTemplate restTemplate = new RestTemplate();
 
@@ -78,50 +123,6 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 			connectInfoJson.put(object);
 		}
 		return connectInfoJson;
-	}
-
-	public JandiWebhookResponse parseScheduleListToResponse(String title, String color, List<List<String>> result) {
-		JandiWebhookResponse jandiWebhookResponse = null;
-
-		int i = 0;
-		int cnt = 0;
-
-		for (List<String> strings : result) {
-			if (strings != null) {
-				StringBuilder sb = new StringBuilder();
-
-				for (String string : strings) {
-					sb.append(string).append("\n");
-				}
-
-				String content = sb.toString().trim();
-
-				int dayOfWeekValue = i;
-
-				if (result.size() == 1)
-					dayOfWeekValue = LocalDate.now().getDayOfWeek().getValue();
-
-				String dayName = getDayName(dayOfWeekValue);
-
-				ConnectInfo connectInfo = new ConnectInfo(dayName, content, null);
-				jandiWebhookResponse = new JandiWebhookResponse(title, color, connectInfo);
-
-
-				cnt++;
-			}
-			i++;
-		}
-
-		if (cnt == 0) {
-			return new JandiWebhookResponse(title, jandiProperties.color().failColor(),
-						new ConnectInfo(
-								"일정이 없어요", null, null
-						)
-					);
-
-		}
-
-		return jandiWebhookResponse;
 	}
 
 	private String getDayName(int dayOfWeekValue) {
