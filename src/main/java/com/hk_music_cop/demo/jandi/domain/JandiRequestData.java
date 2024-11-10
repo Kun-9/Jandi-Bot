@@ -9,6 +9,9 @@ import java.util.List;
 
 public class JandiRequestData {
 
+	private static final int MAX_WEEK_NUMBER = 4;
+	private static final int MIN_WEEK_NUMBER = 0;
+
 	@Getter
 	public static class Params {
 		private final String command;
@@ -22,6 +25,7 @@ public class JandiRequestData {
 
 	public Params validParamCnt(String command, List<List<String>> parameters) {
 
+
 		boolean isValid = true;
 		switch (command) {
 			case "추첨 등록" -> isValid = (parameters.size() == 1) && (parameters.get(0).size() == 2);
@@ -30,7 +34,7 @@ public class JandiRequestData {
 		    case "일단위 일정 조회" -> isValid = (parameters.size() == 1) && (parameters.get(0).size() == 3);
             case "주단위 일정 조회" -> {
 	            int weekNth = Integer.parseInt(parameters.get(0).get(2));
-	            isValid = (parameters.size() == 1) && (parameters.get(0).size() == 3) && (weekNth <= 4) && (weekNth >= 0);
+	            isValid = (parameters.size() == 1) && (parameters.get(0).size() == 3) && (weekNth <= MAX_WEEK_NUMBER) && (weekNth >= MIN_WEEK_NUMBER);
             }
 			case "추첨", "추첨 리스트 조회" -> isValid = (parameters.isEmpty());
 		}

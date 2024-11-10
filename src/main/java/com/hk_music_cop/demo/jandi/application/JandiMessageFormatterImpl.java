@@ -66,7 +66,6 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 					dayName = null;
 				} else {
 					dayName = dailySchedule.getDayName();
-					System.out.println("JandiMessageFormatterImpl.parseScheduleListToResponse");
 				}
 
 				connectInfoList.add(new ConnectInfo(dayName, content, null));
@@ -86,8 +85,6 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 					);
 
 		}
-
-		System.out.println(jandiWebhookResponse);
 
 		return jandiWebhookResponse;
 	}
