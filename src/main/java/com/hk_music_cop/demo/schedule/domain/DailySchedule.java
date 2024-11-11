@@ -26,6 +26,6 @@ public class DailySchedule {
 	}
 
 	public String getDayName() {
-		return day.getDisplayName(TextStyle.FULL, Locale.KOREAN);
+		return day == null ? null : day.getDisplayName(TextStyle.FULL, Locale.KOREAN);
 	}
 }

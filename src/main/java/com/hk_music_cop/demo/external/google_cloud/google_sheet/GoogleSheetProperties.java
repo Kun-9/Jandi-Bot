@@ -9,3 +9,5 @@ public record GoogleSheetProperties(String spreadsheetId, SheetCalendar calendar
 	public record SheetCalendar(List<String> dayList, List<String> dayCode, List<Integer> sheetNumbers) {}
 	public record Config(String key, String serviceName) {}
 }
+
+
