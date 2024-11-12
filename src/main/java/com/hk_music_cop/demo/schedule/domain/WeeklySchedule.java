@@ -13,7 +13,7 @@ public class WeeklySchedule {
 	List<DailySchedule> dailySchedules;
 	LocalDate targetDate;
 
-	public static WeeklySchedule from(List<List<String>> rawSchedules, LocalDate targetDate) {
+	public static WeeklySchedule of(List<List<String>> rawSchedules, LocalDate targetDate) {
 		List<DailySchedule> dailySchedules = new ArrayList<>();
 
 		for (int i = 0; i < rawSchedules.size(); i++) {

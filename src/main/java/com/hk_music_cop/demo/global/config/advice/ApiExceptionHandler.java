@@ -27,7 +27,7 @@ public class ApiExceptionHandler {
 
 		return ResponseEntity
 				.badRequest()
-				.body(errorResponse);
+				.body(errorRㅉesponse);
 	}
 
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)

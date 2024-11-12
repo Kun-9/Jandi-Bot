@@ -46,7 +46,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 		// 해당 주의 금요일 코드
 		String endCode = googleSheetProperties.calendar().dayCode().get(4) + sheetNum;
 
-		return WeeklySchedule.from(googleSheetAPI.getSheetData(sheetName, startCode, endCode, false), date);
+		return WeeklySchedule.of(googleSheetAPI.getSheetData(sheetName, startCode, endCode, false), date);
 	}
 
 
@@ -66,7 +66,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 		String code = googleSheetProperties.calendar().dayCode().get(day - 1) + googleSheetProperties.calendar().sheetNumbers().get(nthWeek);
 
-		return WeeklySchedule.from(googleSheetAPI.getSheetData(sheetName, code, code, true), date);
+		return WeeklySchedule.of(googleSheetAPI.getSheetData(sheetName, code, code, true), date);
 	}
 
 	@Override
