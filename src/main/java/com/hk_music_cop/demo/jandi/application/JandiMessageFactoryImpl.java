@@ -87,7 +87,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 
 	@Override
 	public JSONObject deleteLotteryMessage(LotteryRequest lotteryRequest) {
-		boolean result = lotteryService.deleteLottery(lotteryRequest.getMemberId(), lotteryRequest.getLotteryName());
+		boolean result = lotteryService.deleteLottery(lotteryRequest.memberId(), lotteryRequest.lotteryName());
 
 		JandiWebhookResponse response = createResultResponse(result);
 
@@ -96,7 +96,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 
 	@Override
 	public JSONObject updateLotteryMessage(Long targetLotteryId, LotteryRequest lotteryRequest) {
-		boolean result = lotteryService.updateLottery(lotteryRequest.getMemberId(), targetLotteryId, lotteryRequest);
+		boolean result = lotteryService.updateLottery(lotteryRequest.memberId(), targetLotteryId, lotteryRequest);
 
 		JandiWebhookResponse response = createResultResponse(result);
 
@@ -133,7 +133,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 		List<ConnectInfo> connectInfoList = lotteryResponseList.stream()
 				.map(lotteryResponse ->
 						new ConnectInfo(
-								lotteryResponse.getName() + " " + lotteryResponse.getPosition(),
+								lotteryResponse.getLotteryName() + " " + lotteryResponse.getPosition(),
 								null,
 								null
 						)
@@ -153,7 +153,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 		return new JandiWebhookResponse(
 				title,
 				color,
-				new ConnectInfo("결과", "'" + person.getName() + " " + person.getPosition() + "'님 당첨되었습니다.\n축하합니다~!", imgURL)
+				new ConnectInfo("결과", "'" + person.getLotteryName() + " " + person.getPosition() + "'님 당첨되었습니다.\n축하합니다~!", imgURL)
 		);
 	}
 

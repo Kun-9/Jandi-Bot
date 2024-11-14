@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Getter @NoArgsConstructor @ToString @AllArgsConstructor
 public class LotteryResponse {
-	private String name;
+	private String lotteryName;
 	private String position;
 	private LocalDateTime createdDate;
 	private Long lotteryId;

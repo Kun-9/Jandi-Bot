@@ -39,7 +39,7 @@ public class LotteryServiceImpl implements LotteryService {
 	@Override
 	public boolean registerLottery(LotteryRequest lotteryRequest) {
 
-		validateDuplicateName(lotteryRequest.getLotteryName());
+		validateDuplicateName(lotteryRequest.lotteryName());
 
 		return lotteryRepository.createLottery(lotteryRequest) > 0;
 	}
@@ -65,7 +65,7 @@ public class LotteryServiceImpl implements LotteryService {
 		LotteryResponse targetLottery = lotteryRepository.findByLotteryId(lotteryId).get();
 
 		// 바꿀 이름 존재 여부 확인 :: 동시성 고려?
-		validateNotExist(targetLottery.getName());
+		validateNotExist(targetLottery.getLotteryName());
 
 		return lotteryRepository.editLottery(lotteryId, lotteryRequest) == 1;
 	}

@@ -86,7 +86,7 @@ class LotteryRepositoryTest {
 		assertThat(i).isEqualTo(1);
 		assertThat(findEditObject)
 				.satisfies(object -> {
-					assertThat(object.getName()).isEqualTo(editLottery.getLotteryName());
+					assertThat(object.getLotteryName()).isEqualTo(editLottery.getLotteryName());
 					assertThat(object.getPosition()).isEqualTo(editLottery.getPosition());
 				});
 	}

@@ -4,12 +4,12 @@ import lombok.Value;
 
 @Value
 public class LotterySimpleResponse {
-	String name;
+	String lotteryName;
 	String position;
 
 	public static LotterySimpleResponse from(LotteryResponse lotteryResponse) {
 
-		return new LotterySimpleResponse(lotteryResponse.getName(), lotteryResponse.getPosition());
+		return new LotterySimpleResponse(lotteryResponse.getLotteryName(), lotteryResponse.getPosition());
 	}
 
 }

@@ -2,6 +2,8 @@ package com.hk_music_cop.demo.lottery.presentation;
 
 
 import com.hk_music_cop.demo.lottery.application.LotteryService;
+import com.hk_music_cop.demo.lottery.dto.request.LotteryCreateRequest;
+import com.hk_music_cop.demo.lottery.dto.request.LotteryDeleteRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.lottery.dto.response.LotterySimpleResponse;
@@ -45,15 +47,15 @@ public class LotteryController {
 	}
 
 	@PostMapping("remove")
-	public ResponseEntity<String> deleteLottery(@RequestBody String lotteryName, @AuthenticationPrincipal UserDetails userDetails) {
+	public ResponseEntity<String> deleteLottery(@RequestBody LotteryDeleteRequest deleteRequest, @AuthenticationPrincipal UserDetails userDetails) {
 
-		System.out.println("lotteryName = " + lotteryName);
+		String targetLottery = deleteRequest.lotteryName();
 
 		String userId = userDetails.getUsername();
 
 		MemberResponse byUserId = memberService.findByUserId(userId);
 
-		boolean result = lotteryService.deleteLottery(byUserId.getMemberId(), lotteryName);
+		boolean result = lotteryService.deleteLottery(byUserId.getMemberId(), targetLottery);
 
 		if (result) return new ResponseEntity<>("삭제 성공", HttpStatus.OK);
 
@@ -61,11 +63,11 @@ public class LotteryController {
 	}
 
 	@PostMapping
-	public ResponseEntity<String> createLottery(@RequestBody LotteryRequest lotteryRequest, @AuthenticationPrincipal UserDetails userDetails) {
+	public ResponseEntity<String> createLottery(@RequestBody LotteryCreateRequest lotteryCreateRequest, @AuthenticationPrincipal UserDetails userDetails) {
 		String userId = userDetails.getUsername();
 		MemberResponse byUserId = memberService.findByUserId(userId);
 
-		LotteryRequest request = lotteryRequest.withMemberId(byUserId.getMemberId());
+		LotteryRequest request = LotteryRequest.of(byUserId.getMemberId(), lotteryCreateRequest);
 
 		lotteryService.registerLottery(request);
 
