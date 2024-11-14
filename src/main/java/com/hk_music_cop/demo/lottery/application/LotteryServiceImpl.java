@@ -39,15 +39,15 @@ public class LotteryServiceImpl implements LotteryService {
 	@Override
 	public boolean registerLottery(LotteryRequest lotteryRequest) {
 
-		validateDuplicateName(lotteryRequest.getName());
+		validateDuplicateName(lotteryRequest.getLotteryName());
 
 		return lotteryRepository.createLottery(lotteryRequest) > 0;
 	}
 
 
 	@Override
-	public boolean deleteLottery(Long memberId, String name) {
-		LotteryResponse targetLottery = validateExistByName(name);
+	public boolean deleteLottery(Long memberId, String lotteryName) {
+		LotteryResponse targetLottery = validateExistByName(lotteryName);
 		validCreator(memberId, targetLottery.getLotteryId());
 
 		return lotteryRepository.deleteLottery(targetLottery.getLotteryId()) == 1;

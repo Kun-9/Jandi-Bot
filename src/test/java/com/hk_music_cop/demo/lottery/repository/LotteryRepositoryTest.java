@@ -65,7 +65,7 @@ class LotteryRepositoryTest {
 
 
 		//
-		LotteryResponse findLottery = lotteryRepository.findByName(testObject.getName()).get();
+		LotteryResponse findLottery = lotteryRepository.findByName(testObject.getLotteryName()).get();
 
 
 		//
@@ -86,7 +86,7 @@ class LotteryRepositoryTest {
 		assertThat(i).isEqualTo(1);
 		assertThat(findEditObject)
 				.satisfies(object -> {
-					assertThat(object.getName()).isEqualTo(editLottery.getName());
+					assertThat(object.getName()).isEqualTo(editLottery.getLotteryName());
 					assertThat(object.getPosition()).isEqualTo(editLottery.getPosition());
 				});
 	}
@@ -117,7 +117,7 @@ class LotteryRepositoryTest {
 		requests.forEach(lotteryRepository::createLottery);
 
 		List<Tuple> expectedTuple = requests.stream().map(
-				data -> tuple(data.getName(), data.getPosition())
+				data -> tuple(data.getLotteryName(), data.getPosition())
 		).toList();
 
 
@@ -137,7 +137,7 @@ class LotteryRepositoryTest {
 	@Test
 	void existsByName() {
 		//
-		String name = testObject.getName();
+		String name = testObject.getLotteryName();
 
 		//
 		boolean isExistExTrue = lotteryRepository.existsByName(name);

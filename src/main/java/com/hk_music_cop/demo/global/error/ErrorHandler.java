@@ -21,7 +21,7 @@ public class ErrorHandler {
 	private final ObjectMapper objectMapper;
 
 	public ErrorResponse handleException(Exception e, HttpStatus status) {
-		log.error("error occurred: ", e);
+		log.error("error occurred: {}", e.getMessage());
 
 		return new ErrorResponse(
 				status.value(),
@@ -30,7 +30,7 @@ public class ErrorHandler {
 	}
 
 	public ErrorResponse handleExceptionMessage(Exception e, HttpStatus status, String message) {
-		log.error("error occurred: ", e);
+		log.error("error occurred: {}", e.getMessage());
 
 		return new ErrorResponse(
 				status.value(),

@@ -11,7 +11,7 @@ public interface LotteryService {
 
 	boolean registerLottery(LotteryRequest lotteryRequest);
 
-	boolean deleteLottery(Long memberId, String name);
+	boolean deleteLottery(Long memberId, String lotteryName);
 
 	boolean updateLottery(Long memberId, Long lotteryId, LotteryRequest lotteryRequest);
 
@@ -21,6 +21,7 @@ public interface LotteryService {
 
 	void validateExistById(Long lotteryId);
 
+	// 해당 로터리 생성자인지 확인
 	void validCreator(Long memberId, Long lotteryId);
 
 	void validateDuplicateName(String name);

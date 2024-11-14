@@ -4,6 +4,7 @@ import com.hk_music_cop.demo.global.config.advice.dto.ErrorResponse;
 import com.hk_music_cop.demo.global.error.ErrorHandler;
 import com.hk_music_cop.demo.global.error.common.CustomException;
 import com.hk_music_cop.demo.lottery.presentation.LotteryController;
+import com.hk_music_cop.demo.member.presentation.MemberController;
 import com.hk_music_cop.demo.schedule.presentation.ScheduleController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 @Slf4j
 @RequiredArgsConstructor
-@RestControllerAdvice(assignableTypes = {ScheduleController.class, LotteryController.class})
+@RestControllerAdvice(assignableTypes = {ScheduleController.class, LotteryController.class, MemberController.class})
 public class ApiExceptionHandler {
 
 	private final ErrorHandler errorHandler;

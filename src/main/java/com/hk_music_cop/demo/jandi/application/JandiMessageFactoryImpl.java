@@ -87,7 +87,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 
 	@Override
 	public JSONObject deleteLotteryMessage(LotteryRequest lotteryRequest) {
-		boolean result = lotteryService.deleteLottery(lotteryRequest.getMemberId(), lotteryRequest.getName());
+		boolean result = lotteryService.deleteLottery(lotteryRequest.getMemberId(), lotteryRequest.getLotteryName());
 
 		JandiWebhookResponse response = createResultResponse(result);
 

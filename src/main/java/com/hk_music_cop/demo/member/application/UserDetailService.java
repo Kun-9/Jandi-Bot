@@ -32,7 +32,7 @@ public class UserDetailService implements UserDetailsService {
 
 		if (validMember == null) {
 			log.error("Member 찾기 실패 : {}", userId);
-			throw new UsernameNotFoundException("로그인 아이디 찾을 수 없음");
+			throw new UsernameNotFoundException("로그인 아이디 찾을 수 없습니다.");
 		}
 
 		List<String> rolesByMemberId = memberRepository.findRolesByMemberId(validMember.getMemberId());

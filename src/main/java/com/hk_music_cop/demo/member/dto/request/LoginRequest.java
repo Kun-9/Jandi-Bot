@@ -1,4 +1,4 @@
 package com.hk_music_cop.demo.member.dto.request;
 
-public class LoginRequest {
-}
+
+public record LoginRequest(String userId, String password) {}

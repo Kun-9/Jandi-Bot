@@ -7,6 +7,7 @@ import com.hk_music_cop.demo.member.dto.request.MemberRequest;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import com.hk_music_cop.demo.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,18 +15,22 @@ import org.springframework.stereotype.Service;
 public class MemberServiceImpl implements MemberService {
 
 	private final MemberRepository memberRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public Long join(MemberRequest memberRequest) {
 		String userId = memberRequest.getUserId();
-
 
 		// 이미 존재할 때
 		if (isUserIdExist(userId)) {
 			throw new CustomDuplicatedUserIdException(userId);
 		}
 
-		return memberRepository.join(memberRequest);
+		return memberRepository.join(new MemberRequest(
+				memberRequest.getName(),
+				memberRequest.getUserId(),
+				passwordEncoder.encode(memberRequest.getPassword())
+		));
 	}
 
 	@Override
