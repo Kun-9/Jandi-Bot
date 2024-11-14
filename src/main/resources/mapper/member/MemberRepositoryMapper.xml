@@ -11,14 +11,18 @@
     </select>
 
     <select id="findByUserId" parameterType="String" resultType="MemberResponse">
-        SELECT "member_id", "user_id", "password", "name", "created_date" FROM members WHERE user_id = #{userId}
+        SELECT "member_id", "user_id", "password", "name", "created_date", "enabled"
+        FROM members
+        WHERE user_id = #{userId}
     </select>
 
-<!--    <select id="join" parameterType="MemberRequest" resultType="java.lang.Long">-->
-<!--        INSERT INTO members (user_id, password, name)-->
-<!--        VALUES (#{userId}, #{password}, #{name})-->
-<!--        RETURNING member_id-->
-<!--    </select>-->
+    <select id="findRolesByMemberId" parameterType="Long" resultType="String">
+        select role_name
+        from member_roles mr
+        JOIN roles r ON mr."role_id" = r."role_id"
+        WHERE member_id = #{memberId}
+    </select>
+
 
     <select id="join" parameterType="MemberRequest" resultType="Long">
         INSERT INTO members (user_id, password, name)

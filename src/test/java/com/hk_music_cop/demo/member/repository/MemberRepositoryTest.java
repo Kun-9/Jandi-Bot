@@ -1,7 +1,13 @@
 package com.hk_music_cop.demo.member.repository;
 
+import com.hk_music_cop.demo.global.config.security.SecurityRole;
+import com.hk_music_cop.demo.global.jwt.JwtProperties;
+import com.hk_music_cop.demo.global.jwt.JwtTokenProvider;
 import com.hk_music_cop.demo.member.dto.request.MemberRequest;
+import com.hk_music_cop.demo.member.dto.response.Member;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
+import com.hk_music_cop.demo.member.dto.response.MemberSecurity;
+import io.jsonwebtoken.security.Keys;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,8 +17,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.crypto.SecretKey;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -152,6 +161,20 @@ class MemberRepositoryTest {
 					assertThat(member.getUserId()).isEqualTo(memberRequest.getUserId());
 					assertThat(member.getPassword()).isEqualTo(memberRequest.getPassword());
 				});
+	}
+
+
+	@Test
+	void findRoleByMemberId() {
+
+
+		List<String> roleByMemberId = memberRepository.findRolesByMemberId(5L);
+
+		MemberResponse member = memberRepository.findByUserId("id1").withRoles(roleByMemberId);
+
+
+		System.out.println(MemberSecurity.from(member));
+
 	}
 
 

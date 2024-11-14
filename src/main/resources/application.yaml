@@ -7,7 +7,6 @@ spring:
     username: ${DB_USER_NAME}
     password: ${DB_PASSWORD}
 
-
 server:
   servlet:
     encoding:
@@ -16,12 +15,17 @@ server:
       force-response: true
       enabled: true
 
-
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml # mapper 경로 설정
   configuration:
     map-underscore-to-camel-case: true
   type-aliases-package: com.hk_music_cop.demo.**.domain, com.hk_music_cop.demo.**.dto # 도메인 폴더 설정
+
+jwt:
+  secret: 'I9VkGByEuaSJlw5Tl00_wtmozyZVOSi1x3lVq1OdKgA='
+#  secret: 'kun'
+  token-validity-in-seconds: 3600
+
 
 jandi:
   color:

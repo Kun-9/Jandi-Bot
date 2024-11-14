@@ -1,5 +1,6 @@
 package com.hk_music_cop.demo.member.repository;
 
+import com.hk_music_cop.demo.global.config.security.SecurityRole;
 import com.hk_music_cop.demo.member.dto.request.MemberRequest;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import org.apache.ibatis.annotations.Mapper;
@@ -38,6 +39,12 @@ public interface MemberRepository {
 	List<MemberResponse> findAll();
 
 
-
+	/**
+	 *
+	 * @param userId 존재하는지 확인 할 유저 아이디
+	 * @return 존재 여부
+	 */
 	boolean userIdExistValidation(String userId);
+
+	List<String> findRolesByMemberId(Long memberId);
 }
