@@ -1,4 +1,4 @@
-package com.hk_music_cop.demo.global.error.common;
+package com.hk_music_cop.demo.global.error.exceptions;
 
 public class CustomLotteryNotFoundException extends CustomException {
 	private static final String DEFAULT_MESSAGE = "해당 lottery를 찾을 수 없습니다.";

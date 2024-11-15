@@ -1,9 +1,9 @@
 package com.hk_music_cop.demo.lottery.application;
 
-import com.hk_music_cop.demo.global.error.common.CustomDuplicatedNameException;
-import com.hk_music_cop.demo.global.error.common.CustomNotFoundException;
-import com.hk_music_cop.demo.global.error.common.CustomUnauthorizedException;
-import com.hk_music_cop.demo.global.error.common.CustomLotteryNotFoundException;
+import com.hk_music_cop.demo.global.error.exceptions.CustomDuplicatedNameException;
+import com.hk_music_cop.demo.global.error.exceptions.CustomNotFoundException;
+import com.hk_music_cop.demo.global.error.exceptions.CustomUnauthorizedException;
+import com.hk_music_cop.demo.global.error.exceptions.CustomLotteryNotFoundException;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.lottery.repository.LotteryRepository;
@@ -21,6 +21,11 @@ public class LotteryServiceImpl implements LotteryService {
 
 	private final Random rand = new Random();
 	private final LotteryRepository lotteryRepository;
+
+	@Override
+	public LotteryResponse findByName(String name) {
+		return validateExistByName(name);
+	}
 
 	public LotteryResponse chooseLotteryWinner() {
 		List<LotteryResponse> personList = lotteryRepository.findAll();

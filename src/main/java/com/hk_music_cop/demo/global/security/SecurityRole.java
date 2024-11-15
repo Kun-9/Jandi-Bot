@@ -1,4 +1,4 @@
-package com.hk_music_cop.demo.global.config.security;
+package com.hk_music_cop.demo.global.security;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

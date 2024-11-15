@@ -1,6 +1,5 @@
 package com.hk_music_cop.demo.member.repository;
 
-import com.hk_music_cop.demo.global.config.security.SecurityRole;
 import com.hk_music_cop.demo.member.dto.request.MemberRequest;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import org.apache.ibatis.annotations.Mapper;

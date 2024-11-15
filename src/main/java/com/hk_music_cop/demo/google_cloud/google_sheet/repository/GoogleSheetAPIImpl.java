@@ -1,8 +1,9 @@
-package com.hk_music_cop.demo.external.google_cloud.google_sheet;
+package com.hk_music_cop.demo.google_cloud.google_sheet.repository;
 
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
-import com.hk_music_cop.demo.global.error.common.CustomApiException;
+import com.hk_music_cop.demo.global.error.exceptions.CustomApiException;
+import com.hk_music_cop.demo.google_cloud.google_sheet.GoogleSheetProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class GoogleSheetAPIImpl implements GoogleSheetAPI {
 					.get(googleSheetProperties.spreadsheetId(), range.toString())
 					.execute();
 		} catch (IOException e) {
-			throw new CustomApiException("입력 값을 확인해주세요.");
+			throw new CustomApiException();
 		}
 
 		return getSheetDataParse(isDay, response.getValues());

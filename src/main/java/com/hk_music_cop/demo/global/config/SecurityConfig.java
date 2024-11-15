@@ -1,4 +1,4 @@
-package com.hk_music_cop.demo.global.config.security;
+package com.hk_music_cop.demo.global.config;
 
 import com.hk_music_cop.demo.global.config.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +31,14 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		http
+				.csrf(csrf -> csrf.disable())
+				.sessionManagement(session -> session
+						.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				)
 				.addFilterBefore(
 						jwtAuthenticationFilter,
 						UsernamePasswordAuthenticationFilter.class
 				)
-				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth
 								.requestMatchers("/jandi/**").permitAll()
 								.requestMatchers("/api/lottery/**").permitAll()
@@ -44,9 +47,6 @@ public class SecurityConfig {
 								.requestMatchers(HttpMethod.POST,"/api/lottery/**").authenticated()
 								.requestMatchers(HttpMethod.POST,"/api/lottery/remove/**").authenticated()
 								.anyRequest().authenticated()
-				)
-				.sessionManagement(session -> session
-						.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				);
 
 

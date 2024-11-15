@@ -25,12 +25,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final JwtTokenProvider tokenProvider;
 	private final ErrorHandler errorHandler;
 
-	@PostConstruct
-	public void init() {
-		log.info("JwtTokenProvider : {}", tokenProvider == null ? "없음" : "있음");
-		log.info("errorHandler : {}", errorHandler == null ? "없음" : "있음");
-	}
-
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
 		try {

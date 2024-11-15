@@ -1,8 +1,8 @@
 package com.hk_music_cop.demo.global.config.advice;
 
-import com.hk_music_cop.demo.global.config.advice.dto.ErrorResponse;
+import com.hk_music_cop.demo.global.error.dto.ErrorResponse;
 import com.hk_music_cop.demo.global.error.ErrorHandler;
-import com.hk_music_cop.demo.global.error.common.CustomException;
+import com.hk_music_cop.demo.global.error.exceptions.CustomException;
 import com.hk_music_cop.demo.lottery.presentation.LotteryController;
 import com.hk_music_cop.demo.member.presentation.MemberController;
 import com.hk_music_cop.demo.schedule.presentation.ScheduleController;

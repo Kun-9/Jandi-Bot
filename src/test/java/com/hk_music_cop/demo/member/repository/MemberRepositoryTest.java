@@ -1,27 +1,22 @@
 package com.hk_music_cop.demo.member.repository;
 
-import com.hk_music_cop.demo.global.config.security.SecurityRole;
-import com.hk_music_cop.demo.global.jwt.JwtProperties;
-import com.hk_music_cop.demo.global.jwt.JwtTokenProvider;
+import com.hk_music_cop.demo.global.security.Role;
+import com.hk_music_cop.demo.global.security.SecurityRole;
 import com.hk_music_cop.demo.member.dto.request.MemberRequest;
-import com.hk_music_cop.demo.member.dto.response.Member;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import com.hk_music_cop.demo.member.dto.response.MemberSecurity;
-import io.jsonwebtoken.security.Keys;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.crypto.SecretKey;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -51,7 +46,7 @@ class MemberRepositoryTest {
 		testData.forEach(m -> seqValues.add(memberRepository.join(m)));
 	}
 
-	// join 테스트
+	@DisplayName("회원 생성")
 	@Test
 	void join() {
 		// given
@@ -65,8 +60,8 @@ class MemberRepositoryTest {
 	}
 
 
-	// 중복 가입불가 테스트
 	@Test
+	@DisplayName("이름 중복 가입 불가")
 	void joinDup() {
 		// given
 		MemberRequest memberRequest1 = new MemberRequest("신동근", "userId1", "pass1");
@@ -85,6 +80,7 @@ class MemberRepositoryTest {
 
 
 	@Test
+	@DisplayName("고유Id로 멤버 객체 찾기")
 	void findByMemberId() {
 		// given
 		MemberRequest targetMember = testData.get(0);
@@ -103,6 +99,7 @@ class MemberRepositoryTest {
 	}
 
 
+	@DisplayName("userId로 사용자 조회")
 	@Test
 	void findByUserId() {
 		// given
@@ -121,6 +118,7 @@ class MemberRepositoryTest {
 
 	}
 
+	@DisplayName("모든 사용자 조회")
 	@Test
 	void findAll() {
 		// given
@@ -142,9 +140,7 @@ class MemberRepositoryTest {
 
 	}
 
-	/**
-	 * join + findByUserId 통합 테스트
- 	 */
+	@DisplayName("join + findById 통합")
 	@Test
 	void joinAndFind() {
 		// given
@@ -164,16 +160,22 @@ class MemberRepositoryTest {
 	}
 
 
+	@DisplayName("사용자 역할 조회")
 	@Test
 	void findRoleByMemberId() {
 
-
+		// given
 		List<String> roleByMemberId = memberRepository.findRolesByMemberId(5L);
+		List<String> expectedRole = List.of(Role.ROLE_ADMIN.name(), Role.ROLE_USER.name());
 
+
+		// when
 		MemberResponse member = memberRepository.findByUserId("id1").withRoles(roleByMemberId);
 
 
-		System.out.println(MemberSecurity.from(member));
+		// then
+		assertThat(member.getRoles())
+				.containsExactlyInAnyOrder(expectedRole.toArray(String[]::new));
 
 	}
 

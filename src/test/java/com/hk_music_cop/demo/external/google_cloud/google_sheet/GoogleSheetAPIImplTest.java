@@ -1,6 +1,8 @@
 package com.hk_music_cop.demo.external.google_cloud.google_sheet;
 
 import com.google.api.services.sheets.v4.Sheets;
+import com.hk_music_cop.demo.google_cloud.google_sheet.repository.GoogleSheetAPI;
+import com.hk_music_cop.demo.google_cloud.google_sheet.GoogleSheetProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

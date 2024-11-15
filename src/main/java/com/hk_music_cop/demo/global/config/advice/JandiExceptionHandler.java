@@ -1,6 +1,6 @@
 package com.hk_music_cop.demo.global.config.advice;
 
-import com.hk_music_cop.demo.global.error.common.CustomException;
+import com.hk_music_cop.demo.global.error.exceptions.CustomException;
 import com.hk_music_cop.demo.jandi.application.JandiMessageFactory;
 import com.hk_music_cop.demo.jandi.presentation.JandiWebhookController;
 import lombok.RequiredArgsConstructor;

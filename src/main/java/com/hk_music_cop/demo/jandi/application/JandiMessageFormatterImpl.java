@@ -1,6 +1,6 @@
 package com.hk_music_cop.demo.jandi.application;
 
-import com.hk_music_cop.demo.external.google_cloud.google_sheet.GoogleSheetProperties;
+import com.hk_music_cop.demo.google_cloud.google_sheet.GoogleSheetProperties;
 import com.hk_music_cop.demo.jandi.JandiProperties;
 import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
 import com.hk_music_cop.demo.schedule.domain.DailySchedule;

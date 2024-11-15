@@ -1,7 +1,6 @@
-package com.hk_music_cop.demo.external.google_cloud.google_sheet;
+package com.hk_music_cop.demo.google_cloud.google_sheet.repository;
 
 
-import java.io.IOException;
 import java.util.List;
 
 public interface GoogleSheetAPI {

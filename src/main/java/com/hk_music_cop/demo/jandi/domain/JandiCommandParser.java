@@ -1,13 +1,13 @@
 package com.hk_music_cop.demo.jandi.domain;
 
-import com.hk_music_cop.demo.global.error.common.CustomUndefinedCommand;
+import com.hk_music_cop.demo.global.error.exceptions.CustomUndefinedCommand;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class JandiRequestData {
+public class JandiCommandParser {
 
 	private static final int MAX_WEEK_NUMBER = 4;
 	private static final int MIN_WEEK_NUMBER = 0;
@@ -24,9 +24,8 @@ public class JandiRequestData {
 	}
 
 	public Params validParamCnt(String command, List<List<String>> parameters) {
-
-
 		boolean isValid = true;
+
 		switch (command) {
 			case "추첨 등록" -> isValid = (parameters.size() == 1) && (parameters.get(0).size() == 2);
 			case "추첨 수정" -> isValid = (parameters.size() == 2) && (parameters.get(0).size() == 1) && (parameters.get(1).size() == 2);

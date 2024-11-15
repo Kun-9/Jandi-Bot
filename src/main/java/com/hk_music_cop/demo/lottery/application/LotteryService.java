@@ -28,4 +28,5 @@ public interface LotteryService {
 
 	void validateNotExist(String name);
 
+	LotteryResponse findByName(String name);
 }

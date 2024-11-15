@@ -1,4 +1,4 @@
-package com.hk_music_cop.demo.global.error.common;
+package com.hk_music_cop.demo.global.error.exceptions;
 
 public class CustomApiException extends CustomException {
 

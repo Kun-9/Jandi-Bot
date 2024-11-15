@@ -1,8 +1,7 @@
 package com.hk_music_cop.demo.global.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hk_music_cop.demo.global.config.advice.dto.ErrorResponse;
-import jakarta.servlet.http.HttpServletRequest;
+import com.hk_music_cop.demo.global.error.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +22,7 @@ public class ErrorHandler {
 	public ErrorResponse handleException(Exception e, HttpStatus status) {
 		log.error("error occurred: ", e);
 
-		return new ErrorResponse(
+		return ErrorResponse.of(
 				status.value(),
 				e.getMessage()
 		);
@@ -32,7 +31,7 @@ public class ErrorHandler {
 	public ErrorResponse handleExceptionMessage(Exception e, HttpStatus status, String message) {
 		log.error("error occurred: ", e);
 
-		return new ErrorResponse(
+		return ErrorResponse.of(
 				status.value(),
 				message
 		);
@@ -47,7 +46,7 @@ public class ErrorHandler {
 
 		ErrorResponse errorResponse = handleExceptionMessage(e, status, message);
 
-		response.setStatus(errorResponse.getStatus());
+		response.setStatus(errorResponse.status());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 

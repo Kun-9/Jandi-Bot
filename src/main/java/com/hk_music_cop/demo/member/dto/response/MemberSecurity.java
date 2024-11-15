@@ -1,5 +1,9 @@
 package com.hk_music_cop.demo.member.dto.response;
 
+import com.hk_music_cop.demo.global.error.exceptions.CustomApiException;
+import com.hk_music_cop.demo.global.error.exceptions.CustomNotFoundException;
+import com.hk_music_cop.demo.global.error.exceptions.CustomUnknownMemberException;
+import com.hk_music_cop.demo.global.security.Role;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,8 +29,13 @@ public class MemberSecurity {
 
 	public static MemberSecurity from(MemberResponse member) {
 		List<SimpleGrantedAuthority> roleList = member.getRoles().stream()
-				.map(SimpleGrantedAuthority::new)
+				.map(role -> new SimpleGrantedAuthority(Role.getRole(role).name()))
 				.toList();
+
+		// 값 모두 들어왔는지 검증
+		if (member.getUserId() == null || member.getPassword() == null || roleList.isEmpty()) {
+			throw new CustomNotFoundException();
+		}
 
 		return new MemberSecurity(member.getUserId(), member.getPassword(), roleList, member.isEnabled());
 	}
