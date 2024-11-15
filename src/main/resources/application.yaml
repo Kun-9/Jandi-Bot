@@ -26,7 +26,6 @@ jwt:
   access-token-validity-in-seconds: 3600
   refresh-token-validity-in-days: 14
 
-
 jandi:
   color:
     success-color: '#68BB6C'
