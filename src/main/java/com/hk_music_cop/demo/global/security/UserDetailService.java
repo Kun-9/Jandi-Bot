@@ -1,7 +1,6 @@
-package com.hk_music_cop.demo.member.application;
+package com.hk_music_cop.demo.global.security;
 
 import com.hk_music_cop.demo.global.error.exceptions.CustomUsernmaeNotFoundException;
-import com.hk_music_cop.demo.global.security.CustomUser;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import com.hk_music_cop.demo.member.dto.response.MemberSecurity;
 import com.hk_music_cop.demo.member.repository.MemberRepository;
@@ -31,6 +30,8 @@ public class UserDetailService implements UserDetailsService {
 		}
 
 		List<String> rolesByMemberId = memberRepository.findRolesByMemberId(member.getMemberId());
+
+		System.out.println("rolesByMemberId = " + rolesByMemberId);
 
 		MemberSecurity memberSecurity = MemberSecurity.from(
 				member.withRoles(rolesByMemberId)

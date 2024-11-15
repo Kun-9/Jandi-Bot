@@ -1,6 +1,6 @@
 package com.hk_music_cop.demo.jandi.application;
 
-import com.hk_music_cop.demo.jandi.JandiProperties;
+import com.hk_music_cop.demo.jandi.config.JandiProperties;
 import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
 import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookRequest;
 import com.hk_music_cop.demo.lottery.application.LotteryService;

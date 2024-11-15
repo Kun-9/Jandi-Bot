@@ -45,5 +45,7 @@ public interface MemberRepository {
 	 */
 	boolean userIdExistValidation(String userId);
 
+	boolean usernameExistValidation(String userName);
+
 	List<String> findRolesByMemberId(Long memberId);
 }

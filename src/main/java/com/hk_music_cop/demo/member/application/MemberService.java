@@ -17,4 +17,6 @@ public interface MemberService {
 	boolean isUserIdExist(String userId);
 
 	void validateUserIdExist(String userId);
+
+	boolean isUsernameExist(String username);
 }

@@ -1,4 +1,4 @@
-package com.hk_music_cop.demo.jandi;
+package com.hk_music_cop.demo.jandi.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

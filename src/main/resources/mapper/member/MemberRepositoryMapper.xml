@@ -36,4 +36,9 @@
         WHERE user_id = #{userId};
     </select>
 
+    <select id="usernameExistValidation" parameterType="String" resultType="boolean">
+        select count(*) > 0 as isExist
+        from members
+        WHERE name = #{username};
+    </select>
 </mapper>

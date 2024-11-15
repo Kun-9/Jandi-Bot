@@ -1,8 +1,7 @@
 package com.hk_music_cop.demo.global.config.filter;
 
 import com.hk_music_cop.demo.global.error.ErrorHandler;
-import com.hk_music_cop.demo.global.jwt.JwtTokenProvider;
-import jakarta.annotation.PostConstruct;
+import com.hk_music_cop.demo.global.security.jwt.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

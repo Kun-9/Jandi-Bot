@@ -1,4 +1,4 @@
-package com.hk_music_cop.demo.google_cloud.google_sheet;
+package com.hk_music_cop.demo.googleCloud.googleSheet;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

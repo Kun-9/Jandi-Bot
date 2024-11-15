@@ -1,5 +1,6 @@
 package com.hk_music_cop.demo.member.application;
 
+import com.hk_music_cop.demo.global.error.exceptions.CustomDuplicatedNameException;
 import com.hk_music_cop.demo.global.error.exceptions.CustomDuplicatedUserIdException;
 import com.hk_music_cop.demo.global.error.exceptions.CustomIncorrectPasswordException;
 import com.hk_music_cop.demo.global.error.exceptions.CustomUnknownMemberException;
@@ -20,10 +21,16 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Long join(MemberRequest memberRequest) {
 		String userId = memberRequest.getUserId();
+		String username = memberRequest.getName();
 
-		// 이미 존재할 때
+		// 이미 아이디가 존재할 때
 		if (isUserIdExist(userId)) {
 			throw new CustomDuplicatedUserIdException(userId);
+		}
+
+		// 이미 유저네임이 존재할때
+		if (isUsernameExist(username)) {
+			throw new CustomDuplicatedNameException(username);
 		}
 
 		return memberRepository.join(new MemberRequest(
@@ -65,6 +72,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public boolean isUserIdExist(String userId) {
 		return memberRepository.userIdExistValidation(userId);
+	}
+
+	@Override
+	public boolean isUsernameExist(String username) {
+		return memberRepository.usernameExistValidation(username);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import com.hk_music_cop.demo.global.error.exceptions.CustomUnknownMemberExceptio
 import com.hk_music_cop.demo.global.security.Role;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -13,7 +14,8 @@ import java.util.Collection;
 import java.util.List;
 
 
-@ToString @Getter
+@Slf4j
+@Getter
 public class MemberSecurity {
 	private final String userId;
 	private final String password;
@@ -28,6 +30,7 @@ public class MemberSecurity {
 	}
 
 	public static MemberSecurity from(MemberResponse member) {
+
 		List<SimpleGrantedAuthority> roleList = member.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(Role.getRole(role).name()))
 				.toList();
@@ -39,6 +42,4 @@ public class MemberSecurity {
 
 		return new MemberSecurity(member.getUserId(), member.getPassword(), roleList, member.isEnabled());
 	}
-
-
 }

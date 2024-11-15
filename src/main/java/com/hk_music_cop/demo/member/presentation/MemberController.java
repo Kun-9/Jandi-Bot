@@ -1,11 +1,12 @@
 package com.hk_music_cop.demo.member.presentation;
 
 
-import com.hk_music_cop.demo.global.jwt.JwtTokenProvider;
-import com.hk_music_cop.demo.global.jwt.dto.TokenResponse;
+import com.hk_music_cop.demo.global.security.jwt.JwtTokenProvider;
+import com.hk_music_cop.demo.global.security.jwt.dto.TokenResponse;
 import com.hk_music_cop.demo.member.application.MemberService;
 import com.hk_music_cop.demo.member.dto.request.LoginRequest;
 import com.hk_music_cop.demo.member.dto.request.MemberRequest;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -43,9 +44,10 @@ public class MemberController {
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		String token = jwtTokenProvider.createToken(authentication);
+		TokenResponse tokenResponse = jwtTokenProvider.createToken(authentication);
 
-		return new ResponseEntity<>(new TokenResponse(token), HttpStatus.OK);
+
+		return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
 	}
 
 

@@ -9,7 +9,7 @@ import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.hk_music_cop.demo.global.error.exceptions.CustomApiException;
-import com.hk_music_cop.demo.google_cloud.google_sheet.GoogleSheetProperties;
+import com.hk_music_cop.demo.googleCloud.googleSheet.GoogleSheetProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

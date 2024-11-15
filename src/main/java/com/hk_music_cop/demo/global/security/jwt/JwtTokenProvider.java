@@ -1,6 +1,8 @@
-package com.hk_music_cop.demo.global.jwt;
+package com.hk_music_cop.demo.global.security.jwt;
 
-import com.hk_music_cop.demo.member.application.UserDetailService;
+import com.hk_music_cop.demo.global.security.jwt.config.JwtProperties;
+import com.hk_music_cop.demo.global.security.UserDetailService;
+import com.hk_music_cop.demo.global.security.jwt.dto.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -36,20 +38,48 @@ public class JwtTokenProvider {
 
 	}
 
-	public String createToken(Authentication authentication) {
+//	public String createToken(Authentication authentication) {
+//
+//		// 인증 정보를 UserDetails로 타입 캐스팅
+//		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+//
+//		Instant now = Instant.now();
+//		Instant validityTime = now.plus(Duration.ofSeconds(jwtProperties.tokenValidityInSeconds()));
+//
+//		return Jwts.builder()
+//				.subject(userDetails.getUsername())
+//				.issuedAt(Date.from(now))
+//				.expiration(Date.from(validityTime))
+//				.signWith(key)
+//				.compact();
+//	}
+
+	public TokenResponse createToken(Authentication authentication) {
 
 		// 인증 정보를 UserDetails로 타입 캐스팅
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
 		Instant now = Instant.now();
-		Instant validityTime = now.plus(Duration.ofSeconds(jwtProperties.tokenValidityInSeconds()));
 
-		return Jwts.builder()
+		// accessToken 생성
+		Instant validityTime = now.plus(Duration.ofSeconds(jwtProperties.accessTokenValidityInSeconds()));
+		String accessToken = Jwts.builder()
 				.subject(userDetails.getUsername())
 				.issuedAt(Date.from(now))
 				.expiration(Date.from(validityTime))
 				.signWith(key)
 				.compact();
+
+		// refresh token 생성
+		Instant refreshValidityTime = now.plus(Duration.ofDays(jwtProperties.refreshTokenValidityInDays()));
+		String refreshToken = Jwts.builder()
+				.subject(userDetails.getUsername())
+				.issuedAt(Date.from(now))
+				.expiration(Date.from(refreshValidityTime))
+				.signWith(key)
+				.compact();
+
+		return TokenResponse.of(accessToken, refreshToken, Date.from(validityTime));
 	}
 
 	public Authentication getAuthentication(String token) {

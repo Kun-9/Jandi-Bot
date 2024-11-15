@@ -1,9 +1,9 @@
-package com.hk_music_cop.demo.google_cloud.google_sheet.repository;
+package com.hk_music_cop.demo.googleCloud.googleSheet.repository;
 
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import com.hk_music_cop.demo.global.error.exceptions.CustomApiException;
-import com.hk_music_cop.demo.google_cloud.google_sheet.GoogleSheetProperties;
+import com.hk_music_cop.demo.googleCloud.googleSheet.GoogleSheetProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
