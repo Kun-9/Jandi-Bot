@@ -1,8 +1,9 @@
 package com.hk_music_cop.demo.global.config.filter;
 
 import com.hk_music_cop.demo.global.error.ErrorHandler;
-import com.hk_music_cop.demo.global.security.jwt.JwtTokenProvider;
-import com.hk_music_cop.demo.global.security.jwt.TokenExtractor;
+import com.hk_music_cop.demo.global.error.exceptions.CustomExpiredRefreshTokenException;
+import com.hk_music_cop.demo.global.security.CustomUser;
+import com.hk_music_cop.demo.global.security.jwt.*;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final JwtTokenProvider tokenProvider;
 	private final ErrorHandler errorHandler;
 	private final TokenExtractor tokenExtractor;
+	private final JwtTokenRepository jwtTokenRepository;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
@@ -39,13 +41,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	}
 
 	private void authenticateRequest(HttpServletRequest request) {
-		Optional.ofNullable(tokenExtractor.extractAccessToken(request))
+		Optional.ofNullable(tokenExtractor.extractAccessTokenFromRequest(request))
 						.ifPresent(this::authenticateProcess);
 	}
 
 	private void authenticateProcess(String token) {
 		tokenProvider.validateToken(token);
-		Authentication authentication = tokenProvider.getAuthentication(token);
+
+		Authentication authentication = tokenProvider.getAuthenticationByToken(token);
+
+		CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+		// 블랙리스트인지 확인
+		if(jwtTokenRepository.isBlacklisted(customUser.getUsername(), token))
+			throw new CustomExpiredRefreshTokenException();
+
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 

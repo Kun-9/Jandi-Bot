@@ -10,7 +10,7 @@ public class TokenExtractorImpl implements TokenExtractor {
 
 
 	@Override
-	public String extractAccessToken(HttpServletRequest request) {
+	public String extractAccessTokenFromRequest(HttpServletRequest request) {
 		String tokenHeaderName = "Authorization";
 
 		String accessToken = request.getHeader(tokenHeaderName);
@@ -24,7 +24,7 @@ public class TokenExtractorImpl implements TokenExtractor {
 	}
 
 	@Override
-	public String extractRefreshToken(HttpServletRequest request) {
+	public String extractRefreshTokenFromRequest(HttpServletRequest request) {
 		String tokenHeaderName = "Refresh-Token";
 
 		String refreshToken = request.getHeader(tokenHeaderName);

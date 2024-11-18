@@ -2,12 +2,9 @@ package com.hk_music_cop.demo.global.security.jwt;
 
 import com.hk_music_cop.demo.global.error.exceptions.CustomInvalidTokenException;
 import com.hk_music_cop.demo.global.error.exceptions.CustomTokenExpiredException;
-import com.hk_music_cop.demo.global.error.exceptions.CustomUnauthorizedException;
 import com.hk_music_cop.demo.global.security.jwt.config.JwtProperties;
 import com.hk_music_cop.demo.global.security.UserDetailService;
 import com.hk_music_cop.demo.global.security.jwt.dto.TokenResponse;
-import com.hk_music_cop.demo.member.application.MemberService;
-import com.hk_music_cop.demo.member.repository.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -38,7 +35,6 @@ public class JwtTokenProvider {
 		// 환경변수로 제공받은 시크릿 키를 BASE64로 인코딩
 		byte[] secretKey = jwtProperties.secret().getBytes();
 		key = getSignKey(Base64.getEncoder().encodeToString(secretKey));
-
 	}
 
 
@@ -70,13 +66,12 @@ public class JwtTokenProvider {
 		return TokenResponse.of(accessToken, refreshToken, Date.from(validityTime));
 	}
 
-	public Authentication getAuthentication(String token) {
-		Claims claims = Jwts.parser()
-				.verifyWith(key)
-				.build()
-				.parseSignedClaims(token)
-				.getPayload();
+	public Authentication getAuthenticationByToken(String token) {
+		Claims claims = getClaims(token);
+		return getAuthenticationByClaims(claims);
+	}
 
+	public Authentication getAuthenticationByClaims(Claims claims) {
 		// 로그인 아이디로 유저 정보 가져오기
 		UserDetails userDetails = userDetailService.loadUserByUsername(claims.getSubject());
 
@@ -87,15 +82,12 @@ public class JwtTokenProvider {
 		);
 	}
 
-	public TokenResponse createTokenByRefreshToken(String refreshToken) {
-		// 토큰 기본 검증
-		validateToken(refreshToken);
-
-		// 인증 정보 파싱
-		Authentication authentication = getAuthentication(refreshToken);
-
-
-		return createToken(authentication);
+	public Claims getClaims(String token) {
+		return Jwts.parser()
+				.verifyWith(key)
+				.build()
+				.parseSignedClaims(token)
+				.getPayload();
 	}
 
 	// accessToken 검증

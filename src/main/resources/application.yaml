@@ -6,6 +6,11 @@ spring:
     url: ${DB_URL}
     username: ${DB_USER_NAME}
     password: ${DB_PASSWORD}
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 1133
 
 server:
   servlet:
@@ -23,7 +28,7 @@ mybatis:
 
 jwt:
   secret: ${JWT_KEY}
-  access-token-validity-in-seconds: 30
+  access-token-validity-in-seconds: 600
   refresh-token-validity-in-days: 14
 
 jandi:
