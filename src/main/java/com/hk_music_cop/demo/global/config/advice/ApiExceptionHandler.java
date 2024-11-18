@@ -17,7 +17,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 @Slf4j
 @RequiredArgsConstructor
-@RestControllerAdvice(assignableTypes = {ScheduleController.class, LotteryController.class, MemberController.class})
+@RestControllerAdvice
 public class ApiExceptionHandler {
 
 	private final ErrorHandler errorHandler;

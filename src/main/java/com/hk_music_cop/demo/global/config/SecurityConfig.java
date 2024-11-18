@@ -43,6 +43,7 @@ public class SecurityConfig {
 								.requestMatchers("/jandi/**").permitAll()
 								.requestMatchers("/api/lottery/**").permitAll()
 								.requestMatchers("/api/member/**").permitAll()
+								.requestMatchers("/auth/**").permitAll()
 //						        .requestMatchers("/api/**").hasRole("ADMIN")
 								.requestMatchers(HttpMethod.POST,"/api/lottery/**").authenticated()
 								.requestMatchers(HttpMethod.POST,"/api/lottery/remove/**").authenticated()

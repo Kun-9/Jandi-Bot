@@ -1,11 +1,14 @@
 package com.hk_music_cop.demo.global.security.jwt;
 
+import com.hk_music_cop.demo.global.error.exceptions.CustomInvalidTokenException;
+import com.hk_music_cop.demo.global.error.exceptions.CustomTokenExpiredException;
+import com.hk_music_cop.demo.global.error.exceptions.CustomUnauthorizedException;
 import com.hk_music_cop.demo.global.security.jwt.config.JwtProperties;
 import com.hk_music_cop.demo.global.security.UserDetailService;
 import com.hk_music_cop.demo.global.security.jwt.dto.TokenResponse;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
+import com.hk_music_cop.demo.member.application.MemberService;
+import com.hk_music_cop.demo.member.repository.MemberRepository;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -38,21 +41,6 @@ public class JwtTokenProvider {
 
 	}
 
-//	public String createToken(Authentication authentication) {
-//
-//		// 인증 정보를 UserDetails로 타입 캐스팅
-//		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//
-//		Instant now = Instant.now();
-//		Instant validityTime = now.plus(Duration.ofSeconds(jwtProperties.tokenValidityInSeconds()));
-//
-//		return Jwts.builder()
-//				.subject(userDetails.getUsername())
-//				.issuedAt(Date.from(now))
-//				.expiration(Date.from(validityTime))
-//				.signWith(key)
-//				.compact();
-//	}
 
 	public TokenResponse createToken(Authentication authentication) {
 
@@ -99,15 +87,32 @@ public class JwtTokenProvider {
 		);
 	}
 
-	public boolean validateToken(String token) {
+	public TokenResponse createTokenByRefreshToken(String refreshToken) {
+		// 토큰 기본 검증
+		validateToken(refreshToken);
+
+		// 인증 정보 파싱
+		Authentication authentication = getAuthentication(refreshToken);
+
+
+		return createToken(authentication);
+	}
+
+	// accessToken 검증
+	public void validateToken(String token) {
 		try {
 			Jwts.parser()
 					.verifyWith(key)
 					.build()
 					.parseSignedClaims(token);
-			return true;
-		} catch (JwtException | IllegalArgumentException e) {
-			return false;
+		} catch (ExpiredJwtException e) {
+			throw new CustomTokenExpiredException("/auth/refresh 경로를 통해 갱신이 필요합니다.");
+		} catch (SignatureException e) {
+			throw new CustomInvalidTokenException("토큰 서명이 유효하지 않습니다.");
+		} catch (MalformedJwtException e) {
+			throw new CustomInvalidTokenException("올바르지 않은 토큰 형식입니다.");
+		} catch (JwtException e) {
+			throw new CustomInvalidTokenException();
 		}
 	}
 
@@ -115,4 +120,5 @@ public class JwtTokenProvider {
 		byte[] bytes = key.getBytes(StandardCharsets.UTF_8);
 		return Keys.hmacShaKeyFor(bytes);
 	}
+
 }

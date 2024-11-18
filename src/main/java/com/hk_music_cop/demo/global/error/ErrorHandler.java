@@ -40,15 +40,15 @@ public class ErrorHandler {
 	public void handleFilterException(
 			HttpServletResponse response,
 			Exception e,
-			HttpStatus status,
-			String message
+			HttpStatus status
 	) throws IOException {
 
-		ErrorResponse errorResponse = handleExceptionMessage(e, status, message);
+		ErrorResponse errorResponse = handleExceptionMessage(e, status, e.getMessage());
 
 		response.setStatus(errorResponse.status());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+
 
 		objectMapper.writeValue(response.getOutputStream(), errorResponse);
 	}
