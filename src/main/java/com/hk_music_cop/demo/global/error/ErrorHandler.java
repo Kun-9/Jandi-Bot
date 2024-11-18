@@ -37,20 +37,26 @@ public class ErrorHandler {
 		);
 	}
 
-	public void handleFilterException(
+	public void handleFilterExceptionMessage(
 			HttpServletResponse response,
 			Exception e,
-			HttpStatus status
+			HttpStatus status,
+			String message
 	) throws IOException {
-
-		ErrorResponse errorResponse = handleExceptionMessage(e, status, e.getMessage());
+		ErrorResponse errorResponse = handleExceptionMessage(e, status, message);
 
 		response.setStatus(errorResponse.status());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
-
 		objectMapper.writeValue(response.getOutputStream(), errorResponse);
 	}
 
+	public void handleFilterException(
+			HttpServletResponse response,
+			Exception e,
+			HttpStatus status
+	) throws IOException {
+		handleFilterExceptionMessage(response, e, status, e.getMessage());
+	}
 }
