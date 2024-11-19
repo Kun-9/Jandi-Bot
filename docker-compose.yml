@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   app:
     image: ${DOCKER_IMAGE}
@@ -11,5 +11,17 @@ services:
       - GOOGLE_SHEET_JSON=${GOOGLE_SHEET_JSON}
       - SPREAD_SHEET_ID=${SPREAD_SHEET_ID}
       - JWT_KEY=${JWT_KEY}
-      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_HOST=redis
       - REDIS_PWD=${REDIS_PWD}
+    depends_on:            # redis 서비스 의존성 추가
+      - redis
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass ${REDIS_PWD}
+    volumes:
+      - redis-data:/data
+volumes:
+  redis-data:
