@@ -8,9 +8,9 @@ spring:
     password: ${DB_PASSWORD}
   data:
     redis:
-      host: localhost
+      host: ${REDIS_HOST}
       port: 6379
-      password: 1133
+      password: ${REDIS_PWD}
 
 server:
   servlet:
