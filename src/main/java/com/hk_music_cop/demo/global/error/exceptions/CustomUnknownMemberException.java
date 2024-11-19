@@ -1,13 +1,13 @@
 package com.hk_music_cop.demo.global.error.exceptions;
 
-public class CustomUnknownMemberException extends CustomException {
-	private static final String DEFAULT_MESSAGE = "등록되지 않은 회원입니다.";
+import com.hk_music_cop.demo.ex.ResponseCode;
 
-	public CustomUnknownMemberException(String message) {
-		super(DEFAULT_MESSAGE + " : " + message);
+public class CustomUnknownMemberException extends CustomException {
+	public CustomUnknownMemberException() {
+		super(ResponseCode.UNKNOWN_MEMBER);
 	}
 
-	public CustomUnknownMemberException() {
-		super(DEFAULT_MESSAGE);
+	public CustomUnknownMemberException(String detail) {
+		super(ResponseCode.UNKNOWN_MEMBER, detail);
 	}
 }

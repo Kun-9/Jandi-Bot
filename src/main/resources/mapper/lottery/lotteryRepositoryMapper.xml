@@ -33,9 +33,9 @@
 
     <update id="editLottery">
         UPDATE lottery
-        SET lottery_name = #{lotteryRequest.lotteryName},
-            position     = #{lotteryRequest.position}
-        WHERE lottery_id = #{lotteryId}
+        SET lottery_name = #{lottery.lotteryName},
+            position     = #{lottery.position}
+        WHERE lottery_id = #{targetId}
     </update>
 
     <select id="existsByName" resultType="boolean">
@@ -47,9 +47,8 @@
     <select id="isCreatedBy" resultType="boolean">
         SELECT t.member_id = #{memberId}
         FROM (SELECT *
-              FROM lottery
-              WHERE lottery_id = #{lotteryId}) AS t
+            FROM lottery
+            WHERE lottery_id = #{lotteryId}) AS t;
     </select>
-
 
 </mapper>

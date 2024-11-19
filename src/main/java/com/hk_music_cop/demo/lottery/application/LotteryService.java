@@ -1,7 +1,9 @@
 package com.hk_music_cop.demo.lottery.application;
 
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
+import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
+import com.hk_music_cop.demo.lottery.dto.response.LotterySimple;
 
 import java.util.List;
 
@@ -9,24 +11,24 @@ import java.util.List;
 public interface LotteryService {
 	LotteryResponse chooseLotteryWinner();
 
-	boolean registerLottery(LotteryRequest lotteryRequest);
+	void registerLottery(LotteryRequest lotteryRequest);
 
-	boolean deleteLottery(Long memberId, String lotteryName);
+	void deleteLottery(Long memberId, String lotteryName);
 
-	boolean updateLottery(Long memberId, Long lotteryId, LotteryRequest lotteryRequest);
+	void deleteLotteryByManager(String lotteryName);
+
+	void updateLottery(Long memberId, LotteryUpdateRequest lottery);
 
 	List<LotteryResponse> getAllLottery();
 
-	LotteryResponse validateExistByName(String name);
+	void validateExistByName(String name);
 
 	void validateExistById(Long lotteryId);
 
 	// 해당 로터리 생성자인지 확인
-	void validCreator(Long memberId, Long lotteryId);
+	void validateCreator(Long memberId, Long lotteryId);
 
 	void validateDuplicateName(String name);
-
-	void validateNotExist(String name);
 
 	LotteryResponse findByName(String name);
 }

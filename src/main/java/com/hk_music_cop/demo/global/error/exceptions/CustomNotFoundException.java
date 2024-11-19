@@ -1,14 +1,13 @@
 package com.hk_music_cop.demo.global.error.exceptions;
 
+import com.hk_music_cop.demo.ex.ResponseCode;
+
 public class CustomNotFoundException extends CustomException {
-
-	private static final String DEFAULT_MESSAGE = "해당 값이나 리소스를 찾지 못했습니다.";
-
-	public CustomNotFoundException(String message) {
-		super(DEFAULT_MESSAGE + " : " + message);
+	public CustomNotFoundException() {
+		super(ResponseCode.NOT_FOUND);
 	}
 
-	public CustomNotFoundException() {
-		super(DEFAULT_MESSAGE);
+	public CustomNotFoundException(String detail) {
+		super(ResponseCode.NOT_FOUND, detail);
 	}
 }

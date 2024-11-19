@@ -1,11 +1,12 @@
 package com.hk_music_cop.demo.global.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hk_music_cop.demo.global.error.dto.ErrorResponse;
+import com.hk_music_cop.demo.ex.ApiResponse;
+import com.hk_music_cop.demo.ex.ResponseCode;
+import com.hk_music_cop.demo.global.error.exceptions.CustomException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
@@ -19,44 +20,42 @@ public class ErrorHandler {
 
 	private final ObjectMapper objectMapper;
 
-	public ErrorResponse handleException(Exception e, HttpStatus status) {
+	public ApiResponse<?> handleException(Exception e, ResponseCode code) {
 		log.error("error occurred: ", e);
 
-		return ErrorResponse.of(
-				status.value(),
-				e.getMessage()
-		);
+		return ApiResponse.of(code);
 	}
 
-	public ErrorResponse handleExceptionMessage(Exception e, HttpStatus status, String message) {
+	public ApiResponse<?> handleCustomException(CustomException e) {
 		log.error("error occurred: ", e);
 
-		return ErrorResponse.of(
-				status.value(),
-				message
-		);
+		return ApiResponse.of(e.getResponseCode());
 	}
 
-	public void handleFilterExceptionMessage(
+	public ApiResponse<?> handleCustomExceptionWithMessage(CustomException e, String message) {
+		log.error("error occurred: ", e);
+
+		return ApiResponse.of(e.getResponseCode(), message);
+	}
+
+//	public ApiResponse<?> handleExceptionWithMessage(Exception e, ResponseCode code) {
+//		log.error("error occurred: ", e);
+//
+//		return ApiResponse.of(code);
+//	}
+
+	public void handleExceptionDirect(
 			HttpServletResponse response,
 			Exception e,
-			HttpStatus status,
-			String message
+			ResponseCode code
 	) throws IOException {
-		ErrorResponse errorResponse = handleExceptionMessage(e, status, message);
+		ApiResponse<?> apiResponse = handleException(e, code);
 
-		response.setStatus(errorResponse.status());
+		response.setStatus(apiResponse.getStatus());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
-		objectMapper.writeValue(response.getOutputStream(), errorResponse);
+		objectMapper.writeValue(response.getOutputStream(), apiResponse);
 	}
 
-	public void handleFilterException(
-			HttpServletResponse response,
-			Exception e,
-			HttpStatus status
-	) throws IOException {
-		handleFilterExceptionMessage(response, e, status, e.getMessage());
-	}
 }

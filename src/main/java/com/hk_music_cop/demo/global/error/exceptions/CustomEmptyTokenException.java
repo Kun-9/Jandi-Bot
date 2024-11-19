@@ -1,13 +1,13 @@
 package com.hk_music_cop.demo.global.error.exceptions;
 
-public class CustomEmptyTokenException extends CustomException {
-	private static final String DEFAULT_MESSAGE = "토큰이 제공되지 않았습니다.";
+import com.hk_music_cop.demo.ex.ResponseCode;
 
-	public CustomEmptyTokenException(String message) {
-		super(DEFAULT_MESSAGE + " : " + message);
+public class CustomEmptyTokenException extends CustomException {
+	public CustomEmptyTokenException() {
+		super(ResponseCode.EMPTY_TOKEN);
 	}
 
-	public CustomEmptyTokenException() {
-		super(DEFAULT_MESSAGE);
+	public CustomEmptyTokenException(String detail) {
+		super(ResponseCode.EMPTY_TOKEN, detail);
 	}
 }

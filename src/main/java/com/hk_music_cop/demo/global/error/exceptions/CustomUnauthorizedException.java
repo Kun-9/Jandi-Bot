@@ -1,14 +1,13 @@
 package com.hk_music_cop.demo.global.error.exceptions;
 
+import com.hk_music_cop.demo.ex.ResponseCode;
+
 public class CustomUnauthorizedException extends CustomException {
-
-	private static final String DEFAULT_MESSAGE = "권한이 없습니다.";
-
-	public CustomUnauthorizedException(String message) {
-		super(DEFAULT_MESSAGE + " : " + message);
+	public CustomUnauthorizedException() {
+		super(ResponseCode.UNAUTHORIZED);
 	}
 
-	public CustomUnauthorizedException() {
-		super(DEFAULT_MESSAGE);
+	public CustomUnauthorizedException(String detail) {
+		super(ResponseCode.UNAUTHORIZED, detail);
 	}
 }

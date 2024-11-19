@@ -1,5 +1,7 @@
 package com.hk_music_cop.demo.global.security.jwt;
 
+import com.hk_music_cop.demo.ex.ResponseCode;
+import com.hk_music_cop.demo.global.error.exceptions.CustomException;
 import com.hk_music_cop.demo.global.error.exceptions.CustomExpiredRefreshTokenException;
 import com.hk_music_cop.demo.global.security.CustomUser;
 import com.hk_music_cop.demo.global.security.jwt.config.JwtProperties;
@@ -9,6 +11,7 @@ import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,10 +47,17 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 		String password = loginRequest.password();
 
 		log.info("userId: {}, 로그인", userId);
+		Authentication authenticate;
 
-		return authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(userId, password)
-		);
+		try {
+			authenticate = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(userId, password));
+
+		} catch (BadCredentialsException e) {
+			throw new CustomException(ResponseCode.LOGIN_FAIL);
+		}
+
+		return authenticate;
 	}
 
 	@Override

@@ -1,13 +1,13 @@
 package com.hk_music_cop.demo.global.error.exceptions;
 
-public class CustomIncorrectPasswordException extends CustomException {
-	private static final String DEFAULT_MESSAGE = "비밀번호가 일치하지 않습니다.";
+import com.hk_music_cop.demo.ex.ResponseCode;
 
-	public CustomIncorrectPasswordException(String message) {
-		super(DEFAULT_MESSAGE + " : " + message);
+public class CustomIncorrectPasswordException extends CustomException {
+	public CustomIncorrectPasswordException() {
+		super(ResponseCode.INCORRECT_PASSWORD);
 	}
 
-	public CustomIncorrectPasswordException() {
-		super(DEFAULT_MESSAGE);
+	public CustomIncorrectPasswordException(String detail) {
+		super(ResponseCode.INCORRECT_PASSWORD, detail);
 	}
 }

@@ -5,6 +5,7 @@ import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookRequest;
 import com.hk_music_cop.demo.global.error.exceptions.CustomUndefinedCommand;
 import com.hk_music_cop.demo.lottery.application.LotteryService;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
+import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.member.application.MemberService;
 import com.hk_music_cop.demo.member.dto.request.MemberRequest;
@@ -90,12 +91,13 @@ public class JandiCommandServiceImpl implements JandiCommandService {
 			case "추첨 수정" -> {
 				String targetName = parameters.get(0).get(0);
 
-				LotteryResponse lotteryResponse = lotteryService.findByName(targetName);
-
 				List<String> updateParam = parameters.get(1);
+
+				LotteryUpdateRequest lotteryUpdateRequest = LotteryUpdateRequest.of(targetName, updateParam.get(0), updateParam.get(1));
+
 				response = jandiMessageFactory.updateLotteryMessage(
-						lotteryResponse.getLotteryId(),
-						new LotteryRequest(memberId, updateParam.get(0), updateParam.get(1))
+						memberId,
+						lotteryUpdateRequest
 				);
 			}
 			case "추첨 리스트 조회" -> {

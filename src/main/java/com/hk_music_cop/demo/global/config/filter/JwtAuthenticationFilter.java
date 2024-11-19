@@ -1,5 +1,6 @@
 package com.hk_music_cop.demo.global.config.filter;
 
+import com.hk_music_cop.demo.ex.ResponseCode;
 import com.hk_music_cop.demo.global.error.ErrorHandler;
 import com.hk_music_cop.demo.global.error.exceptions.CustomExpiredRefreshTokenException;
 import com.hk_music_cop.demo.global.security.CustomUser;
@@ -9,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -60,6 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	}
 
 	private void handleAuthError(HttpServletResponse response, Exception e) throws IOException {
-		errorHandler.handleFilterException(response, e, HttpStatus.UNAUTHORIZED);
+		// 사용자에게 권한없음 오류 반환
+		errorHandler.handleExceptionDirect(response, e, ResponseCode.UNAUTHORIZED);
 	}
 }

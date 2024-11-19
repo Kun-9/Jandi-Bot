@@ -1,15 +1,13 @@
 package com.hk_music_cop.demo.global.error.exceptions;
 
+import com.hk_music_cop.demo.ex.ResponseCode;
+
 public class CustomApiException extends CustomException {
-
-	private static final String DEFAULT_MESSAGE = "API 호출 오류입니다.";
-
-	public CustomApiException(String message ) {
-		super(DEFAULT_MESSAGE + " : " + message);
-	}
-
 	public CustomApiException() {
-		super(DEFAULT_MESSAGE);
+		super(ResponseCode.API_ERROR);
 	}
 
+	public CustomApiException(String detail) {
+		super(ResponseCode.API_ERROR, detail);
+	}
 }

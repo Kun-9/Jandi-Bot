@@ -1,12 +1,13 @@
 package com.hk_music_cop.demo.global.config;
 
+import com.hk_music_cop.demo.ex.ResponseCode;
 import com.hk_music_cop.demo.global.config.filter.JwtAuthenticationFilter;
 import com.hk_music_cop.demo.global.error.ErrorHandler;
+import com.hk_music_cop.demo.global.security.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -49,21 +50,21 @@ public class SecurityConfig {
 								.requestMatchers("/api/member/**").permitAll()
 								.requestMatchers("/api/schedule/**").permitAll()
 								.requestMatchers("/auth/**").permitAll()
-//						        .requestMatchers("/api/**").hasRole("ADMIN")
-								.requestMatchers(HttpMethod.POST,"/api/lottery/**").authenticated()
+						        .requestMatchers("/api/manager/**").hasRole(Role.getRoleName(Role.ROLE_MANAGER))
+								.requestMatchers("/api/lottery/winner").permitAll()
 								.requestMatchers(HttpMethod.POST,"/api/lottery/remove/**").authenticated()
+								.requestMatchers(HttpMethod.POST,"/api/lottery/**").authenticated()
 								.anyRequest().authenticated()
 				).exceptionHandling(exception -> {
-					String message = "권한이 없습니다.";
-					exception.authenticationEntryPoint(getAuthenticationEntryPoint(message));
+					exception.authenticationEntryPoint(getAuthenticationEntryPoint());
 				});
 
 		return http.build();
 	}
 
-	private AuthenticationEntryPoint getAuthenticationEntryPoint(String message) {
+	private AuthenticationEntryPoint getAuthenticationEntryPoint() {
 		return (request, response, e) ->
-				errorHandler.handleFilterExceptionMessage(response, e, HttpStatus.UNAUTHORIZED, message);
+				errorHandler.handleExceptionDirect(response, e, ResponseCode.UNAUTHORIZED);
 	}
 
 	@Bean

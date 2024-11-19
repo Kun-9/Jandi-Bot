@@ -1,10 +1,12 @@
 package com.hk_music_cop.demo.jandi.application;
 
+import com.hk_music_cop.demo.ex.ResponseCode;
 import com.hk_music_cop.demo.jandi.config.JandiProperties;
 import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
 import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookRequest;
 import com.hk_music_cop.demo.lottery.application.LotteryService;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
+import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.schedule.application.ScheduleService;
 import com.hk_music_cop.demo.schedule.domain.WeeklySchedule;
@@ -55,11 +57,11 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	}
 
 	@Override
-	public JSONObject errorMessage(String message) {
+	public JSONObject errorMessage(ResponseCode code) {
 		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(
 				"ERROR MESSAGE",
 				jandiProperties.color().failColor(),
-				new ConnectInfo(message, null, null)
+				new ConnectInfo(code.getMessage(), code.getCode(), null)
 		);
 
 
@@ -80,48 +82,39 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 
 	@Override
 	public JSONObject registerLotteryMessage(LotteryRequest lotteryRequest) {
-		boolean result = lotteryService.registerLottery(lotteryRequest);
-		JandiWebhookResponse response = createResultResponse(result);
+		lotteryService.registerLottery(lotteryRequest);
+		JandiWebhookResponse response = createSuccessResponse(ResponseCode.CREATED);
 		return createJandiMessage(response);
 	}
 
 	@Override
 	public JSONObject deleteLotteryMessage(LotteryRequest lotteryRequest) {
-		boolean result = lotteryService.deleteLottery(lotteryRequest.memberId(), lotteryRequest.lotteryName());
+		lotteryService.deleteLottery(lotteryRequest.memberId(), lotteryRequest.lotteryName());
 
-		JandiWebhookResponse response = createResultResponse(result);
+		JandiWebhookResponse response = createSuccessResponse(ResponseCode.LOTTERY_DELETE_SUCCESS);
 
 		return createJandiMessage(response);
 	}
 
 	@Override
-	public JSONObject updateLotteryMessage(Long targetLotteryId, LotteryRequest lotteryRequest) {
-		boolean result = lotteryService.updateLottery(lotteryRequest.memberId(), targetLotteryId, lotteryRequest);
+	public JSONObject updateLotteryMessage(Long memberId, LotteryUpdateRequest request) {
 
-		JandiWebhookResponse response = createResultResponse(result);
+		lotteryService.updateLottery(memberId, request);
+
+		JandiWebhookResponse response = createSuccessResponse(ResponseCode.UPDATED);
 
 		return createJandiMessage(response);
 	}
 
-	private JandiWebhookResponse createResultResponse(boolean result) {
-		String title;
-		String color;
-		String mainTitle;
-
-		if (result) {
-			mainTitle = "SUCCESS";
-			title = jandiProperties.title().successTitle();
-			color = jandiProperties.color().successColor();
-		} else {
-			mainTitle = "FAIL";
-			title = jandiProperties.title().failTitle();
-			color = jandiProperties.color().failColor();
-		}
+	private JandiWebhookResponse createSuccessResponse(ResponseCode responseCode) {
+		String mainTitle = "SUCCESS";
+		String title = jandiProperties.title().successTitle();
+		String color = jandiProperties.color().successColor();
 
 		return new JandiWebhookResponse(
 				mainTitle,
 				color,
-				new ConnectInfo(title, null, null)
+				new ConnectInfo(title, responseCode.getMessage(), null)
 		);
 
 	}

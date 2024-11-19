@@ -1,6 +1,6 @@
 package com.hk_music_cop.demo.global.security;
 
-import com.hk_music_cop.demo.global.error.exceptions.CustomUnkownRoleException;
+import com.hk_music_cop.demo.global.error.exceptions.CustomUnknownRoleException;
 
 public enum Role {
 	ROLE_ADMIN,
@@ -12,7 +12,11 @@ public enum Role {
 		try {
 			return valueOf(roleValue);
 		} catch (IllegalArgumentException e) {
-			throw new CustomUnkownRoleException();
+			throw new CustomUnknownRoleException();
 		}
+	}
+
+	public static String getRoleName(Role roleValue) {
+		return roleValue.name().substring("ROLE_".length());
 	}
 }

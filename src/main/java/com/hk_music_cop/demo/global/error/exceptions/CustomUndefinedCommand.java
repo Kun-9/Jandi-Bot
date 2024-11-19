@@ -1,13 +1,13 @@
 package com.hk_music_cop.demo.global.error.exceptions;
 
-public class CustomUndefinedCommand extends CustomException {
-	private static final String DEFAULT_MESSAGE = "적절하지 않은 명령어입니다.";
+import com.hk_music_cop.demo.ex.ResponseCode;
 
-	public CustomUndefinedCommand(String message) {
-		super(DEFAULT_MESSAGE + " : " + message);
+public class CustomUndefinedCommand extends CustomException {
+	public CustomUndefinedCommand() {
+		super(ResponseCode.UNDEFINED_COMMAND);
 	}
 
-	public CustomUndefinedCommand() {
-		super(DEFAULT_MESSAGE);
+	public CustomUndefinedCommand(String detail) {
+		super(ResponseCode.UNDEFINED_COMMAND, detail);
 	}
 }

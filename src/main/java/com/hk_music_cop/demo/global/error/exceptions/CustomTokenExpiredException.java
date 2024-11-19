@@ -1,13 +1,13 @@
 package com.hk_music_cop.demo.global.error.exceptions;
 
-public class CustomTokenExpiredException extends CustomException {
-	private static final String DEFAULT_MESSAGE = "토큰이 만료되었습니다.";
+import com.hk_music_cop.demo.ex.ResponseCode;
 
-	public CustomTokenExpiredException(String message) {
-		super(DEFAULT_MESSAGE + " : " + message);
+public class CustomTokenExpiredException extends CustomException {
+	public CustomTokenExpiredException() {
+		super(ResponseCode.TOKEN_EXPIRED);
 	}
 
-	public CustomTokenExpiredException() {
-		super(DEFAULT_MESSAGE);
+	public CustomTokenExpiredException(String detail) {
+		super(ResponseCode.TOKEN_EXPIRED, detail);
 	}
 }

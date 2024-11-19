@@ -1,7 +1,9 @@
 package com.hk_music_cop.demo.jandi.application;
 
+import com.hk_music_cop.demo.ex.ResponseCode;
 import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
+import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import org.json.JSONObject;
 
@@ -15,7 +17,7 @@ public interface JandiMessageFactory {
 
 	JSONObject chooseLotteryMessage(String imgURL);
 
-	JSONObject errorMessage(String message);
+	JSONObject errorMessage(ResponseCode message);
 
 	JSONObject infoMessage(JandiWebhookRequest jandiWebhookRequest);
 
@@ -23,7 +25,7 @@ public interface JandiMessageFactory {
 
 	JSONObject deleteLotteryMessage(LotteryRequest lotteryRequest);
 
-	JSONObject updateLotteryMessage(Long targetLotteryId, LotteryRequest lotteryRequest);
+	JSONObject updateLotteryMessage(Long memberId, LotteryUpdateRequest request);
 
 	JSONObject lotteryListMessage(List<LotteryResponse> lotteryResponseList);
 }
