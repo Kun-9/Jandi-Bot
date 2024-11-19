@@ -1,4 +1,4 @@
-package com.hk_music_cop.demo.global.security.jwt;
+package com.hk_music_cop.demo.global.security.jwt.service;
 
 import com.hk_music_cop.demo.global.security.jwt.dto.TokenResponse;
 import com.hk_music_cop.demo.member.dto.request.LoginRequest;

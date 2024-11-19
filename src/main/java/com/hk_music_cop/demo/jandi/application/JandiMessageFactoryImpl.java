@@ -1,6 +1,7 @@
 package com.hk_music_cop.demo.jandi.application;
 
 import com.hk_music_cop.demo.ex.ResponseCode;
+import com.hk_music_cop.demo.global.error.exceptions.CustomException;
 import com.hk_music_cop.demo.jandi.config.JandiProperties;
 import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
 import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookRequest;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -57,11 +59,13 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	}
 
 	@Override
-	public JSONObject errorMessage(ResponseCode code) {
+	public JSONObject errorMessage(CustomException e) {
+		ResponseCode code = e.getResponseCode();
+
 		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(
 				"ERROR MESSAGE",
 				jandiProperties.color().failColor(),
-				new ConnectInfo(code.getMessage(), code.getCode(), null)
+				new ConnectInfo(e.getMessage(), code.getCode(), null)
 		);
 
 

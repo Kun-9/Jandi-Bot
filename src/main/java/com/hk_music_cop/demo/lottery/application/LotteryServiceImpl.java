@@ -7,6 +7,7 @@ import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.lottery.dto.response.LotterySimple;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryUpdateLog;
 import com.hk_music_cop.demo.lottery.repository.LotteryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,15 +72,19 @@ public class LotteryServiceImpl implements LotteryService {
 	}
 
 	@Override
-	public void updateLottery(Long memberId, LotteryUpdateRequest lottery) {
+	public LotteryUpdateLog updateLottery(Long memberId, LotteryUpdateRequest lottery) {
 
-		LotteryResponse targetLottery = findByName(lottery.targetName());
+		LotteryResponse beforeLottery = findByName(lottery.targetName());
 
 		// 권한 확인 (요청자가 생성자인지)
-		validateCreator(memberId, targetLottery.getLotteryId());
+		validateCreator(memberId, beforeLottery.getLotteryId());
 
-		if (lotteryRepository.editLottery(targetLottery.getLotteryId(), LotterySimple.from(lottery)) != 1)
+		if (lotteryRepository.editLottery(beforeLottery.getLotteryId(), LotterySimple.from(lottery)) != 1)
 			throw new CustomException(ResponseCode.DATABASE_UPDATE_ERROR);
+
+		LotteryResponse afterLottery = findByName(lottery.targetName());
+
+		return LotteryUpdateLog.of(LotterySimple.from(beforeLottery), LotterySimple.from(afterLottery));
 	}
 
 	@Override

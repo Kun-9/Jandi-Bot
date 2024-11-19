@@ -23,13 +23,13 @@ public class ErrorHandler {
 	public ApiResponse<?> handleException(Exception e, ResponseCode code) {
 		log.error("error occurred: ", e);
 
-		return ApiResponse.of(code);
+		return ApiResponse.of(code, e.getMessage());
 	}
 
 	public ApiResponse<?> handleCustomException(CustomException e) {
 		log.error("error occurred: ", e);
 
-		return ApiResponse.of(e.getResponseCode());
+		return ApiResponse.from(e);
 	}
 
 	public ApiResponse<?> handleCustomExceptionWithMessage(CustomException e, String message) {

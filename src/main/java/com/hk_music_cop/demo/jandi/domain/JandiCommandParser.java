@@ -1,5 +1,7 @@
 package com.hk_music_cop.demo.jandi.domain;
 
+import com.hk_music_cop.demo.ex.ResponseCode;
+import com.hk_music_cop.demo.global.error.exceptions.CustomException;
 import com.hk_music_cop.demo.global.error.exceptions.CustomUndefinedCommand;
 import lombok.Getter;
 
@@ -39,7 +41,7 @@ public class JandiCommandParser {
 		}
 
 		if (!isValid) {
-			throw new CustomUndefinedCommand("잘못된 명령어 입니다.");
+			throw new CustomException(ResponseCode.UNDEFINED_COMMAND);
 		}
 
 		return new Params(command, parameters);

@@ -43,14 +43,8 @@ public class LotteryController {
 		String username = customUser.getUsername();
 		MemberResponse user = memberService.findByUserId(username);
 
-		LotteryResponse beforeLottery = lotteryService.findByName(request.targetName());
-
 		// 추첨 수정
-		lotteryService.updateLottery(user.getMemberId(), request);
-
-		LotteryResponse afterLottery = lotteryService.findByName(request.targetName());
-
-		LotteryUpdateLog lotteryUpdateLog = LotteryUpdateLog.of(LotterySimple.from(beforeLottery), LotterySimple.from(afterLottery));
+		LotteryUpdateLog lotteryUpdateLog = lotteryService.updateLottery(user.getMemberId(), request);
 
 		ApiResponse<LotteryUpdateLog> response = ApiResponse.of(ResponseCode.UPDATED, lotteryUpdateLog);
 

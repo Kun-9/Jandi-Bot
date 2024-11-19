@@ -28,7 +28,7 @@ mybatis:
 
 jwt:
   secret: ${JWT_KEY}
-  access-token-validity-in-seconds: 600
+  access-token-validity-in-seconds: 10
   refresh-token-validity-in-days: 14
 
 jandi:

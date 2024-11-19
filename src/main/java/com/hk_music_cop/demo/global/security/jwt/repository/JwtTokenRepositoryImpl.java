@@ -1,7 +1,7 @@
-package com.hk_music_cop.demo.global.security.jwt;
+package com.hk_music_cop.demo.global.security.jwt.repository;
 
 import com.hk_music_cop.demo.global.redis.RedisRepository;
-import com.hk_music_cop.demo.global.security.jwt.dto.TokenPrefix;
+import com.hk_music_cop.demo.global.security.jwt.common.TokenPrefix;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

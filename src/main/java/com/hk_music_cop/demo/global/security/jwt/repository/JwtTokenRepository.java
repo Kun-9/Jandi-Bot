@@ -1,4 +1,4 @@
-package com.hk_music_cop.demo.global.security.jwt;
+package com.hk_music_cop.demo.global.security.jwt.repository;
 
 public interface JwtTokenRepository {
 

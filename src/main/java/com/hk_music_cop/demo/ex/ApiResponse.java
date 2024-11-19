@@ -1,6 +1,7 @@
 package com.hk_music_cop.demo.ex;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.hk_music_cop.demo.global.error.exceptions.CustomException;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -28,12 +29,33 @@ public class ApiResponse<T> {
 	}
 
 	// 응답 객체 생성 (데이터 없는 경우)
-	public static <T> ApiResponse<T> of(ResponseCode code) {
+	public static <T> ApiResponse<T> from(ResponseCode code) {
 		return ApiResponse.<T>builder()
 				.code(code.getCode())
 				.message(code.getMessage())
 				.status(code.getStatus())
 				.timestamp(LocalDateTime.now())
+				.build();
+	}
+
+	// CustomException 응답
+	public static <T> ApiResponse<T> from(CustomException e) {
+		ResponseCode code = e.getResponseCode();
+		return ApiResponse.<T>builder()
+				.code(code.getCode())
+				.message(e.getMessage())
+				.status(code.getStatus())
+				.timestamp(LocalDateTime.now())
+				.build();
+	}
+
+
+	public ApiResponse<T> withMessage(String message) {
+		return ApiResponse.<T>builder()
+				.code(this.code)
+				.message(message)
+				.status(this.status)
+				.timestamp(this.timestamp)
 				.build();
 	}
 

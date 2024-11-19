@@ -49,7 +49,7 @@ public enum ResponseCode {
 	// 멤버 관련 에러
 	UNKNOWN_MEMBER(404, "M001", "등록되지 않은 회원입니다."),
 	USERNAME_NOT_FOUND(404, "M002", "유저 이름을 찾을 수 없습니다."),
-	LOGIN_FAIL(401, "M003", "아이디 또는 비밀번호가 잘못되었습니다."),
+	LOGIN_FAIL(400, "M003", "아이디 또는 비밀번호가 잘못되었습니다."),
 
 	// 중복 관련 에러
 	DUPLICATE_NAME(400, "D001", "이미 등록된 이름입니다."),
@@ -71,7 +71,6 @@ public enum ResponseCode {
 	DATABASE_DELETE_ERROR(500, "D001", "데이터 삭제 중 오류가 발생했습니다."),
 	DATABASE_SELECT_ERROR(500, "D002", "데이터 조회 중 오류가 발생했습니다."),
 	DATABASE_UPDATE_ERROR(500, "D004", "데이터 수정 중 오류가 발생했습니다.");
-
 
 	private final int status;
 	private final String code;

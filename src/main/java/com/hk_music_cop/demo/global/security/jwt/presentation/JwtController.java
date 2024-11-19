@@ -1,8 +1,8 @@
 package com.hk_music_cop.demo.global.security.jwt.presentation;
 
-import com.hk_music_cop.demo.ex.Token;
-import com.hk_music_cop.demo.ex.TokenType;
-import com.hk_music_cop.demo.global.security.jwt.JwtTokenService;
+import com.hk_music_cop.demo.global.security.jwt.annotation.Token;
+import com.hk_music_cop.demo.global.security.jwt.common.TokenType;
+import com.hk_music_cop.demo.global.security.jwt.service.JwtTokenService;
 import com.hk_music_cop.demo.global.security.jwt.dto.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

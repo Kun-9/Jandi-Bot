@@ -1,6 +1,5 @@
-package com.hk_music_cop.demo.global.security.jwt;
+package com.hk_music_cop.demo.global.security.jwt.util;
 
-import com.hk_music_cop.demo.global.error.exceptions.CustomEmptyTokenException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;

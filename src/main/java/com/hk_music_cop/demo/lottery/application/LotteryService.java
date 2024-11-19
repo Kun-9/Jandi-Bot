@@ -4,6 +4,7 @@ import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.lottery.dto.response.LotterySimple;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryUpdateLog;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface LotteryService {
 
 	void deleteLotteryByManager(String lotteryName);
 
-	void updateLottery(Long memberId, LotteryUpdateRequest lottery);
+	LotteryUpdateLog updateLottery(Long memberId, LotteryUpdateRequest lottery);
 
 	List<LotteryResponse> getAllLottery();
 

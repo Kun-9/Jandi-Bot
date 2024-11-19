@@ -1,7 +1,8 @@
-package com.hk_music_cop.demo.ex;
+package com.hk_music_cop.demo.global.security.jwt.annotation;
 
+import com.hk_music_cop.demo.global.security.jwt.common.TokenType;
 import com.hk_music_cop.demo.global.error.exceptions.CustomEmptyTokenException;
-import com.hk_music_cop.demo.global.security.jwt.TokenExtractor;
+import com.hk_music_cop.demo.global.security.jwt.util.TokenExtractor;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;

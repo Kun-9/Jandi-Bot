@@ -1,4 +1,4 @@
-package com.hk_music_cop.demo.global.security.jwt;
+package com.hk_music_cop.demo.global.security.jwt.domain;
 
 import com.hk_music_cop.demo.global.error.exceptions.CustomInvalidTokenException;
 import com.hk_music_cop.demo.global.error.exceptions.CustomTokenExpiredException;
