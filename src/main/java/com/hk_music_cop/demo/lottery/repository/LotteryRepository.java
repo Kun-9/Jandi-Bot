@@ -1,9 +1,8 @@
 package com.hk_music_cop.demo.lottery.repository;
 
-import com.hk_music_cop.demo.lottery.dto.request.Lottery;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
-import com.hk_music_cop.demo.lottery.dto.response.LotterySimple;
+import com.hk_music_cop.demo.lottery.dto.LotterySimple;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

@@ -1,11 +1,8 @@
 package com.hk_music_cop.demo.member.dto.response;
 
-import com.hk_music_cop.demo.global.error.exceptions.CustomApiException;
-import com.hk_music_cop.demo.global.error.exceptions.CustomNotFoundException;
-import com.hk_music_cop.demo.global.error.exceptions.CustomUnknownMemberException;
-import com.hk_music_cop.demo.global.security.Role;
+import com.hk_music_cop.demo.global.common.error.exceptions.CustomNotFoundException;
+import com.hk_music_cop.demo.global.security.common.Role;
 import lombok.Getter;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

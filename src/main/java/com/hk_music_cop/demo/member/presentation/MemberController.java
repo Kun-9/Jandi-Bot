@@ -1,10 +1,10 @@
 package com.hk_music_cop.demo.member.presentation;
 
 
-import com.hk_music_cop.demo.global.security.jwt.annotation.Token;
-import com.hk_music_cop.demo.global.security.jwt.common.TokenType;
-import com.hk_music_cop.demo.global.security.jwt.service.JwtTokenService;
-import com.hk_music_cop.demo.global.security.jwt.dto.TokenResponse;
+import com.hk_music_cop.demo.global.jwt.annotation.Token;
+import com.hk_music_cop.demo.global.jwt.common.TokenType;
+import com.hk_music_cop.demo.global.jwt.service.JwtTokenService;
+import com.hk_music_cop.demo.global.jwt.dto.TokenResponse;
 import com.hk_music_cop.demo.member.application.MemberService;
 import com.hk_music_cop.demo.member.dto.request.LoginRequest;
 import com.hk_music_cop.demo.member.dto.request.MemberRequest;

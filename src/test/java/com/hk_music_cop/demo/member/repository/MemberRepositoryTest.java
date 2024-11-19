@@ -1,10 +1,8 @@
 package com.hk_music_cop.demo.member.repository;
 
-import com.hk_music_cop.demo.global.security.Role;
-import com.hk_music_cop.demo.global.security.SecurityRole;
+import com.hk_music_cop.demo.global.security.common.Role;
 import com.hk_music_cop.demo.member.dto.request.MemberRequest;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
-import com.hk_music_cop.demo.member.dto.response.MemberSecurity;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;

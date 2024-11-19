@@ -1,6 +1,6 @@
 package com.hk_music_cop.demo.global.config;
 
-import com.hk_music_cop.demo.global.security.jwt.annotation.TokenResolver;
+import com.hk_music_cop.demo.global.jwt.annotation.TokenResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

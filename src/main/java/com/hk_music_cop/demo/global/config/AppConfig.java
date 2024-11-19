@@ -1,7 +1,7 @@
 package com.hk_music_cop.demo.global.config;
 
 import com.hk_music_cop.demo.googleCloud.googleSheet.GoogleSheetProperties;
-import com.hk_music_cop.demo.global.security.jwt.config.JwtProperties;
+import com.hk_music_cop.demo.global.jwt.config.JwtProperties;
 import com.hk_music_cop.demo.jandi.config.JandiProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

@@ -1,8 +1,8 @@
 package com.hk_music_cop.demo.jandi.domain;
 
-import com.hk_music_cop.demo.ex.ResponseCode;
-import com.hk_music_cop.demo.global.error.exceptions.CustomException;
-import com.hk_music_cop.demo.global.error.exceptions.CustomUndefinedCommand;
+import com.hk_music_cop.demo.global.common.response.ResponseCode;
+import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
+import com.hk_music_cop.demo.global.common.error.exceptions.CustomUndefinedCommand;
 import lombok.Getter;
 
 import java.util.ArrayList;

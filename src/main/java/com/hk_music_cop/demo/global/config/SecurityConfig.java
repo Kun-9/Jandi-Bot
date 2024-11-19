@@ -1,9 +1,9 @@
 package com.hk_music_cop.demo.global.config;
 
-import com.hk_music_cop.demo.ex.ResponseCode;
-import com.hk_music_cop.demo.global.config.filter.JwtAuthenticationFilter;
-import com.hk_music_cop.demo.global.error.ErrorHandler;
-import com.hk_music_cop.demo.global.security.Role;
+import com.hk_music_cop.demo.global.common.response.ResponseCode;
+import com.hk_music_cop.demo.global.security.filter.JwtAuthenticationFilter;
+import com.hk_music_cop.demo.global.common.error.ErrorHandler;
+import com.hk_music_cop.demo.global.security.common.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,9 +55,7 @@ public class SecurityConfig {
 								.requestMatchers(HttpMethod.POST,"/api/lottery/remove/**").authenticated()
 								.requestMatchers(HttpMethod.POST,"/api/lottery/**").authenticated()
 								.anyRequest().authenticated()
-				).exceptionHandling(exception -> {
-					exception.authenticationEntryPoint(getAuthenticationEntryPoint());
-				});
+				).exceptionHandling(exception -> exception.authenticationEntryPoint(getAuthenticationEntryPoint()));
 
 		return http.build();
 	}

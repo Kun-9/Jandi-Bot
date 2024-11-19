@@ -1,7 +1,6 @@
 package com.hk_music_cop.demo.jandi.application;
 
-import com.hk_music_cop.demo.ex.ResponseCode;
-import com.hk_music_cop.demo.global.error.exceptions.CustomException;
+import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
 import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;

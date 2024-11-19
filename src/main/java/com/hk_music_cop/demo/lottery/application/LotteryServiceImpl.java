@@ -1,12 +1,11 @@
 package com.hk_music_cop.demo.lottery.application;
 
-import com.hk_music_cop.demo.ex.ResponseCode;
-import com.hk_music_cop.demo.global.error.exceptions.*;
-import com.hk_music_cop.demo.lottery.dto.request.Lottery;
+import com.hk_music_cop.demo.global.common.response.ResponseCode;
+import com.hk_music_cop.demo.global.common.error.exceptions.*;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
-import com.hk_music_cop.demo.lottery.dto.response.LotterySimple;
+import com.hk_music_cop.demo.lottery.dto.LotterySimple;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryUpdateLog;
 import com.hk_music_cop.demo.lottery.repository.LotteryRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,11 +1,11 @@
 package com.hk_music_cop.demo.lottery.presentation;
 
-import com.hk_music_cop.demo.ex.ApiResponse;
-import com.hk_music_cop.demo.ex.ResponseCode;
+import com.hk_music_cop.demo.global.common.response.ApiResponse;
+import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.lottery.application.LotteryService;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryTargetRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
-import com.hk_music_cop.demo.lottery.dto.response.LotterySimple;
+import com.hk_music_cop.demo.lottery.dto.LotterySimple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

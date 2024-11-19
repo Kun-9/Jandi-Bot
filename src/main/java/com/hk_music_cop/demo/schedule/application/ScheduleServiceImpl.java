@@ -2,7 +2,7 @@ package com.hk_music_cop.demo.schedule.application;
 
 import com.hk_music_cop.demo.googleCloud.googleSheet.repository.GoogleSheetAPI;
 import com.hk_music_cop.demo.googleCloud.googleSheet.GoogleSheetProperties;
-import com.hk_music_cop.demo.global.error.exceptions.CustomUndefinedCommand;
+import com.hk_music_cop.demo.global.common.error.exceptions.CustomUndefinedCommand;
 import com.hk_music_cop.demo.schedule.domain.WeeklySchedule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

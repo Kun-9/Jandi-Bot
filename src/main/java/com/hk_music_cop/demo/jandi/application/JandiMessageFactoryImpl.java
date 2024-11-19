@@ -1,7 +1,7 @@
 package com.hk_music_cop.demo.jandi.application;
 
-import com.hk_music_cop.demo.ex.ResponseCode;
-import com.hk_music_cop.demo.global.error.exceptions.CustomException;
+import com.hk_music_cop.demo.global.common.response.ResponseCode;
+import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
 import com.hk_music_cop.demo.jandi.config.JandiProperties;
 import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
 import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookRequest;
@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,9 +1,9 @@
 package com.hk_music_cop.demo.member.application;
 
-import com.hk_music_cop.demo.global.error.exceptions.CustomDuplicatedNameException;
-import com.hk_music_cop.demo.global.error.exceptions.CustomDuplicatedUserIdException;
-import com.hk_music_cop.demo.global.error.exceptions.CustomIncorrectPasswordException;
-import com.hk_music_cop.demo.global.error.exceptions.CustomUnknownMemberException;
+import com.hk_music_cop.demo.global.common.error.exceptions.CustomDuplicatedNameException;
+import com.hk_music_cop.demo.global.common.error.exceptions.CustomDuplicatedUserIdException;
+import com.hk_music_cop.demo.global.common.error.exceptions.CustomIncorrectPasswordException;
+import com.hk_music_cop.demo.global.common.error.exceptions.CustomUnknownMemberException;
 import com.hk_music_cop.demo.member.dto.request.MemberRequest;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import com.hk_music_cop.demo.member.repository.MemberRepository;
