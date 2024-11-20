@@ -22,14 +22,12 @@ public class JandiWebhookController {
 
 	@PostMapping("/jandi/message")
 	public ResponseEntity<String> sendMessage(String webhookURL, String content, String color, String title, String description) {
-
 		RestTemplate restTemplate = new RestTemplate();
 
-		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(
-				content,
-				color,
-				new JandiWebhookResponse.ConnectInfo(title, description, null)
-		);
+		JandiWebhookResponse response = JandiWebhookResponse.createResponseBase(title, color);
+		JandiWebhookResponse.ConnectInfo connectInfo = new JandiWebhookResponse.ConnectInfo(title, description, null);
+
+		JandiWebhookResponse jandiWebhookResponse = response.withConnectInfo(connectInfo);
 
 		// web hook url 설정
 		webhookURL = "https://wh.jandi.com/connect-api/webhook/23002156/ad2476253597a22daaecdb0961fd25bd";
@@ -40,7 +38,7 @@ public class JandiWebhookController {
 	}
 
 	@PostMapping("/jandi")
-	public String sendJandiMessage(@RequestBody JandiWebhookRequest jandiWebhookRequest) {
-		return jandiCommandServiceImpl.executeCommand(jandiWebhookRequest).toString();
+	public JandiWebhookResponse sendJandiMessage(@RequestBody JandiWebhookRequest jandiWebhookRequest) {
+		return jandiCommandServiceImpl.executeCommand(jandiWebhookRequest);
 	}
 }

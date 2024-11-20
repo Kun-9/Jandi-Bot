@@ -32,11 +32,12 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	private final JandiProperties jandiProperties;
 
 	@Override
-	public JSONObject scheduleWeekMessage(LocalDate date) {
+	public JandiWebhookResponse scheduleWeekMessage(LocalDate date) {
 		String title = jandiProperties.title().weekScheduleTitle();
 		String color = jandiProperties.color().successColor();
 
-		return createJandiMessage(createScheduleWeekResponse(title, color, date));
+//		return createJandiMessage(createScheduleWeekResponse(title, color, date));
+		return createScheduleWeekResponse(title, color, date);
 	}
 
 	@Override
@@ -58,17 +59,31 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	}
 
 	@Override
-	public JSONObject errorMessage(CustomException e) {
+	public JSONObject customErrorMessage(CustomException e) {
+		log.error("jandi custom Error : ", e);
 		ResponseCode code = e.getResponseCode();
+		String title = jandiProperties.title().failTitle();
+		String color = jandiProperties.color().failColor();
 
-		JandiWebhookResponse jandiWebhookResponse = new JandiWebhookResponse(
-				"ERROR MESSAGE",
-				jandiProperties.color().failColor(),
-				new ConnectInfo(e.getMessage(), code.getCode(), null)
-		);
+		JandiWebhookResponse response = createResponseBase(title, color);
+		ConnectInfo connectInfo = new ConnectInfo(e.getMessage(), code.getCode(), null);
 
 
-		return createJandiMessage(jandiWebhookResponse);
+		return createJandiMessage(response.withConnectInfo(connectInfo));
+	}
+
+	@Override
+	public JSONObject errorMessage(Exception e, ResponseCode code) {
+		log.error("jandi Error : ", e);
+
+		String title = jandiProperties.title().failTitle();
+		String color = jandiProperties.color().failColor();
+
+		JandiWebhookResponse response = createResponseBase(title, color);
+		ConnectInfo connectInfo = new ConnectInfo(code.getMessage(), code.getCode(), null);
+
+
+		return createJandiMessage(response.withConnectInfo(connectInfo));
 	}
 
 	@Override
@@ -110,16 +125,14 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	}
 
 	private JandiWebhookResponse createSuccessResponse(ResponseCode responseCode) {
-		String mainTitle = "SUCCESS";
-		String title = jandiProperties.title().successTitle();
+		String title = "SUCCESS";
+		String subTitle = jandiProperties.title().successTitle();
 		String color = jandiProperties.color().successColor();
 
-		return new JandiWebhookResponse(
-				mainTitle,
-				color,
-				new ConnectInfo(title, responseCode.getMessage(), null)
-		);
+		JandiWebhookResponse response = createResponseBase(title, color);
+		ConnectInfo connectInfo = new ConnectInfo(subTitle, responseCode.getMessage(), null);
 
+		return response.withConnectInfo(connectInfo);
 	}
 
 	@Override
@@ -141,16 +154,18 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 				connectInfoList
 		);
 
-
 		return createJandiMessage(response);
 	}
 
 	private JandiWebhookResponse createLotteryResponse(String title, String color, LotteryResponse person, String imgURL) {
-		return new JandiWebhookResponse(
-				title,
-				color,
-				new ConnectInfo("결과", "'" + person.getLotteryName() + " " + person.getPosition() + "'님 당첨되었습니다.\n축하합니다~!", imgURL)
-		);
+
+		JandiWebhookResponse response = createResponseBase(title, color);
+		ConnectInfo connectInfo = new ConnectInfo(
+				"결과",
+				"'" + person.getLotteryName() + " " + person.getPosition() + "'님 당첨되었습니다.\n축하합니다~!",
+				imgURL);
+
+		return response.withConnectInfo(connectInfo);
 	}
 
 	private JandiWebhookResponse createScheduleWeekResponse(String title, String color, LocalDate date) {
@@ -168,11 +183,11 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	}
 
 	private JandiWebhookResponse createMyInfoResponse(String title, String color, String content) {
-		return new JandiWebhookResponse(
-				title,
-				color,
-				new ConnectInfo("정보", content, null)
-		);
+
+		JandiWebhookResponse response = createResponseBase(title, color);
+		ConnectInfo connectInfo = new ConnectInfo("정보", content, null);
+
+		return response.withConnectInfo(connectInfo);
 	}
 
 	// 여기 있으면 안됨

@@ -1,6 +1,8 @@
 package com.hk_music_cop.demo.jandi.application;
 
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
+import com.hk_music_cop.demo.global.common.response.ResponseCode;
+import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
 import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
@@ -11,13 +13,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface JandiMessageFactory {
-	JSONObject scheduleWeekMessage(LocalDate date);
+	JandiWebhookResponse scheduleWeekMessage(LocalDate date);
 
 	JSONObject scheduleDayMessage(LocalDate date);
 
 	JSONObject chooseLotteryMessage(String imgURL);
 
-	JSONObject errorMessage(CustomException e);
+	JSONObject customErrorMessage(CustomException e);
+
+	JSONObject errorMessage(Exception e, ResponseCode code);
 
 	JSONObject infoMessage(JandiWebhookRequest jandiWebhookRequest);
 

@@ -1,6 +1,7 @@
 package com.hk_music_cop.demo.jandi.application;
 
 import com.hk_music_cop.demo.jandi.domain.JandiCommandParser;
+import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
 import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookRequest;
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomUndefinedCommand;
 import com.hk_music_cop.demo.lottery.application.LotteryService;
@@ -28,7 +29,7 @@ public class JandiCommandServiceImpl implements JandiCommandService {
 	private final MemberService memberService;
 
 
-	public JSONObject executeCommand(JandiWebhookRequest request) {
+	public JandiWebhookResponse executeCommand(JandiWebhookRequest request) {
 
 		Params params = getParameter(request.getData());
 		List<List<String>> parameters = params.getParameters();
@@ -49,21 +50,23 @@ public class JandiCommandServiceImpl implements JandiCommandService {
 
 
 
-		JSONObject response;
+//		JSONObject response;
+
+		JandiWebhookResponse response = null;
 
 		switch (params.getCommand()) {
 			case "이번주 일정" -> response = jandiMessageFactory.scheduleWeekMessage(LocalDate.now());
-			case "오늘 일정" -> response = jandiMessageFactory.scheduleDayMessage(LocalDate.now());
-			case "일단위 일정 조회" -> {
-				List<String> param = parameters.get(0);
-
-				LocalDate date = LocalDate.of(
-						Integer.parseInt(param.get(0)),
-						Integer.parseInt(param.get(1)),
-						Integer.parseInt(param.get(2))
-				);
-				response = jandiMessageFactory.scheduleDayMessage(date);
-			}
+//			case "오늘 일정" -> response = jandiMessageFactory.scheduleDayMessage(LocalDate.now());
+//			case "일단위 일정 조회" -> {
+//				List<String> param = parameters.get(0);
+//
+//				LocalDate date = LocalDate.of(
+//						Integer.parseInt(param.get(0)),
+//						Integer.parseInt(param.get(1)),
+//						Integer.parseInt(param.get(2))
+//				);
+//				response = jandiMessageFactory.scheduleDayMessage(date);
+//			}
 			case "주단위 일정 조회" -> {
 				List<String> param = parameters.get(0);
 				response = jandiMessageFactory.scheduleWeekMessage(
@@ -74,38 +77,39 @@ public class JandiCommandServiceImpl implements JandiCommandService {
 						)
 				);
 			}
-			case "추첨" -> response = jandiMessageFactory.chooseLotteryMessage(null);
-			case "내 정보" -> response = jandiMessageFactory.infoMessage(request);
-			case "추첨 등록" -> {
-				List<String> registerInfo = parameters.get(0);
-				response = jandiMessageFactory.registerLotteryMessage(
-						new LotteryRequest(memberId, registerInfo.get(0), registerInfo.get(1))
-				);
-			}
-			case "추첨 삭제" -> {
-				String targetName = parameters.get(0).get(0);
-				response = jandiMessageFactory.deleteLotteryMessage(
-						new LotteryRequest(memberId, targetName, null)
-				);
-			}
-			case "추첨 수정" -> {
-				String targetName = parameters.get(0).get(0);
-
-				List<String> updateParam = parameters.get(1);
-
-				LotteryUpdateRequest lotteryUpdateRequest = LotteryUpdateRequest.of(targetName, updateParam.get(0), updateParam.get(1));
-
-				response = jandiMessageFactory.updateLotteryMessage(
-						memberId,
-						lotteryUpdateRequest
-				);
-			}
-			case "추첨 리스트 조회" -> {
-				List<LotteryResponse> allLottery = lotteryService.getAllLottery();
-				response = jandiMessageFactory.lotteryListMessage(allLottery);
-			}
-			default -> throw new CustomUndefinedCommand(params.getCommand());
+//			case "추첨" -> response = jandiMessageFactory.chooseLotteryMessage(null);
+//			case "내 정보" -> response = jandiMessageFactory.infoMessage(request);
+//			case "추첨 등록" -> {
+//				List<String> registerInfo = parameters.get(0);
+//				response = jandiMessageFactory.registerLotteryMessage(
+//						new LotteryRequest(memberId, registerInfo.get(0), registerInfo.get(1))
+//				);
+//			}
+//			case "추첨 삭제" -> {
+//				String targetName = parameters.get(0).get(0);
+//				response = jandiMessageFactory.deleteLotteryMessage(
+//						new LotteryRequest(memberId, targetName, null)
+//				);
+//			}
+//			case "추첨 수정" -> {
+//				String targetName = parameters.get(0).get(0);
+//
+//				List<String> updateParam = parameters.get(1);
+//
+//				LotteryUpdateRequest lotteryUpdateRequest = LotteryUpdateRequest.of(targetName, updateParam.get(0), updateParam.get(1));
+//
+//				response = jandiMessageFactory.updateLotteryMessage(
+//						memberId,
+//						lotteryUpdateRequest
+//				);
+//			}
+//			case "추첨 리스트 조회" -> {
+//				List<LotteryResponse> allLottery = lotteryService.getAllLottery();
+//				response = jandiMessageFactory.lotteryListMessage(allLottery);
+//			}
+//			default -> throw new CustomUndefinedCommand(params.getCommand());
 		}
+
 		return response;
 	}
 

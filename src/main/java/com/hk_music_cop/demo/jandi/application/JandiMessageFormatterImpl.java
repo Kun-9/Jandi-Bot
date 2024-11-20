@@ -1,7 +1,7 @@
 package com.hk_music_cop.demo.jandi.application;
 
+import com.hk_music_cop.demo.global.common.error.exceptions.CustomNotFoundException;
 import com.hk_music_cop.demo.googleCloud.googleSheet.GoogleSheetProperties;
-import com.hk_music_cop.demo.jandi.config.JandiProperties;
 import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
 import com.hk_music_cop.demo.schedule.domain.DailySchedule;
 import com.hk_music_cop.demo.schedule.domain.Todo;
@@ -25,18 +25,16 @@ import static com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse.*;
 public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 
 	private final GoogleSheetProperties googleSheetProperties;
-	private final JandiProperties jandiProperties;
-
 
 	@Override
 	public JSONObject createResponseMessage(JandiWebhookResponse jandiWebhookResponse) {
 
 		// JSON 응답 메시지 생성
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("body", jandiWebhookResponse.getBody());
+		jsonObject.put("body", jandiWebhookResponse.body());
 
-		if (jandiWebhookResponse.getConnectColor() != null)
-			jsonObject.put("connectColor", jandiWebhookResponse.getConnectColor());
+		if (jandiWebhookResponse.connectColor() != null)
+			jsonObject.put("connectColor", jandiWebhookResponse.connectColor());
 
 		JSONArray connectInfoJson = setConnectInfo(jandiWebhookResponse);
 		jsonObject.put("connectInfo", connectInfoJson);
@@ -45,9 +43,11 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 	}
 
 	public JandiWebhookResponse parseScheduleListToResponse(String title, String color, WeeklySchedule weeklySchedule) {
-		JandiWebhookResponse jandiWebhookResponse;
+		// 일정이 있는지 검증
+		validateExistSchedule(weeklySchedule);
 
-		int cnt = 0;
+		JandiWebhookResponse response = createResponseBase(title, color);
+
 		List <ConnectInfo> connectInfoList = new ArrayList<>();
 
 		for (DailySchedule dailySchedule : weeklySchedule.getDailySchedules()) {
@@ -69,24 +69,14 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 				}
 
 				connectInfoList.add(new ConnectInfo(dayName, content, null));
-
-				cnt++;
 			}
 		}
 
-		jandiWebhookResponse = new JandiWebhookResponse(title, color, connectInfoList);
+		return response.withConnectInfoList(connectInfoList);
+	}
 
-
-		if (weeklySchedule.isEmpty()) {
-			return new JandiWebhookResponse(title, jandiProperties.color().failColor(),
-						new ConnectInfo(
-								"일정이 없어요", null, null
-						)
-					);
-
-		}
-
-		return jandiWebhookResponse;
+	private static void validateExistSchedule(WeeklySchedule weeklySchedule) {
+		if (weeklySchedule.isEmpty()) throw new CustomNotFoundException("일정이 없어요");
 	}
 
 	@Override
@@ -112,9 +102,9 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 	private static JSONArray setConnectInfo(JandiWebhookResponse jandiWebhookResponse) {
 		JSONArray connectInfoJson = new JSONArray();
 
-		for (int i = 0; i < jandiWebhookResponse.getConnectInfoList().size(); i++) {
+		for (int i = 0; i < jandiWebhookResponse.connectInfoList().size(); i++) {
 			JSONObject object = new JSONObject();
-			ConnectInfo connectInfo = jandiWebhookResponse.getConnectInfoList().get(i);
+			ConnectInfo connectInfo = jandiWebhookResponse.connectInfoList().get(i);
 
 			if (connectInfo.getTitle() != null)
 				object.put("title", connectInfo.getTitle());

@@ -11,7 +11,7 @@ import java.util.List;
 public interface LotteryService {
 	LotteryResponse chooseLotteryWinner();
 
-	void registerLottery(LotteryRequest lotteryRequest);
+	Long registerLottery(LotteryRequest lotteryRequest);
 
 	void deleteLottery(Long memberId, String lotteryName);
 

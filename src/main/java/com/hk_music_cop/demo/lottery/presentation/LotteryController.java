@@ -1,6 +1,8 @@
 package com.hk_music_cop.demo.lottery.presentation;
 
 
+import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
+import com.hk_music_cop.demo.global.common.error.exceptions.CustomExpiredRefreshTokenException;
 import com.hk_music_cop.demo.global.common.response.ApiResponse;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.global.security.common.CustomUser;

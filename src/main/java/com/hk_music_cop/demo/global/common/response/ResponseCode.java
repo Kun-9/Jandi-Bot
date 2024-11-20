@@ -60,17 +60,22 @@ public enum ResponseCode {
 
 	// 기능 관련 에러
 	LOTTERY_NOT_FOUND(404, "L001", "해당 lottery를 찾을 수 없습니다."),
+	LOTTERY_EQUALS(404, "L002", "해당 lottery와 동일한 값입니다."),
+	LOTTERY_DUPLICATE_NAME(400, "L003", "이미 등록된 lottery 이름입니다."),
 
 	// 공통 에러
+	UNKNOWN_ERROR(404, "C001", "알 수 없는 에러입니다."),
 	NOT_FOUND(404, "C001", "해당 값이나 리소스를 찾지 못했습니다."),
 	UNDEFINED_COMMAND(400, "C002", "적절하지 않은 명령어입니다."),
 	INCORRECT_FORMAT(400, "C003", "날짜 형식이 올바르지 않습니다. yyyy-MM-dd 형식으로 입력해주세요."),
 
 	// 데이터베이스 에러
-	DATABASE_CREATE_ERROR(500, "D002", "데이터 생성 중 오류가 발생했습니다."),
-	DATABASE_DELETE_ERROR(500, "D001", "데이터 삭제 중 오류가 발생했습니다."),
-	DATABASE_SELECT_ERROR(500, "D002", "데이터 조회 중 오류가 발생했습니다."),
-	DATABASE_UPDATE_ERROR(500, "D004", "데이터 수정 중 오류가 발생했습니다.");
+	DATABASE_ERROR(500, "D001", "데이터베이스 요청 과정에서 오류가 발생했습니다."),
+	DATABASE_DELETE_ERROR(500, "D002", "데이터 삭제 중 오류가 발생했습니다."),
+	DATABASE_SELECT_ERROR(500, "D003", "데이터 조회 중 오류가 발생했습니다."),
+	DATABASE_UPDATE_ERROR(500, "D004", "데이터 수정 중 오류가 발생했습니다."),
+	DATABASE_CREATE_ERROR(500, "D005", "데이터 생성 중 오류가 발생했습니다.");
+	;
 
 	private final int status;
 	private final String code;

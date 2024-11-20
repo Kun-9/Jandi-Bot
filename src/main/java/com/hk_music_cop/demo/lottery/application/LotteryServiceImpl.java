@@ -43,12 +43,15 @@ public class LotteryServiceImpl implements LotteryService {
 	}
 
 	@Override
-	public void registerLottery(LotteryRequest lotteryRequest) {
+	public Long registerLottery(LotteryRequest lotteryRequest) {
 
 		validateDuplicateName(lotteryRequest.lotteryName());
 
-		if (lotteryRepository.createLottery(lotteryRequest) != 1)
+		Long lotteryId = lotteryRepository.createLottery(lotteryRequest);
+		if (lotteryId == 0)
 			throw new CustomException(ResponseCode.DATABASE_CREATE_ERROR);
+
+		return lotteryId;
 	}
 
 	@Override
@@ -73,17 +76,39 @@ public class LotteryServiceImpl implements LotteryService {
 	@Override
 	public LotteryUpdateLog updateLottery(Long memberId, LotteryUpdateRequest lottery) {
 
-		LotteryResponse beforeLottery = findByName(lottery.targetName());
+		LotteryResponse targetLottery = findByName(lottery.targetName());
+
+		// 변경가능한 값인지 확인
+//		validatePossibleUpdate(LotterySimple.from(lottery), LotterySimple.from(targetLottery));
 
 		// 권한 확인 (요청자가 생성자인지)
-		validateCreator(memberId, beforeLottery.getLotteryId());
+		validateCreator(memberId, targetLottery.getLotteryId());
 
-		if (lotteryRepository.editLottery(beforeLottery.getLotteryId(), LotterySimple.from(lottery)) != 1)
+		if (lotteryRepository.editLottery(targetLottery.getLotteryId(), LotterySimple.from(lottery)) != 1)
 			throw new CustomException(ResponseCode.DATABASE_UPDATE_ERROR);
 
-		LotteryResponse afterLottery = findByName(lottery.targetName());
+		return LotteryUpdateLog.of(LotterySimple.from(targetLottery), LotterySimple.from(lottery));
+	}
 
-		return LotteryUpdateLog.of(LotterySimple.from(beforeLottery), LotterySimple.from(afterLottery));
+	private void validatePossibleUpdate(LotterySimple lotteryTarget, LotterySimple lotteryToUpdate) {
+		// 변경하고자 하는 로터리와, 업데이트할 로터리의 이름이 같은지 확인
+		if (lotteryToUpdate.lotteryName().equals(lotteryTarget.lotteryName())) {
+			// 포지션도 동일하다면, 동일한 로터리 오류 발생
+			if (lotteryToUpdate.position().equals(lotteryTarget.position()))
+				throw new CustomException(ResponseCode.LOTTERY_EQUALS);
+		} else {
+			// 이름이 같지 않은데, 존재하는 이름이라면 오류 발생
+			if (validationExistByName(lotteryTarget.lotteryName()))
+				throw new CustomException(ResponseCode.LOTTERY_DUPLICATE_NAME);
+		}
+	}
+
+	private boolean validationExistByName(String lotteryName) {
+		return lotteryRepository.existsByName(lotteryName);
+	}
+
+	private void validateEquals(LotterySimple lottery, LotterySimple lotteryTarget) {
+		if (lotteryTarget.equals(lottery)) throw new CustomException(ResponseCode.LOTTERY_EQUALS);
 	}
 
 	@Override

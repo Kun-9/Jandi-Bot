@@ -2,34 +2,27 @@ package com.hk_music_cop.demo.jandi.dto.request;
 
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 
-@Getter @ToString
-public class JandiWebhookResponse {
-	private final String body;
-	private final String connectColor;
-	private final List<ConnectInfo> connectInfoList;
-
-	public JandiWebhookResponse(String body, String connectColor, List<ConnectInfo> connectInfoList) {
-		this.body = body;
-		this.connectColor = connectColor;
-		this.connectInfoList = connectInfoList;
+public record JandiWebhookResponse(String body, String connectColor, List<ConnectInfo> connectInfoList) {
+	public static JandiWebhookResponse createResponseBase(String body, String connectColor) {
+		return new JandiWebhookResponse(body, connectColor, null);
 	}
 
-	public JandiWebhookResponse(String body, String connectColor, ConnectInfo connectInfo) {
-		this(body, connectColor, Collections.singletonList(connectInfo));
+	public JandiWebhookResponse withConnectInfoList(List<ConnectInfo> connectInfoList) {
+		return new JandiWebhookResponse(this.body, this.connectColor, connectInfoList);
 	}
 
-	public JandiWebhookResponse addConnectInfo(ConnectInfo info) {
-		this.connectInfoList.add(info);
-		return this;
+	public JandiWebhookResponse withConnectInfo(ConnectInfo connectInfo) {
+		return new JandiWebhookResponse(body, connectColor, Collections.singletonList(connectInfo));
 	}
 
-	@Getter @ToString @NoArgsConstructor
+
+	@Getter
+	@ToString
+	@NoArgsConstructor
 	public static class ConnectInfo {
 		public ConnectInfo(String title, String description, String imageUrl) {
 			this.title = title;
