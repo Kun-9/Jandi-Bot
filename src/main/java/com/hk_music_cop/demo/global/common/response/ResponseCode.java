@@ -32,6 +32,8 @@ public enum ResponseCode {
 	LOTTERY_JOIN_SUCCESS(200, "SL002", "추첨이 등록되었습니다."),
 	LOTTERY_DELETE_SUCCESS(200, "SL003", "추첨이 삭제되었습니다."),
 
+	// Jandi 관련 성공
+	JANDI_SCHEDULE_EMPTY(200, "SJ001", "일정이 없습니다."),
 
 	// API 관련 에러
 	API_ERROR(500, "E001", "API 호출 오류입니다."),
@@ -75,7 +77,7 @@ public enum ResponseCode {
 	DATABASE_SELECT_ERROR(500, "D003", "데이터 조회 중 오류가 발생했습니다."),
 	DATABASE_UPDATE_ERROR(500, "D004", "데이터 수정 중 오류가 발생했습니다."),
 	DATABASE_CREATE_ERROR(500, "D005", "데이터 생성 중 오류가 발생했습니다.");
-	;
+
 
 	private final int status;
 	private final String code;

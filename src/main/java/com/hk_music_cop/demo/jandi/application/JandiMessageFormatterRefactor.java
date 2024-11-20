@@ -1,21 +1,14 @@
 package com.hk_music_cop.demo.jandi.application;
 
-import com.hk_music_cop.demo.global.common.error.exceptions.CustomNotFoundException;
-import com.hk_music_cop.demo.googleCloud.googleSheet.GoogleSheetProperties;
 import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
-import com.hk_music_cop.demo.schedule.domain.DailySchedule;
-import com.hk_music_cop.demo.schedule.domain.Todo;
 import com.hk_music_cop.demo.schedule.domain.WeeklySchedule;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse.ConnectInfo;
@@ -23,20 +16,18 @@ import static com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse.Conne
 @Component
 @RequiredArgsConstructor
 public class JandiMessageFormatterRefactor implements JandiMessageFormatter {
-
-	private final GoogleSheetProperties googleSheetProperties;
-
-
 	public List<ConnectInfo> parseWeekScheduleToConnectInfo(WeeklySchedule weeklySchedule) {
 		// 일정이 있는지 검증
-		validateExistSchedule(weeklySchedule);
+		if (validationScheduleEmpty(weeklySchedule)) {
+			return null;
+		}
 
 		// WeeklySchedule을 ConnectInfo List 로 변환
 		return ConnectInfo.from(weeklySchedule);
 	}
 
-	private static void validateExistSchedule(WeeklySchedule weeklySchedule) {
-		if (weeklySchedule.isEmpty()) throw new CustomNotFoundException("일정이 없어요");
+	private boolean validationScheduleEmpty(WeeklySchedule weeklySchedule) {
+		return weeklySchedule.isEmpty();
 	}
 
 	@Override

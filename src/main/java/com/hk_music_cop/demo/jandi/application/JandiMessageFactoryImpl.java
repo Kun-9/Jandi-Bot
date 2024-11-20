@@ -34,6 +34,10 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 
 		List<ConnectInfo> connectInfoList = jandiMessageFormatter.parseWeekScheduleToConnectInfo(weekTodoData);
 
+		// 일정 리스트가 비었다면 일정이 비었다고 반환
+		if (connectInfoList == null || connectInfoList.isEmpty())
+			return jandiResponseGenerator.createSuccessResponse(ResponseCode.JANDI_SCHEDULE_EMPTY);
+
 		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList);
 	}
 
@@ -42,6 +46,10 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 		WeeklySchedule daySchedule = scheduleService.getDayTodo(date);
 
 		List<ConnectInfo> connectInfoList = jandiMessageFormatter.parseWeekScheduleToConnectInfo(daySchedule);
+
+		// 일정 리스트가 비었다면 일정이 비었다고 반환
+		if (connectInfoList == null || connectInfoList.isEmpty())
+			return jandiResponseGenerator.createSuccessResponse(ResponseCode.JANDI_SCHEDULE_EMPTY);
 
 		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList);
 	}
