@@ -4,7 +4,6 @@ import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import lombok.Value;
 
-@Value
 public record LotterySimple(String lotteryName, String position) {
 	public static LotterySimple from(LotteryResponse lotteryResponse) {
 		return new LotterySimple(lotteryResponse.getLotteryName(), lotteryResponse.getPosition());
