@@ -1,7 +1,7 @@
 package com.hk_music_cop.demo.jandi.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.hk_music_cop.demo.jandi.application.DailyScheduleConverter;
+import com.hk_music_cop.demo.jandi.util.DailyScheduleConverter;
 import com.hk_music_cop.demo.lottery.dto.LotterySimple;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.schedule.domain.DailySchedule;
@@ -34,6 +34,10 @@ public record JandiWebhookResponse(String body, String connectColor, List<Connec
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public record ConnectInfo(String title, String description, String imageUrl) {
 
+		public static ConnectInfo fromDescription(String description) {
+			return new ConnectInfo(null, description, null);
+		}
+
 		public static ConnectInfo withOutImg(String title, String description) {
 			return new ConnectInfo(title, description, null);
 		}
@@ -57,16 +61,8 @@ public record JandiWebhookResponse(String body, String connectColor, List<Connec
 					.toList();
 		}
 
-		public static ConnectInfo fromLotteryWinner(LotteryResponse winner) {
-			return ConnectInfo.withOutImg(
-					"결과",
-					String.format("%s님 당첨되었습니다.\n축하합니다~!", winner.getLotteryName())
-			);
-		}
-
-		public static ConnectInfo ofSingleStringData(String content) {
-			return ConnectInfo.withOutImg(
-					null,
+		public static ConnectInfo fromSingleStringData(String content) {
+			return ConnectInfo.fromDescription(
 					content
 			);
 		}

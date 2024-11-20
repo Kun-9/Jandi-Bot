@@ -22,17 +22,16 @@ public interface JandiMessageFormatter {
 	 * @param jandiWebhookResponse 잔디 요청 DTO
 	 * @return Response JSON
 	 */
-	JSONObject jandiResponseToJsonObject(JandiWebhookResponse jandiWebhookResponse);
+	// JandiWebhookResponse 로 응답하기 때문에 사용 X (스프링에서 JSON 자동 변환됨)
+//	JSONObject jandiResponseToJsonObject(JandiWebhookResponse jandiWebhookResponse);
 
 
 	/**
-	 * 잔디 ResponseDTO로 파싱
-	 * @param title 잔디 메시지 제목
-	 * @param color 잔디 메시지 색상
+	 * 잔디 ResponseDTO 로 파싱
 	 * @param weeklySchedule 캘린더 일정 객체
 	 * @return JandiWebhookResponse DTO
 	 */
-	List<JandiWebhookResponse.ConnectInfo> parseScheduleToResponse(WeeklySchedule weeklySchedule);
+	List<JandiWebhookResponse.ConnectInfo> parseWeekScheduleToConnectInfo(WeeklySchedule weeklySchedule);
 
 
 

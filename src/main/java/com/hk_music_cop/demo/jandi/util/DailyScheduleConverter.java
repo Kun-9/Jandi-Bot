@@ -1,4 +1,4 @@
-package com.hk_music_cop.demo.jandi.application;
+package com.hk_music_cop.demo.jandi.util;
 
 import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
 import com.hk_music_cop.demo.schedule.domain.DailySchedule;

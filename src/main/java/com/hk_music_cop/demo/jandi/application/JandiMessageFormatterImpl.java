@@ -30,23 +30,23 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 
 	private final GoogleSheetProperties googleSheetProperties;
 
-	@Override
-	public JSONObject jandiResponseToJsonObject(JandiWebhookResponse jandiWebhookResponse) {
+//	@Override
+//	public JSONObject jandiResponseToJsonObject(JandiWebhookResponse jandiWebhookResponse) {
+//
+//		// JSON 응답 메시지 생성
+//		JSONObject jsonObject = new JSONObject();
+//		jsonObject.put("body", jandiWebhookResponse.body());
+//
+//		if (jandiWebhookResponse.connectColor() != null)
+//			jsonObject.put("connectColor", jandiWebhookResponse.connectColor());
+//
+//		JSONArray connectInfoJson = setConnectInfo(jandiWebhookResponse);
+//		jsonObject.put("connectInfo", connectInfoJson);
+//
+//		return jsonObject;
+//	}
 
-		// JSON 응답 메시지 생성
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("body", jandiWebhookResponse.body());
-
-		if (jandiWebhookResponse.connectColor() != null)
-			jsonObject.put("connectColor", jandiWebhookResponse.connectColor());
-
-		JSONArray connectInfoJson = setConnectInfo(jandiWebhookResponse);
-		jsonObject.put("connectInfo", connectInfoJson);
-
-		return jsonObject;
-	}
-
-	public List<ConnectInfo> parseScheduleToResponse(WeeklySchedule weeklySchedule) {
+	public List<ConnectInfo> parseWeekScheduleToConnectInfo(WeeklySchedule weeklySchedule) {
 		// 일정이 있는지 검증
 		validateExistSchedule(weeklySchedule);
 
@@ -90,34 +90,30 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.set("Accept", "application/vnd.tosslab.jandi-v2+json");
 
-		// Json 응답 생성
-		JSONObject jsonMessageObject = jandiResponseToJsonObject(JandiWebhookResponse);
-
-
 		// Http 엔티티 생성
-		HttpEntity<String> entity = new HttpEntity<>(jsonMessageObject.toString(), headers);
+		HttpEntity<JandiWebhookResponse> entity = new HttpEntity<>(JandiWebhookResponse, headers);
 
 		return restTemplate.postForEntity(webhookURL, entity, String.class);
 	}
 
-	private static JSONArray setConnectInfo(JandiWebhookResponse jandiWebhookResponse) {
-		JSONArray connectInfoJson = new JSONArray();
-
-		for (int i = 0; i < jandiWebhookResponse.connectInfo().size(); i++) {
-			JSONObject object = new JSONObject();
-			ConnectInfo connectInfo = jandiWebhookResponse.connectInfo().get(i);
-
-			if (connectInfo.title() != null)
-				object.put("title", connectInfo.title());
-			if (connectInfo.description() != null)
-				object.put("description", connectInfo.description());
-			if (connectInfo.imageUrl() != null)
-				object.put("imageUrl", connectInfo.imageUrl());
-
-			connectInfoJson.put(object);
-		}
-		return connectInfoJson;
-	}
+//	private static JSONArray setConnectInfo(JandiWebhookResponse jandiWebhookResponse) {
+//		JSONArray connectInfoJson = new JSONArray();
+//
+//		for (int i = 0; i < jandiWebhookResponse.connectInfo().size(); i++) {
+//			JSONObject object = new JSONObject();
+//			ConnectInfo connectInfo = jandiWebhookResponse.connectInfo().get(i);
+//
+//			if (connectInfo.title() != null)
+//				object.put("title", connectInfo.title());
+//			if (connectInfo.description() != null)
+//				object.put("description", connectInfo.description());
+//			if (connectInfo.imageUrl() != null)
+//				object.put("imageUrl", connectInfo.imageUrl());
+//
+//			connectInfoJson.put(object);
+//		}
+//		return connectInfoJson;
+//	}
 
 	private String getDayName(int dayOfWeekValue) {
 		return googleSheetProperties.calendar().dayList().get(dayOfWeekValue) + "요일";

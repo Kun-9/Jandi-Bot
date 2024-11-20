@@ -32,7 +32,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	public JandiWebhookResponse scheduleWeekMessage(LocalDate date) {
 		WeeklySchedule weekTodoData = scheduleService.getWeekTodo(date);
 
-		List<ConnectInfo> connectInfoList = jandiMessageFormatter.parseScheduleToResponse(weekTodoData);
+		List<ConnectInfo> connectInfoList = jandiMessageFormatter.parseWeekScheduleToConnectInfo(weekTodoData);
 
 		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList);
 	}
@@ -41,7 +41,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	public JandiWebhookResponse scheduleDayMessage(LocalDate date) {
 		WeeklySchedule daySchedule = scheduleService.getDayTodo(date);
 
-		List<ConnectInfo> connectInfoList = jandiMessageFormatter.parseScheduleToResponse(daySchedule);
+		List<ConnectInfo> connectInfoList = jandiMessageFormatter.parseWeekScheduleToConnectInfo(daySchedule);
 
 		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList);
 	}
@@ -49,7 +49,10 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	@Override
 	public JandiWebhookResponse chooseLotteryMessage(String imgURL) {
 		LotteryResponse winner = lotteryService.chooseLotteryWinner();
-		ConnectInfo connectInfo = ConnectInfo.fromLotteryWinner(winner);
+
+		String data = String.format("%s님 당첨되었습니다.\n축하합니다~!", winner.getLotteryName());
+
+		ConnectInfo connectInfo = ConnectInfo.fromSingleStringData(data);
 
 		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfo);
 	}
@@ -57,7 +60,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	@Override
 	public JandiWebhookResponse infoMessage(JandiWebhookRequest jandiWebhookRequest) {
 		String content = getWriterInfo(jandiWebhookRequest).toString();
-		ConnectInfo connectInfo = ConnectInfo.ofSingleStringData(content);
+		ConnectInfo connectInfo = ConnectInfo.fromSingleStringData(content);
 		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfo);
 	}
 
@@ -76,7 +79,6 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 
 	@Override
 	public JandiWebhookResponse updateLotteryMessage(Long memberId, LotteryUpdateRequest request) {
-
 		lotteryService.updateLottery(memberId, request);
 
 		return jandiResponseGenerator.createSuccessResponse(ResponseCode.UPDATED);
