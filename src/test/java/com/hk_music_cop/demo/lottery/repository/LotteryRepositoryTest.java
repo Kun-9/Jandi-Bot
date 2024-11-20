@@ -1,5 +1,6 @@
 package com.hk_music_cop.demo.lottery.repository;
 
+import com.hk_music_cop.demo.lottery.dto.LotterySimple;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import org.assertj.core.groups.Tuple;
@@ -75,11 +76,11 @@ class LotteryRepositoryTest {
 	@Test
 	void editLottery() {
 		//
-		LotteryRequest editLottery = new LotteryRequest(null, "edit", "editPos");
+		LotterySimple editLottery = new LotterySimple("edit", "editPos");
 
 
 		//
-		int i = lotteryRepository.editLottery(testLotteryId, editLottery);
+		int i = lotteryRepository.editLottery(testLotteryId, LotterySimple.from(editLottery));
 		LotteryResponse findEditObject = lotteryRepository.findByLotteryId(testLotteryId).get();
 
 		assertThat(i).isEqualTo(1);

@@ -10,6 +10,10 @@ public record LotterySimple(String lotteryName, String position) {
 		return new LotterySimple(lotteryResponse.getLotteryName(), lotteryResponse.getPosition());
 	}
 
+	public static LotterySimple from(LotterySimple lotterySimple) {
+		return new LotterySimple(lotterySimple.lotteryName(), lotterySimple.position());
+	}
+
 	public static LotterySimple from(LotteryUpdateRequest lottery) {
 		return new LotterySimple(lottery.name(), lottery.position());
 	}
