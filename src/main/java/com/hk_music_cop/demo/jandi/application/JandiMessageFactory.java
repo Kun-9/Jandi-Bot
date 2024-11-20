@@ -31,5 +31,5 @@ public interface JandiMessageFactory {
 
 	JSONObject updateLotteryMessage(Long memberId, LotteryUpdateRequest request);
 
-	JSONObject lotteryListMessage(List<LotteryResponse> lotteryResponseList);
+	JandiWebhookResponse lotteryListMessage(List<LotteryResponse> lotteryResponseList);
 }

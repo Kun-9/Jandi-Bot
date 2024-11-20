@@ -50,7 +50,7 @@ public class JandiCommandServiceImpl implements JandiCommandService {
 
 
 
-//		JSONObject response;
+//		JSONObject response = null;
 
 		JandiWebhookResponse response = null;
 
@@ -103,11 +103,11 @@ public class JandiCommandServiceImpl implements JandiCommandService {
 //						lotteryUpdateRequest
 //				);
 //			}
-//			case "추첨 리스트 조회" -> {
-//				List<LotteryResponse> allLottery = lotteryService.getAllLottery();
-//				response = jandiMessageFactory.lotteryListMessage(allLottery);
-//			}
-//			default -> throw new CustomUndefinedCommand(params.getCommand());
+			case "추첨 리스트 조회" -> {
+				List<LotteryResponse> allLottery = lotteryService.getAllLottery();
+				response = jandiMessageFactory.lotteryListMessage(allLottery);
+			}
+			default -> throw new CustomUndefinedCommand(params.getCommand());
 		}
 
 		return response;

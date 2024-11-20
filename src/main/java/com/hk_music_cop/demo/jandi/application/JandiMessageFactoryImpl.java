@@ -136,7 +136,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	}
 
 	@Override
-	public JSONObject lotteryListMessage(List<LotteryResponse> lotteryResponseList) {
+	public JandiWebhookResponse lotteryListMessage(List<LotteryResponse> lotteryResponseList) {
 
 
 		List<ConnectInfo> connectInfoList = lotteryResponseList.stream()
@@ -148,13 +148,13 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 						)
 				).toList();
 
-		JandiWebhookResponse response = new JandiWebhookResponse(
+		return new JandiWebhookResponse(
 				"리스트 조회",
 				jandiProperties.color().successColor(),
 				connectInfoList
 		);
 
-		return createJandiMessage(response);
+//		return createJandiMessage(response);
 	}
 
 	private JandiWebhookResponse createLotteryResponse(String title, String color, LotteryResponse person, String imgURL) {

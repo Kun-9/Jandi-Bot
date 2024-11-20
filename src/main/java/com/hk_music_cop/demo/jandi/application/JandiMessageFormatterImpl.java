@@ -102,16 +102,16 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 	private static JSONArray setConnectInfo(JandiWebhookResponse jandiWebhookResponse) {
 		JSONArray connectInfoJson = new JSONArray();
 
-		for (int i = 0; i < jandiWebhookResponse.connectInfoList().size(); i++) {
+		for (int i = 0; i < jandiWebhookResponse.connectInfo().size(); i++) {
 			JSONObject object = new JSONObject();
-			ConnectInfo connectInfo = jandiWebhookResponse.connectInfoList().get(i);
+			ConnectInfo connectInfo = jandiWebhookResponse.connectInfo().get(i);
 
-			if (connectInfo.getTitle() != null)
-				object.put("title", connectInfo.getTitle());
-			if (connectInfo.getDescription() != null)
-				object.put("description", connectInfo.getDescription());
-			if (connectInfo.getImageUrl() != null)
-				object.put("imageUrl", connectInfo.getImageUrl());
+			if (connectInfo.title() != null)
+				object.put("title", connectInfo.title());
+			if (connectInfo.description() != null)
+				object.put("description", connectInfo.description());
+			if (connectInfo.imageUrl() != null)
+				object.put("imageUrl", connectInfo.imageUrl());
 
 			connectInfoJson.put(object);
 		}
