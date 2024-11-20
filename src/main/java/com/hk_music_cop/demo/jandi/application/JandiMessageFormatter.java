@@ -5,6 +5,8 @@ import com.hk_music_cop.demo.schedule.domain.WeeklySchedule;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 
+import java.util.List;
+
 public interface JandiMessageFormatter {
 
 	/**
@@ -20,7 +22,7 @@ public interface JandiMessageFormatter {
 	 * @param jandiWebhookResponse 잔디 요청 DTO
 	 * @return Response JSON
 	 */
-	JSONObject createResponseMessage(JandiWebhookResponse jandiWebhookResponse);
+	JSONObject jandiResponseToJsonObject(JandiWebhookResponse jandiWebhookResponse);
 
 
 	/**
@@ -30,7 +32,7 @@ public interface JandiMessageFormatter {
 	 * @param weeklySchedule 캘린더 일정 객체
 	 * @return JandiWebhookResponse DTO
 	 */
-	JandiWebhookResponse parseScheduleListToResponse(String title, String color, WeeklySchedule weeklySchedule);
+	List<JandiWebhookResponse.ConnectInfo> parseScheduleToResponse(WeeklySchedule weeklySchedule);
 
 
 

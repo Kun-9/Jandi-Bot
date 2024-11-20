@@ -5,7 +5,6 @@ import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.global.common.error.ErrorHandler;
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -16,7 +15,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.sql.SQLException;
 
 
-@Slf4j
 @RequiredArgsConstructor
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -32,7 +30,6 @@ public class GlobalExceptionHandler {
 				.status(apiResponse.getStatus())
 				.body(apiResponse);
 	}
-
 
 	// SQL, DB 오류
 	@ExceptionHandler({SQLException.class, DataAccessException.class})

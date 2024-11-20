@@ -6,10 +6,8 @@ import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookRequest;
 import com.hk_music_cop.demo.jandi.application.JandiMessageFormatter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,7 +23,7 @@ public class JandiWebhookController {
 	public ResponseEntity<String> sendMessage(String webhookURL, String content, String color, String title, String description) {
 		RestTemplate restTemplate = new RestTemplate();
 
-		JandiWebhookResponse response = JandiWebhookResponse.createResponseBase(title, color);
+		JandiWebhookResponse response = JandiWebhookResponse.withoutConnectInfo(title, color);
 		JandiWebhookResponse.ConnectInfo connectInfo = new JandiWebhookResponse.ConnectInfo(title, description, null);
 
 		JandiWebhookResponse jandiWebhookResponse = response.withConnectInfo(connectInfo);

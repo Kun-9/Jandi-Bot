@@ -25,7 +25,7 @@ public class JandiCommandParser {
 		}
 	}
 
-	public Params validParamCnt(String command, List<List<String>> parameters) {
+	public static Params validParamCnt(String command, List<List<String>> parameters) {
 		boolean isValid = true;
 
 		switch (command) {
@@ -60,7 +60,7 @@ public class JandiCommandParser {
 		}
 	}
 
-	public FormatValidate validate(String requestData) {
+	public static FormatValidate validate(String requestData) {
 		boolean flag = false;
 		int openCount = 0;
 		int closeCount = 0;

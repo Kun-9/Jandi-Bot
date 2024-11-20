@@ -24,7 +24,7 @@ public class MemberServiceImpl implements MemberService {
 		String username = memberRequest.getName();
 
 		// 이미 아이디가 존재할 때
-		if (isUserIdExist(userId)) {
+		if (validationUserIdExist(userId)) {
 			throw new CustomDuplicatedUserIdException(userId);
 		}
 
@@ -41,11 +41,11 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public MemberResponse login(MemberRequest memberRequest) {
+	public MemberResponse jandiLogin(MemberRequest memberRequest) {
 		String userId = memberRequest.getUserId();
 
 		// 존재하지 않으면
-		if (!isUserIdExist(userId)) {
+		if (!validationUserIdExist(userId)) {
 			throw new CustomUnknownMemberException(userId);
 		}
 
@@ -70,7 +70,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public boolean isUserIdExist(String userId) {
+	public boolean validationUserIdExist(String userId) {
 		return memberRepository.userIdExistValidation(userId);
 	}
 

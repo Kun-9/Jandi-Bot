@@ -15,21 +15,17 @@ import java.util.List;
 public interface JandiMessageFactory {
 	JandiWebhookResponse scheduleWeekMessage(LocalDate date);
 
-	JSONObject scheduleDayMessage(LocalDate date);
+	JandiWebhookResponse scheduleDayMessage(LocalDate date);
 
-	JSONObject chooseLotteryMessage(String imgURL);
+	JandiWebhookResponse chooseLotteryMessage(String imgURL);
 
-	JSONObject customErrorMessage(CustomException e);
+	JandiWebhookResponse infoMessage(JandiWebhookRequest jandiWebhookRequest);
 
-	JSONObject errorMessage(Exception e, ResponseCode code);
+	JandiWebhookResponse registerLotteryMessage(LotteryRequest lotteryRequest);
 
-	JSONObject infoMessage(JandiWebhookRequest jandiWebhookRequest);
+	JandiWebhookResponse deleteLotteryMessage(LotteryRequest lotteryRequest);
 
-	JSONObject registerLotteryMessage(LotteryRequest lotteryRequest);
-
-	JSONObject deleteLotteryMessage(LotteryRequest lotteryRequest);
-
-	JSONObject updateLotteryMessage(Long memberId, LotteryUpdateRequest request);
+	JandiWebhookResponse updateLotteryMessage(Long memberId, LotteryUpdateRequest request);
 
 	JandiWebhookResponse lotteryListMessage(List<LotteryResponse> lotteryResponseList);
 }

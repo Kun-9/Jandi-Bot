@@ -6,7 +6,6 @@ import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
 import com.hk_music_cop.demo.schedule.domain.DailySchedule;
 import com.hk_music_cop.demo.schedule.domain.Todo;
 import com.hk_music_cop.demo.schedule.domain.WeeklySchedule;
-import io.opencensus.common.ExperimentalApi;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,14 +18,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jetbrains.annotations.ApiStatus;
+import static com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse.ConnectInfo;
 
-import static com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse.*;
-
-@ApiStatus.Experimental
-//@Component
+@Component
 @RequiredArgsConstructor
-public class JandiMessageFormatterImpl implements JandiMessageFormatter {
+public class JandiMessageFormatterRefactor implements JandiMessageFormatter {
 
 	private final GoogleSheetProperties googleSheetProperties;
 
@@ -50,30 +46,8 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 		// 일정이 있는지 검증
 		validateExistSchedule(weeklySchedule);
 
-		List <ConnectInfo> connectInfoList = new ArrayList<>();
-
-		for (DailySchedule dailySchedule : weeklySchedule.getDailySchedules()) {
-			if (dailySchedule != null) {
-				StringBuilder sb = new StringBuilder();
-
-				for (Todo todo : dailySchedule.getTodos()) {
-					sb.append(todo.getTask()).append("\n");
-				}
-
-				String content = sb.toString().trim();
-				String dayName;
-
-				if (weeklySchedule.isDailySchedule()) {
-					dayName = null;
-				} else {
-					dayName = dailySchedule.getDayName();
-				}
-
-				connectInfoList.add(new ConnectInfo(dayName, content, null));
-			}
-		}
-
-		return connectInfoList;
+		// WeeklySchedule을 ConnectInfo List 로 변환
+		return ConnectInfo.from(weeklySchedule);
 	}
 
 	private static void validateExistSchedule(WeeklySchedule weeklySchedule) {
@@ -82,7 +56,6 @@ public class JandiMessageFormatterImpl implements JandiMessageFormatter {
 
 	@Override
 	public HttpEntity<String> sendWebhookRequest(String webhookURL, JandiWebhookResponse JandiWebhookResponse) {
-
 		RestTemplate restTemplate = new RestTemplate();
 
 		// Header 생성

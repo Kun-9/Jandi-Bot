@@ -20,7 +20,6 @@ public class ErrorHandler {
 
 	private final ObjectMapper objectMapper;
 
-
 	// 모든 에러 처리
 	public ApiResponse<?> handleException(Exception e, ResponseCode code) {
 		log.error("error occurred: ", e);
@@ -40,12 +39,6 @@ public class ErrorHandler {
 
 		return ApiResponse.error(e.getResponseCode(), message);
 	}
-
-//	public ApiResponse<?> handleExceptionWithMessage(Exception e, ResponseCode code) {
-//		log.error("error occurred: ", e);
-//
-//		return ApiResponse.of(code);
-//	}
 
 	public void handleExceptionDirect(
 			HttpServletResponse response,

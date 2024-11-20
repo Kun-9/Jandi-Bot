@@ -7,14 +7,14 @@ public interface MemberService {
 
 	Long join(MemberRequest memberRequest);
 
-	MemberResponse login(MemberRequest memberRequest);
+	MemberResponse jandiLogin(MemberRequest memberRequest);
 
 	MemberResponse findByMemberId(Long memberId);
 
 	MemberResponse findByUserId(String userId);
 
 
-	boolean isUserIdExist(String userId);
+	boolean validationUserIdExist(String userId);
 
 	void validateUserIdExist(String userId);
 
