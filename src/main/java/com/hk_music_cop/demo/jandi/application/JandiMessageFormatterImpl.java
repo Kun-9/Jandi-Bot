@@ -2,7 +2,7 @@
 //
 //import com.hk_music_cop.demo.global.common.error.exceptions.CustomNotFoundException;
 //import com.hk_music_cop.demo.googleCloud.googleSheet.GoogleSheetProperties;
-//import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
+//import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse;
 //import com.hk_music_cop.demo.schedule.domain.DailySchedule;
 //import com.hk_music_cop.demo.schedule.domain.Todo;
 //import com.hk_music_cop.demo.schedule.domain.WeeklySchedule;
@@ -21,7 +21,7 @@
 //
 //import org.jetbrains.annotations.ApiStatus;
 //
-//import static com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse.*;
+//import static com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse.*;
 //
 //@ApiStatus.Experimental
 ////@Component

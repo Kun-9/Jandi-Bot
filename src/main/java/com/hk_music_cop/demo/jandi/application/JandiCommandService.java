@@ -1,8 +1,7 @@
 package com.hk_music_cop.demo.jandi.application;
 
-import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
-import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookRequest;
-import org.json.JSONObject;
+import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse;
+import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookRequest;
 
 public interface JandiCommandService {
 

@@ -1,8 +1,6 @@
 package com.hk_music_cop.demo.lottery.presentation;
 
 
-import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
-import com.hk_music_cop.demo.global.common.error.exceptions.CustomExpiredRefreshTokenException;
 import com.hk_music_cop.demo.global.common.response.ApiResponse;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.global.security.common.CustomUser;
@@ -14,10 +12,10 @@ import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.lottery.dto.LotterySimple;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryUpdateLog;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryWinner;
 import com.hk_music_cop.demo.member.application.MemberService;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,10 +31,14 @@ public class LotteryController {
 	private final MemberService memberService;
 
 	@GetMapping("/winner")
-	public ResponseEntity<LotterySimple> drawLottery() {
-		LotterySimple response = LotterySimple.from(lotteryService.chooseLotteryWinner());
+	public ResponseEntity<ApiResponse<LotteryWinner>> drawLottery() {
+		LotteryWinner winner = lotteryService.drawLotteryWinner();
 
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		ApiResponse<LotteryWinner> response = ApiResponse.of(ResponseCode.OK, winner);
+
+		return ResponseEntity
+				.status(response.getStatus())
+				.body(response);
 	}
 
 	@PostMapping("/update")

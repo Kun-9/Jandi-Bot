@@ -1,8 +1,7 @@
 package com.hk_music_cop.demo.jandi.application;
 
-import com.hk_music_cop.demo.jandi.domain.JandiCommandParser;
-import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
-import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookRequest;
+import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse;
+import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookRequest;
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomUndefinedCommand;
 import com.hk_music_cop.demo.lottery.application.LotteryService;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;

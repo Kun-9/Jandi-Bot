@@ -1,9 +1,10 @@
 package com.hk_music_cop.demo.jandi.presentation;
 
 import com.hk_music_cop.demo.jandi.application.JandiCommandServiceImpl;
-import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
-import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookRequest;
-import com.hk_music_cop.demo.jandi.application.JandiMessageFormatter;
+import com.hk_music_cop.demo.jandi.dto.response.ConnectInfo;
+import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse;
+import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookRequest;
+import com.hk_music_cop.demo.jandi.application.JandiWebhookClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -16,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class JandiWebhookController {
 
-	private final JandiMessageFormatter jandiMessageFormatter;
+	private final JandiWebhookClient jandiWebhookClient;
 	private final JandiCommandServiceImpl jandiCommandServiceImpl;
 
 	@PostMapping("/jandi/message")
@@ -24,14 +25,14 @@ public class JandiWebhookController {
 		RestTemplate restTemplate = new RestTemplate();
 
 		JandiWebhookResponse response = JandiWebhookResponse.withoutConnectInfo(title, color);
-		JandiWebhookResponse.ConnectInfo connectInfo = new JandiWebhookResponse.ConnectInfo(title, description, null);
+		ConnectInfo connectInfo = new ConnectInfo(title, description, null);
 
 		JandiWebhookResponse jandiWebhookResponse = response.withConnectInfo(connectInfo);
 
 		// web hook url 설정
 		webhookURL = "https://wh.jandi.com/connect-api/webhook/23002156/ad2476253597a22daaecdb0961fd25bd";
 
-		HttpEntity<String> stringHttpEntity = jandiMessageFormatter.sendWebhookRequest(webhookURL, jandiWebhookResponse);
+		HttpEntity<String> stringHttpEntity = jandiWebhookClient.sendWebhookRequest(webhookURL, jandiWebhookResponse);
 
 		return restTemplate.postForEntity(webhookURL, stringHttpEntity, String.class);
 	}

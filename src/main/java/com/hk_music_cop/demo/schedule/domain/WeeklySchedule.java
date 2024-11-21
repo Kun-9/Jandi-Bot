@@ -11,7 +11,7 @@ import java.util.List;
 public class WeeklySchedule {
 
 	List<DailySchedule> dailySchedules;
-	LocalDate targetDate;
+	LocalDate date;
 
 	public static WeeklySchedule of(List<List<String>> rawSchedules, LocalDate targetDate) {
 		List<DailySchedule> dailySchedules = new ArrayList<>();

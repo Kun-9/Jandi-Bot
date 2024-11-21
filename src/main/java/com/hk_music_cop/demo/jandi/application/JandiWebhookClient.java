@@ -1,13 +1,9 @@
 package com.hk_music_cop.demo.jandi.application;
 
-import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
-import com.hk_music_cop.demo.schedule.domain.WeeklySchedule;
-import org.json.JSONObject;
+import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse;
 import org.springframework.http.HttpEntity;
 
-import java.util.List;
-
-public interface JandiMessageFormatter {
+public interface JandiWebhookClient {
 
 	/**
 	 * 잔디 response 메시지 엔티티 생성
@@ -31,8 +27,5 @@ public interface JandiMessageFormatter {
 	 * @param weeklySchedule 캘린더 일정 객체
 	 * @return JandiWebhookResponse DTO
 	 */
-	List<JandiWebhookResponse.ConnectInfo> parseWeekScheduleToConnectInfo(WeeklySchedule weeklySchedule);
-
-
-
+//	List<ConnectInfo> parseWeekScheduleToConnectInfo(WeeklySchedule weeklySchedule);
 }

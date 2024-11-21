@@ -3,7 +3,7 @@ package com.hk_music_cop.demo.global.common.error.advice;
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.jandi.application.JandiResponseGenerator;
-import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
+import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse;
 import com.hk_music_cop.demo.jandi.presentation.JandiWebhookController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

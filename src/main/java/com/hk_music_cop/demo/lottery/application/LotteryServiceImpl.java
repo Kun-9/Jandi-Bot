@@ -7,6 +7,7 @@ import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.lottery.dto.LotterySimple;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryUpdateLog;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryWinner;
 import com.hk_music_cop.demo.lottery.repository.LotteryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,14 +29,14 @@ public class LotteryServiceImpl implements LotteryService {
 				.orElseThrow(CustomNotFoundException::new);
 	}
 
-	public LotteryResponse chooseLotteryWinner() {
+	public LotteryWinner drawLotteryWinner() {
 		List<LotteryResponse> personList = lotteryRepository.findAll();
 
 		if (personList.isEmpty()) {
 			throw new CustomLotteryNotFoundException("추첨리스트가 존재하지 않습니다.");
 		}
 
-		return getRandom(personList);
+		return LotteryWinner.from(getRandom(personList));
 	}
 
 	private LotteryResponse getRandom(List<LotteryResponse> personList) {

@@ -71,6 +71,8 @@ public enum ResponseCode {
 	UNDEFINED_COMMAND(400, "C002", "적절하지 않은 명령어입니다."),
 	INCORRECT_FORMAT(400, "C003", "날짜 형식이 올바르지 않습니다. yyyy-MM-dd 형식으로 입력해주세요."),
 
+	CONVERTER_NOT_SUPPORT(400, "F001", "컨버팅할 수 없는 타입입니다."),
+
 	// 데이터베이스 에러
 	DATABASE_ERROR(500, "D001", "데이터베이스 요청 과정에서 오류가 발생했습니다."),
 	DATABASE_DELETE_ERROR(500, "D002", "데이터 삭제 중 오류가 발생했습니다."),

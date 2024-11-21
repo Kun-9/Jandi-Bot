@@ -1,12 +1,18 @@
 package com.hk_music_cop.demo.jandi.application;
 
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
-import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
-import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookRequest;
+import com.hk_music_cop.demo.jandi.dto.request.JandiUserInfoRequest;
+import com.hk_music_cop.demo.jandi.dto.response.ConnectInfo;
+import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse;
+import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookRequest;
+import com.hk_music_cop.demo.jandi.util.converter.connectInfo.ConnectInfoConverterComposite;
 import com.hk_music_cop.demo.lottery.application.LotteryService;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryView;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryViewList;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryWinner;
 import com.hk_music_cop.demo.schedule.application.ScheduleService;
 import com.hk_music_cop.demo.schedule.domain.WeeklySchedule;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +22,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse.*;
-
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -26,49 +30,51 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	private final JandiResponseGenerator jandiResponseGenerator;
 	private final ScheduleService scheduleService;
 	private final LotteryService lotteryService;
-	private final JandiMessageFormatter jandiMessageFormatter;
+	private final JandiWebhookClient jandiWebhookClient;
+	private final ConnectInfoConverterComposite connectInfoConverter;
 
 	@Override
 	public JandiWebhookResponse scheduleWeekMessage(LocalDate date) {
 		WeeklySchedule weekTodoData = scheduleService.getWeekTodo(date);
+		List<ConnectInfo> connectInfoList = connectInfoConverter.convertList(weekTodoData);
 
-		List<ConnectInfo> connectInfoList = jandiMessageFormatter.parseWeekScheduleToConnectInfo(weekTodoData);
+		ResponseCode code = ResponseCode.OK;
 
 		// 일정 리스트가 비었다면 일정이 비었다고 반환
 		if (connectInfoList == null || connectInfoList.isEmpty())
-			return jandiResponseGenerator.createSuccessResponse(ResponseCode.JANDI_SCHEDULE_EMPTY);
+			code = ResponseCode.JANDI_SCHEDULE_EMPTY;
 
-		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList);
+		return jandiResponseGenerator.createSuccessResponse(code, connectInfoList);
 	}
 
 	@Override
 	public JandiWebhookResponse scheduleDayMessage(LocalDate date) {
-		WeeklySchedule daySchedule = scheduleService.getDayTodo(date);
+		WeeklySchedule weeklySchedule = scheduleService.getDayTodo(date);
 
-		List<ConnectInfo> connectInfoList = jandiMessageFormatter.parseWeekScheduleToConnectInfo(daySchedule);
+		List<ConnectInfo> connectInfo = connectInfoConverter.convertList(weeklySchedule);
 
 		// 일정 리스트가 비었다면 일정이 비었다고 반환
-		if (connectInfoList == null || connectInfoList.isEmpty())
+		if (connectInfo == null || connectInfo.isEmpty())
 			return jandiResponseGenerator.createSuccessResponse(ResponseCode.JANDI_SCHEDULE_EMPTY);
 
-		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList);
+		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfo);
 	}
 
 	@Override
 	public JandiWebhookResponse chooseLotteryMessage(String imgURL) {
-		LotteryResponse winner = lotteryService.chooseLotteryWinner();
+		LotteryWinner winner = lotteryService.drawLotteryWinner();
 
-		String data = String.format("%s님 당첨되었습니다.\n축하합니다~!", winner.getLotteryName());
-
-		ConnectInfo connectInfo = ConnectInfo.fromSingleStringData(data);
+		ConnectInfo connectInfo = connectInfoConverter.convert(winner);
 
 		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfo);
 	}
 
 	@Override
 	public JandiWebhookResponse infoMessage(JandiWebhookRequest jandiWebhookRequest) {
-		String content = getWriterInfo(jandiWebhookRequest).toString();
-		ConnectInfo connectInfo = ConnectInfo.fromSingleStringData(content);
+
+		JandiUserInfoRequest infoRequest = JandiUserInfoRequest.from(jandiWebhookRequest);
+
+		ConnectInfo connectInfo = connectInfoConverter.convert(infoRequest);
 		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfo);
 	}
 
@@ -95,32 +101,14 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	@Override
 	public JandiWebhookResponse lotteryListMessage(List<LotteryResponse> lotteryResponseList) {
 
-		List<ConnectInfo> connectInfoList = lotteryResponseList.stream()
-				.map(ConnectInfo::fromLotteryInfo)
+		List<LotteryView> lotteryViewList = lotteryResponseList.stream()
+				.map(LotteryView::from)
 				.toList();
+
+
+
+		List<ConnectInfo> connectInfoList = connectInfoConverter.convertList(LotteryViewList.from(lotteryViewList));
 
 		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList);
 	}
-
-	// 여기 있으면 안됨
-	private static StringBuilder getWriterInfo(JandiWebhookRequest jandiWebhookRequest) {
-		StringBuilder writerInfo = new StringBuilder();
-		writerInfo
-				.append("일자 : ").append(jandiWebhookRequest.getCreatedAt()).append("\n")
-				.append("ID : ").append(jandiWebhookRequest.getWriter().getId()).append("\n")
-				.append("이름 : ").append(jandiWebhookRequest.getWriter().getName()).append("\n")
-				.append("E-Mail : ").append(jandiWebhookRequest.getWriter().getEmail()).append("\n")
-				.append("TEL : ").append(jandiWebhookRequest.getWriter().getPhoneNumber()).append("\n")
-				.append("키워드 : ").append(jandiWebhookRequest.getKeyword()).append("\n")
-				.append("IP : ").append(jandiWebhookRequest.getIp()).append("\n")
-				.append("요청 방 이름 : ").append(jandiWebhookRequest.getRoomName()).append("\n")
-				.append("팀 이름 : ").append(jandiWebhookRequest.getTeamName()).append("\n")
-				.append("DATA : ").append(jandiWebhookRequest.getData()).append("\n")
-				.append("TEXT : ").append(jandiWebhookRequest.getText()).append("\n")
-				.append("토큰 : ").append(jandiWebhookRequest.getToken()).append("\n")
-				.append("플랫폼 : ").append(jandiWebhookRequest.getPlatform()).append("\n");
-		return writerInfo;
-	}
-
-
 }

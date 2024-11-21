@@ -4,12 +4,13 @@ import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryUpdateLog;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryWinner;
 
 import java.util.List;
 
 
 public interface LotteryService {
-	LotteryResponse chooseLotteryWinner();
+	LotteryWinner drawLotteryWinner();
 
 	Long registerLottery(LotteryRequest lotteryRequest);
 

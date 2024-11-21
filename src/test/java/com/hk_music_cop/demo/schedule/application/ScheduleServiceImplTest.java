@@ -4,15 +4,11 @@ import com.hk_music_cop.demo.global.common.error.exceptions.CustomUndefinedComma
 import com.hk_music_cop.demo.googleCloud.googleSheet.GoogleSheetProperties;
 import com.hk_music_cop.demo.googleCloud.googleSheet.repository.GoogleSheetAPI;
 import com.hk_music_cop.demo.schedule.domain.WeeklySchedule;
-import net.minidev.json.JSONObject;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -60,6 +56,8 @@ class ScheduleServiceImplTest {
 		// then
 		assertThat(result).isNotNull();
 		verify(googleSheetAPI).getSheetData(eq("2024.03 월간 캘린더"), eq("A4"), eq("E4"), eq(false));
+
+
 	}
 
 	@Test

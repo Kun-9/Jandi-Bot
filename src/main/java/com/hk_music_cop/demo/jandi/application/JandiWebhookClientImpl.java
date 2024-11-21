@@ -1,7 +1,6 @@
 package com.hk_music_cop.demo.jandi.application;
 
-import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse;
-import com.hk_music_cop.demo.schedule.domain.WeeklySchedule;
+import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -9,26 +8,10 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-
-import static com.hk_music_cop.demo.jandi.dto.request.JandiWebhookResponse.ConnectInfo;
 
 @Component
 @RequiredArgsConstructor
-public class JandiMessageFormatterRefactor implements JandiMessageFormatter {
-	public List<ConnectInfo> parseWeekScheduleToConnectInfo(WeeklySchedule weeklySchedule) {
-		// 일정이 있는지 검증
-		if (validationScheduleEmpty(weeklySchedule)) {
-			return null;
-		}
-
-		// WeeklySchedule을 ConnectInfo List 로 변환
-		return ConnectInfo.from(weeklySchedule);
-	}
-
-	private boolean validationScheduleEmpty(WeeklySchedule weeklySchedule) {
-		return weeklySchedule.isEmpty();
-	}
+public class JandiWebhookClientImpl implements JandiWebhookClient {
 
 	@Override
 	public HttpEntity<String> sendWebhookRequest(String webhookURL, JandiWebhookResponse JandiWebhookResponse) {
