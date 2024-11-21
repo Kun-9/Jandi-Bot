@@ -63,6 +63,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private void handleAuthError(HttpServletResponse response, Exception e) throws IOException {
 		// 사용자에게 권한없음 오류 반환
-		errorHandler.handleExceptionDirect(response, e, ResponseCode.UNAUTHORIZED);
+		errorHandler.handleExceptionDirect(response, e, ResponseCode.UNAUTHENTICATED);
 	}
 }

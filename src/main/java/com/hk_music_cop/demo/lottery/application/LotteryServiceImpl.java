@@ -72,6 +72,8 @@ public class LotteryServiceImpl implements LotteryService {
 
 		boolean result = lotteryRepository.deleteLottery(targetLottery.getLotteryId()) == 1;
 		if (!result) throw new CustomException(ResponseCode.DATABASE_DELETE_ERROR);
+
+		log.info("[관리자 권한으로 삭제] : {}", lotteryName);
 	}
 
 	@Override
@@ -88,7 +90,11 @@ public class LotteryServiceImpl implements LotteryService {
 		if (lotteryRepository.editLottery(targetLottery.getLotteryId(), LotterySimple.from(lottery)) != 1)
 			throw new CustomException(ResponseCode.DATABASE_UPDATE_ERROR);
 
-		return LotteryUpdateLog.of(LotterySimple.from(targetLottery), LotterySimple.from(lottery));
+		LotteryUpdateLog lotteryUpdateLog = LotteryUpdateLog.of(LotterySimple.from(targetLottery), LotterySimple.from(lottery));
+
+		log.info("[Lottery 변경] memberId : {}, log : {}" , memberId, lotteryUpdateLog);
+
+		return lotteryUpdateLog;
 	}
 
 	private void validatePossibleUpdate(LotterySimple lotteryTarget, LotterySimple lotteryToUpdate) {

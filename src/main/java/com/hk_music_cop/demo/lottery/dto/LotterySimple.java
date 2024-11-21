@@ -21,14 +21,4 @@ public record LotterySimple(String lotteryName, String position) {
 	public static LotterySimple of(String lotteryName, String position) {
 		return new LotterySimple(lotteryName, position);
 	}
-
-	public String getLotteryStrings() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(lotteryName);
-		if (StringUtils.hasText(position)) {
-			sb.append(" ").append(position);
-		}
-
-		return sb.toString();
-	}
 }

@@ -57,7 +57,7 @@ dependencies {
 
 	// JSON 관련
 	implementation group: 'org.json', name: 'json', version: '20231013' // JSONObject
-	implementation 'com.fasterxml.jackson.core:jackson-core:2.14.2'
+	implementation 'com.fasterxml.jackson.core:jackson-core'
 
 	// JWT
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.6'
@@ -70,6 +70,10 @@ dependencies {
 	// jetbrains 애노테이션
 	implementation 'org.jetbrains:annotations:24.1.0'
 
+	// Jackson
+	implementation 'com.fasterxml.jackson.core:jackson-core:2.15.3'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.3'
+	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.3'
 
 //	implementation('org.springframework.boot:spring-boot-starter-test') {
 //		exclude group: 'com.vaadin.external.google', module: 'android-json'

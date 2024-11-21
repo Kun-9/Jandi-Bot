@@ -40,7 +40,9 @@ public enum ResponseCode {
 
 	// 인증 관련 에러
 	UNAUTHORIZED(403, "A001", "권한이 없습니다."),
-	INCORRECT_PASSWORD(400, "A002", "비밀번호가 일치하지 않습니다."),
+	UNAUTHENTICATED(403, "A002", "인증에 실패하였습니다."),
+	INCORRECT_PASSWORD(400, "A003", "비밀번호가 일치하지 않습니다."),
+	SECURITY_ERROR(403, "A004", "권한이 없거나 인증에 실패하였습니다."),
 
 	// 토큰 관련 에러
 	EMPTY_TOKEN(401, "T001", "토큰이 제공되지 않았습니다."),

@@ -1,6 +1,8 @@
 package com.hk_music_cop.demo.global.security.service;
 
+import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomUsernameNotFoundException;
+import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.global.security.common.CustomUser;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import com.hk_music_cop.demo.member.dto.response.MemberSecurity;
@@ -27,7 +29,7 @@ public class UserDetailService implements UserDetailsService {
 
 		if (member == null) {
 			log.error("Member 찾기 실패 : {}", userId);
-			throw new CustomUsernameNotFoundException(userId);
+			throw new CustomException(ResponseCode.UNKNOWN_MEMBER);
 		}
 
 		List<String> rolesByMemberId = memberRepository.findRolesByMemberId(member.getMemberId());
