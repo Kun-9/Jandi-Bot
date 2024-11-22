@@ -23,17 +23,11 @@
         WHERE member_id = #{memberId}
     </select>
 
-    <insert id="join" parameterType="MemberRequest" resultType="Long" useGeneratedKeys="true" keyProperty="member_Id">
+    <select id="join" parameterType="MemberRequest" resultType="Long">
         INSERT INTO members (user_id, password, name)
         VALUES (#{userId}, #{password}, #{name})
-        RETURNING member_id;
-    </insert>
-
-<!--    <insert id="join" parameterType="MemberRequest" resultType="Long" useGeneratedKeys="true" keyProperty="Long">-->
-<!--        INSERT INTO members (user_id, password, name)-->
-<!--        VALUES (#{userId}, #{password}, #{name})-->
-<!--        RETURNING member_id-->
-<!--    </insert>-->
+        RETURNING member_id
+    </select>
 
     <select id="userIdExistValidation" parameterType="String" resultType="boolean">
         select count(*) > 0 as isExist
