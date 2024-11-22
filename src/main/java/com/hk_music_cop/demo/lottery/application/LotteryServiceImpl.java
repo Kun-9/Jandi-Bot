@@ -26,7 +26,7 @@ public class LotteryServiceImpl implements LotteryService {
 	@Override
 	public LotteryResponse findByName(String name) {
 		return lotteryRepository.findByName(name)
-				.orElseThrow(CustomNotFoundException::new);
+				.orElseThrow(CustomLotteryNotFoundException::new);
 	}
 
 	public LotteryWinner drawLotteryWinner() {

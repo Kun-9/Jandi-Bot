@@ -1,8 +1,9 @@
-package com.hk_music_cop.demo.lottery.repository;
+package com.hk_music_cop.demo.integration.lottery.repository;
 
 import com.hk_music_cop.demo.lottery.dto.LotterySimple;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
+import com.hk_music_cop.demo.lottery.repository.LotteryRepository;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,50 +37,32 @@ class LotteryRepositoryTest {
 
 	@Test
 	void createLottery() {
-		//
+		// given
 		LotteryRequest testObject1 = new LotteryRequest(5L, "test", "test");
 
-		//
+		// when
 		Long lotteryId = lotteryRepository.createLottery(testObject1);
 
-		//
+		// then
 		assertThat(lotteryId).isNotEqualTo(0);
 	}
 
 	@Test
 	void findByLotteryId() {
-		//
-
-
-		//
+		// when
 		LotteryResponse findLottery = lotteryRepository.findByLotteryId(testLotteryId).get();
 
-
-		//
+		// then
 		assertThat(findLottery.getLotteryId()).isEqualTo(testLotteryId);
 		System.out.println(testLotteryId);
 	}
 
 	@Test
-	void findByName() {
-		//
-
-
-		//
-
-
-
-		//
-
-	}
-
-	@Test
 	void editLottery() {
-		//
+		// given
 		LotterySimple editLottery = new LotterySimple("edit", "editPos");
 
-
-		//
+		// when & then
 		int i = lotteryRepository.editLottery(testLotteryId, LotterySimple.from(editLottery));
 		LotteryResponse findEditObject = lotteryRepository.findByLotteryId(testLotteryId).get();
 
@@ -93,21 +76,18 @@ class LotteryRepositoryTest {
 
 	@Test
 	void deleteLottery() {
-		//
-
-
-		//
+		// when
 		int i = lotteryRepository.deleteLottery(testLotteryId);
 		Optional<LotteryResponse> findLottery = lotteryRepository.findByLotteryId(testLotteryId);
 
-		//
+		// then
 		assertThat(i).isEqualTo(1);
 		assertThat(findLottery.isEmpty()).isTrue();
 	}
 
 	@Test
 	void findAll() {
-		//
+		// given
 		List<LotteryRequest> requests = Arrays.asList(
 				new LotteryRequest(5L, "test1", "testPos1"),
 				new LotteryRequest(5L, "test2", "testPos2"),
@@ -120,13 +100,12 @@ class LotteryRepositoryTest {
 				data -> tuple(data.lotteryName(), data.position())
 		).toList();
 
-
-		//
+		// when
 		List<LotteryResponse> findLotteryList = lotteryRepository.findAll();
 
-		//
+		// then
 		assertThat(findLotteryList)
-				.extracting("name", "position")
+				.extracting("lotteryName", "position")
 				.contains(
 						expectedTuple.toArray(new Tuple[0])
 				);
@@ -136,14 +115,14 @@ class LotteryRepositoryTest {
 
 	@Test
 	void existsByName() {
-		//
+		// given
 		String name = testObject.lotteryName();
 
-		//
+		// when
 		boolean isExistExTrue = lotteryRepository.existsByName(name);
 		boolean isExistExFalse = lotteryRepository.existsByName(UUID.randomUUID().toString().substring(0, 8));
 
-		//
+		// then
 		assertThat(isExistExTrue).isTrue();
 		assertThat(isExistExFalse).isFalse();
 	}
@@ -151,26 +130,20 @@ class LotteryRepositoryTest {
 	@DisplayName("생성자 이름 매칭 성공")
 	@Test
 	void isCreatedBy_ValidRequest_Success() {
-		//
-
-
-		//
+		// when
 		boolean result = lotteryRepository.isCreatedBy(testObject.memberId(), testLotteryId);
 
-		//
+		// then
 		assertThat(result).isTrue();
 	}
 
 	@DisplayName("생성자 이름 매칭 실패")
 	@Test
 	void isCreatedBy_ValidRequest_Failed() {
-		//
-
-
-		//
+		// when
 		boolean result = lotteryRepository.isCreatedBy(999999L, testLotteryId);
 
-		//
+		// then
 		assertThat(result).isFalse();
 	}
 }

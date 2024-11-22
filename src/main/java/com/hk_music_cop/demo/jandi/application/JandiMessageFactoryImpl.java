@@ -30,7 +30,6 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 	private final JandiResponseGenerator jandiResponseGenerator;
 	private final ScheduleService scheduleService;
 	private final LotteryService lotteryService;
-	private final JandiWebhookClient jandiWebhookClient;
 	private final ConnectInfoConverterComposite connectInfoConverter;
 
 	@Override

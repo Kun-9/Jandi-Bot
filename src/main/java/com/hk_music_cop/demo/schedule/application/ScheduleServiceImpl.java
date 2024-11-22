@@ -29,21 +29,20 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 	@Override
 	public WeeklySchedule getWeekTodo(LocalDate date) {
-
 		int year = date.getYear();
 		int month = date.getMonthValue();
-
 		String sheetName = generateSheetName(year, month).toString();
 
 		// 오늘이 몇번째 주인지 구하기
 		int nthWeek = getNthWeek(date) - 1;
 
+		// 해당 주차의 엑셀 행 숫자
 		Integer sheetNum = googleSheetProperties.calendar().sheetNumbers().get(nthWeek);
 
-		// 해당 주의 월요일 코드
+		// 해당 주의 월요일 코드 (엑셀 코드)
 		String startCode = googleSheetProperties.calendar().dayCode().get(0) + sheetNum;
 
-		// 해당 주의 금요일 코드
+		// 해당 주의 금요일 코드 (엑셀 코드)
 		String endCode = googleSheetProperties.calendar().dayCode().get(4) + sheetNum;
 
 		return WeeklySchedule.of(googleSheetAPI.getSheetData(sheetName, startCode, endCode, false), date);
@@ -55,17 +54,16 @@ public class ScheduleServiceImpl implements ScheduleService {
 		// 주말 검증
 		validateHoliday(date);
 
+		int day = date.getDayOfWeek().getValue();
 		int year = date.getYear();
 		int month = date.getMonthValue();
-		int day = date.getDayOfWeek().getValue();
-
 		String sheetName = generateSheetName(year, month).toString();
 
 		// 오늘이 몇번째 주인지 구하기
 		int nthWeek = getNthWeek(date) - 1;
 
+		// 조호 할 캘린더 코드 (엑셀 코드)
 		String code = googleSheetProperties.calendar().dayCode().get(day - 1) + googleSheetProperties.calendar().sheetNumbers().get(nthWeek);
-
 		return WeeklySchedule.of(googleSheetAPI.getSheetData(sheetName, code, code, true), date);
 	}
 

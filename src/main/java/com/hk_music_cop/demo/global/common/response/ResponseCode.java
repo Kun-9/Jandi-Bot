@@ -50,7 +50,7 @@ public enum ResponseCode {
 	INVALID_TOKEN(401, "T003", "유효하지 않은 토큰 입니다."),
 	TOKEN_EXPIRED(401, "T004", "토큰이 만료되었습니다."),
 
-	// 멤버 관련 에러
+	// 회원 관련 에러
 	UNKNOWN_MEMBER(404, "M001", "등록되지 않은 회원입니다."),
 	USERNAME_NOT_FOUND(404, "M002", "유저 이름을 찾을 수 없습니다."),
 	LOGIN_FAIL(400, "M003", "아이디 또는 비밀번호가 잘못되었습니다."),

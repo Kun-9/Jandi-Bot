@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Redis를 의존한 토큰 Repository
+ */
 @RequiredArgsConstructor
 @Service
 public class JwtTokenRepositoryImpl implements JwtTokenRepository {
