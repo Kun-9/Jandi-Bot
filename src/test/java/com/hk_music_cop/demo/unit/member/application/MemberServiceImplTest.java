@@ -3,7 +3,7 @@ package com.hk_music_cop.demo.unit.member.application;
 import com.hk_music_cop.demo.global.common.error.exceptions.*;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.member.application.MemberServiceImpl;
-import com.hk_music_cop.demo.member.dto.request.MemberRequest;
+import com.hk_music_cop.demo.member.dto.request.JoinReqeust;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import com.hk_music_cop.demo.member.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -37,12 +37,12 @@ class MemberServiceImplTest {
 	@DisplayName("회원 가입 - 성공")
 	void join_Success() {
 		// given
-		MemberRequest request = new MemberRequest("testName", "testId", "password");
+		JoinReqeust request = new JoinReqeust("testName", "testId", "password");
 
 		when(memberRepository.userIdExistValidation("testId")).thenReturn(false);
 		when(memberRepository.usernameExistValidation("testName")).thenReturn(false);
 		when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
-		when(memberRepository.join(any(MemberRequest.class))).thenReturn(1L);
+		when(memberRepository.join(any(JoinReqeust.class))).thenReturn(1L);
 
 		// when
 		Long memberId = memberService.join(request);
@@ -60,7 +60,7 @@ class MemberServiceImplTest {
 	@DisplayName("회원 가입 - 중복 ID")
 	void join_DuplicateUserId() {
 		// given
-		MemberRequest request = new MemberRequest("testName", "duplicateId", "password");
+		JoinReqeust request = new JoinReqeust("testName", "duplicateId", "password");
 		when(memberRepository.userIdExistValidation("duplicateId")).thenReturn(true);
 
 		// when & then
@@ -73,7 +73,7 @@ class MemberServiceImplTest {
 	@DisplayName("회원 가입 - 중복 이름")
 	void join_DuplicateUsername() {
 		// given
-		MemberRequest request = new MemberRequest("duplicateName", "testId", "password");
+		JoinReqeust request = new JoinReqeust("duplicateName", "testId", "password");
 		when(memberRepository.userIdExistValidation("testId")).thenReturn(false);
 		when(memberRepository.usernameExistValidation("duplicateName")).thenReturn(true);
 
@@ -87,7 +87,7 @@ class MemberServiceImplTest {
 	@DisplayName("잔디 로그인 - 성공")
 	void jandiLogin_Success() {
 		// given
-		MemberRequest request = new MemberRequest("testName", "testId", "password");
+		JoinReqeust request = new JoinReqeust("testName", "testId", "password");
 		MemberResponse response = MemberResponse.builder()
 				.memberId(1L)
 				.userId("testId")
@@ -109,7 +109,7 @@ class MemberServiceImplTest {
 	@DisplayName("잔디 로그인 - 존재하지 않는 사용자")
 	void jandiLogin_UnknownMember() {
 		// given
-		MemberRequest request = new MemberRequest("testName", "unknownId", "password");
+		JoinReqeust request = new JoinReqeust("testName", "unknownId", "password");
 		when(memberRepository.userIdExistValidation("unknownId")).thenReturn(false);
 
 		// when & then
@@ -122,7 +122,7 @@ class MemberServiceImplTest {
 	@DisplayName("잔디 로그인 - 잘못된 비밀번호")
 	void jandiLogin_IncorrectPassword() {
 		// given
-		MemberRequest request = new MemberRequest("testName", "testId", "wrongPassword");
+		JoinReqeust request = new JoinReqeust("testName", "testId", "wrongPassword");
 		MemberResponse response = MemberResponse.builder()
 				.memberId(1L)
 				.userId("testId")

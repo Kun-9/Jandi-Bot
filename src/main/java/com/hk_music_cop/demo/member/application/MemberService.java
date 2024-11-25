@@ -1,13 +1,13 @@
 package com.hk_music_cop.demo.member.application;
 
-import com.hk_music_cop.demo.member.dto.request.MemberRequest;
+import com.hk_music_cop.demo.member.dto.request.JoinReqeust;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 
 public interface MemberService {
 
-	Long join(MemberRequest memberRequest);
+	Long join(JoinReqeust joinReqeust);
 
-	MemberResponse jandiLogin(MemberRequest memberRequest);
+	MemberResponse jandiLogin(JoinReqeust joinReqeust);
 
 	MemberResponse findByMemberId(Long memberId);
 

@@ -1,6 +1,6 @@
 package com.hk_music_cop.demo.member.repository;
 
-import com.hk_music_cop.demo.member.dto.request.MemberRequest;
+import com.hk_music_cop.demo.member.dto.request.JoinReqeust;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,7 +15,7 @@ public interface MemberRepository {
 	 * @param member 멤버 RequestDTO
 	 * @return 시퀀스 값 반환
 	 */
-	Long join(MemberRequest member);
+	Long join(JoinReqeust member);
 
 	/**
 	 *

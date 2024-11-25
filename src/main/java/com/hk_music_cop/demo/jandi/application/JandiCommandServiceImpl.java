@@ -8,7 +8,7 @@ import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.member.application.MemberService;
-import com.hk_music_cop.demo.member.dto.request.MemberRequest;
+import com.hk_music_cop.demo.member.dto.request.JoinReqeust;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class JandiCommandServiceImpl implements JandiCommandService {
 		boolean exist = memberService.validationUserIdExist(request.getWriter().getEmail());
 
 		// Json 으로 넘어온 사용자 정보로 멤버 객체 생성
-		MemberRequest currentUser = new MemberRequest(request.getWriter().getName(), request.getWriter().getEmail(), request.getToken());
+		JoinReqeust currentUser = new JoinReqeust(request.getWriter().getName(), request.getWriter().getEmail(), request.getToken());
 
 		if (!exist) {
 			memberService.join(currentUser);

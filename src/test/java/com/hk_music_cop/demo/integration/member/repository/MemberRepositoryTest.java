@@ -1,7 +1,7 @@
 package com.hk_music_cop.demo.integration.member.repository;
 
 import com.hk_music_cop.demo.global.security.common.Role;
-import com.hk_music_cop.demo.member.dto.request.MemberRequest;
+import com.hk_music_cop.demo.member.dto.request.JoinReqeust;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import com.hk_music_cop.demo.member.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
@@ -29,15 +29,15 @@ class MemberRepositoryTest {
 	MemberRepository memberRepository;
 
 	// 테스트 전역 변수
-	List<MemberRequest> testData;
+	List<JoinReqeust> testData;
 	List<Long> seqValues;
 
 	@BeforeEach
 	void setup() {
 		testData = Arrays.asList(
-				new MemberRequest("Test1", "testData1", "1234"),
-				new MemberRequest("Test2", "testData2", "1234"),
-				new MemberRequest("Test3", "testData3", "1234")
+				new JoinReqeust("Test1", "testData1", "1234"),
+				new JoinReqeust("Test2", "testData2", "1234"),
+				new JoinReqeust("Test3", "testData3", "1234")
 		);
 
 		seqValues = new ArrayList<>();
@@ -49,10 +49,10 @@ class MemberRepositoryTest {
 	@Test
 	void join() {
 		// given
-		MemberRequest memberRequest = new MemberRequest("신동근", "userId1", "pass1");
+		JoinReqeust joinReqeust = new JoinReqeust("신동근", "userId1", "pass1");
 
 		// when
-		Long result = memberRepository.join(memberRequest);
+		Long result = memberRepository.join(joinReqeust);
 
 		// then
 		Assertions.assertThat(result).isNotEqualTo(null);
@@ -63,17 +63,17 @@ class MemberRepositoryTest {
 	@DisplayName("이름 중복 가입 불가")
 	void joinDup() {
 		// given
-		MemberRequest memberRequest1 = new MemberRequest("신동근", "userId1", "pass1");
-		MemberRequest memberRequest2 = new MemberRequest("신동근", "userId2", "pass1");
-		MemberRequest memberRequest3 = new MemberRequest("임시1", "userId1", "pass1");
+		JoinReqeust joinReqeust1 = new JoinReqeust("신동근", "userId1", "pass1");
+		JoinReqeust joinReqeust2 = new JoinReqeust("신동근", "userId2", "pass1");
+		JoinReqeust joinReqeust3 = new JoinReqeust("임시1", "userId1", "pass1");
 
 		// when
-		memberRepository.join(memberRequest1);
+		memberRepository.join(joinReqeust1);
 
 		// then
 		assertThrows(DuplicateKeyException.class, () -> {
-			memberRepository.join(memberRequest2);
-			memberRepository.join(memberRequest3);
+			memberRepository.join(joinReqeust2);
+			memberRepository.join(joinReqeust3);
 		});
 	}
 
@@ -82,7 +82,7 @@ class MemberRepositoryTest {
 	@DisplayName("고유Id로 멤버 객체 찾기")
 	void findByMemberId() {
 		// given
-		MemberRequest targetMember = testData.get(0);
+		JoinReqeust targetMember = testData.get(0);
 
 
 		// when
@@ -102,7 +102,7 @@ class MemberRepositoryTest {
 	@Test
 	void findByUserId() {
 		// given
-		MemberRequest targetMember = testData.get(0);
+		JoinReqeust targetMember = testData.get(0);
 
 		// when
 		MemberResponse findMember = memberRepository.findByUserId(targetMember.getUserId());
@@ -143,18 +143,18 @@ class MemberRepositoryTest {
 	@Test
 	void joinAndFind() {
 		// given
-		MemberRequest memberRequest = new MemberRequest("신동근", "userId1", "pass1");
+		JoinReqeust joinReqeust = new JoinReqeust("신동근", "userId1", "pass1");
 
 		// when
-		memberRepository.join(memberRequest);
+		memberRepository.join(joinReqeust);
 
 		// then
 		MemberResponse findMember = memberRepository.findByUserId("userId1");
 
 		assertThat(findMember)
 				.satisfies(member -> {
-					assertThat(member.getUserId()).isEqualTo(memberRequest.getUserId());
-					assertThat(member.getPassword()).isEqualTo(memberRequest.getPassword());
+					assertThat(member.getUserId()).isEqualTo(joinReqeust.getUserId());
+					assertThat(member.getPassword()).isEqualTo(joinReqeust.getPassword());
 				});
 	}
 

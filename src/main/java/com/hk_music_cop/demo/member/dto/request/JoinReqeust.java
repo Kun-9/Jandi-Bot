@@ -4,7 +4,7 @@ import lombok.*;
 
 @AllArgsConstructor
 @Getter @ToString
-public class MemberRequest {
+public class JoinReqeust {
 	private String name;
 	private String userId;
 	private String password;

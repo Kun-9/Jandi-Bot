@@ -12,7 +12,7 @@ import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
 import com.hk_music_cop.demo.member.application.MemberService;
-import com.hk_music_cop.demo.member.dto.request.MemberRequest;
+import com.hk_music_cop.demo.member.dto.request.JoinReqeust;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,7 +67,7 @@ class JandiCommandServiceImplTest {
 
 		// then
 		assertThat(response).isEqualTo(expectedResponse);
-		verify(memberService).join(any(MemberRequest.class));
+		verify(memberService).join(any(JoinReqeust.class));
 		verify(jandiMessageFactory).scheduleWeekMessage(any(LocalDate.class));
 	}
 

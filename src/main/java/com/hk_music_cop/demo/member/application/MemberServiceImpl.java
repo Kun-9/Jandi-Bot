@@ -2,7 +2,7 @@ package com.hk_music_cop.demo.member.application;
 
 import com.hk_music_cop.demo.global.common.error.exceptions.*;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
-import com.hk_music_cop.demo.member.dto.request.MemberRequest;
+import com.hk_music_cop.demo.member.dto.request.JoinReqeust;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import com.hk_music_cop.demo.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +17,9 @@ public class MemberServiceImpl implements MemberService {
 	private final PasswordEncoder passwordEncoder;
 
 	@Override
-	public Long join(MemberRequest memberRequest) {
-		String userId = memberRequest.getUserId();
-		String username = memberRequest.getName();
+	public Long join(JoinReqeust joinReqeust) {
+		String userId = joinReqeust.getUserId();
+		String username = joinReqeust.getName();
 
 		// 이미 아이디가 존재할 때
 		if (validationUserIdExist(userId)) {
@@ -31,16 +31,16 @@ public class MemberServiceImpl implements MemberService {
 			throw new CustomDuplicatedNameException(username);
 		}
 
-		return memberRepository.join(new MemberRequest(
-				memberRequest.getName(),
-				memberRequest.getUserId(),
-				passwordEncoder.encode(memberRequest.getPassword())
+		return memberRepository.join(new JoinReqeust(
+				joinReqeust.getName(),
+				joinReqeust.getUserId(),
+				passwordEncoder.encode(joinReqeust.getPassword())
 		));
 	}
 
 	@Override
-	public MemberResponse jandiLogin(MemberRequest memberRequest) {
-		String userId = memberRequest.getUserId();
+	public MemberResponse jandiLogin(JoinReqeust joinReqeust) {
+		String userId = joinReqeust.getUserId();
 
 		// 존재하지 않으면
 		if (!validationUserIdExist(userId)) {
@@ -50,7 +50,7 @@ public class MemberServiceImpl implements MemberService {
 		MemberResponse findMember = findByUserId(userId);
 
 		// 비밀번호가 같지 않으면
-		if (!findMember.getPassword().equals(memberRequest.getPassword())) {
+		if (!findMember.getPassword().equals(joinReqeust.getPassword())) {
 			throw new CustomException(ResponseCode.LOGIN_FAIL);
 		}
 

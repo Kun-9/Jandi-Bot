@@ -7,6 +7,7 @@ import com.hk_music_cop.demo.global.security.service.UserDetailService;
 import com.hk_music_cop.demo.global.jwt.dto.TokenResponse;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
