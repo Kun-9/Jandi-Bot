@@ -20,8 +20,7 @@ public class RedisConfig {
 
 		// Json 형식
 		template.setHashKeySerializer(new StringRedisSerializer());
-
-		template.setHashKeySerializer(new StringRedisSerializer());
+		template.setValueSerializer(new StringRedisSerializer());
 		template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
 
 		return template;

@@ -2,7 +2,6 @@ package com.hk_music_cop.demo.global.redis;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -12,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class RedisRepositoryImpl implements RedisRepository {
 	private final RedisTemplate<String, Object> redisTemplate;
-	private final StringRedisTemplate stringRedisTemplate;
 
 	// 값 저장
 	public void setValue(String key, String value) {
