@@ -4,9 +4,10 @@ import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse;
 import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookRequest;
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomUndefinedCommand;
 import com.hk_music_cop.demo.lottery.application.LotteryService;
+import com.hk_music_cop.demo.lottery.common.enums.Position;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
-import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryDetailResponse;
 import com.hk_music_cop.demo.member.application.MemberService;
 import com.hk_music_cop.demo.member.dto.request.JoinRequest;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
@@ -79,6 +80,7 @@ public class JandiCommandServiceImpl implements JandiCommandService {
 			case "내 정보" -> response = jandiMessageFactory.infoMessage(request);
 			case "추첨 등록" -> {
 				List<String> registerInfo = parameters.get(0);
+
 				response = jandiMessageFactory.registerLotteryMessage(
 						new LotteryRequest(memberId, registerInfo.get(0), registerInfo.get(1))
 				);
@@ -102,7 +104,7 @@ public class JandiCommandServiceImpl implements JandiCommandService {
 				);
 			}
 			case "추첨 리스트 조회" -> {
-				List<LotteryResponse> allLottery = lotteryService.getAllLottery();
+				List<LotteryDetailResponse> allLottery = lotteryService.getAllLottery();
 				response = jandiMessageFactory.lotteryListMessage(allLottery);
 			}
 			default -> throw new CustomUndefinedCommand(params.getCommand());

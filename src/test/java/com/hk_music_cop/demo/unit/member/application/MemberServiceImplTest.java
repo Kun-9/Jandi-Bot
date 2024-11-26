@@ -1,6 +1,7 @@
 package com.hk_music_cop.demo.unit.member.application;
 
 import com.hk_music_cop.demo.global.common.error.exceptions.*;
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.member.application.MemberServiceImpl;
 import com.hk_music_cop.demo.member.dto.request.JoinRequest;
@@ -66,7 +67,7 @@ class MemberServiceImplTest {
 		// when & then
 		assertThatThrownBy(() -> memberService.join(request))
 				.isInstanceOf(CustomDuplicatedUserIdException.class)
-				.hasFieldOrPropertyWithValue("responseCode", ResponseCode.DUPLICATE_USER_ID);
+				.hasFieldOrPropertyWithValue("errorCode", ErrorCode.DUPLICATE_USER_ID);
 	}
 
 	@Test
@@ -80,7 +81,7 @@ class MemberServiceImplTest {
 		// when & then
 		assertThatThrownBy(() -> memberService.join(request))
 				.isInstanceOf(CustomDuplicatedNameException.class)
-				.hasFieldOrPropertyWithValue("responseCode", ResponseCode.DUPLICATE_NAME);
+				.hasFieldOrPropertyWithValue("errorCode", ErrorCode.DUPLICATE_NAME);
 	}
 
 	@Test
@@ -115,7 +116,7 @@ class MemberServiceImplTest {
 		// when & then
 		assertThatThrownBy(() -> memberService.jandiLogin(request))
 				.isInstanceOf(CustomUnknownMemberException.class)
-				.hasFieldOrPropertyWithValue("responseCode", ResponseCode.UNKNOWN_MEMBER);
+				.hasFieldOrPropertyWithValue("errorCode", ErrorCode.UNKNOWN_MEMBER);
 	}
 
 	@Test
@@ -136,7 +137,7 @@ class MemberServiceImplTest {
 		// when & then
 		assertThatThrownBy(() -> memberService.jandiLogin(request))
 				.isInstanceOf(CustomException.class)
-				.hasFieldOrPropertyWithValue("responseCode", ResponseCode.LOGIN_FAIL);
+				.hasFieldOrPropertyWithValue("errorCode", ErrorCode.LOGIN_FAIL);
 	}
 
 	@Test
@@ -217,6 +218,6 @@ class MemberServiceImplTest {
 		// when & then
 		assertThatThrownBy(() -> memberService.validateUserIdExist(userId))
 				.isInstanceOf(CustomDuplicatedUserIdException.class)
-				.hasFieldOrPropertyWithValue("responseCode", ResponseCode.DUPLICATE_USER_ID);
+				.hasFieldOrPropertyWithValue("errorCode", ErrorCode.DUPLICATE_USER_ID);
 	}
 }

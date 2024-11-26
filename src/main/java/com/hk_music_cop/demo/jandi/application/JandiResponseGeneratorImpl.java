@@ -15,7 +15,7 @@ import static com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse.with
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class JandiSuccessResponseGeneratorImpl implements JandiSuccessResponseGenerator {
+public class JandiResponseGeneratorImpl implements JandiResponseGenerator {
 
 	private final JandiProperties jandiProperties;
 
@@ -30,7 +30,6 @@ public class JandiSuccessResponseGeneratorImpl implements JandiSuccessResponseGe
 
 		return response.withConnectInfoList(connectInfoList);
 	}
-
 
 	public JandiWebhookResponse createSuccessResponse(ResponseCode responseCode) {
 		JandiWebhookResponse response = withoutConnectInfo(jandiProperties.title().successTitle(), jandiProperties.color().successColor());

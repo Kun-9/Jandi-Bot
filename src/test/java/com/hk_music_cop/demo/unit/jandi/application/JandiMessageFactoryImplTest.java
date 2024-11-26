@@ -2,7 +2,7 @@ package com.hk_music_cop.demo.unit.jandi.application;
 
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.jandi.application.JandiMessageFactoryImpl;
-import com.hk_music_cop.demo.jandi.application.JandiSuccessResponseGenerator;
+import com.hk_music_cop.demo.jandi.application.JandiResponseGenerator;
 import com.hk_music_cop.demo.jandi.dto.request.JandiUserInfoRequest;
 import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookRequest;
 import com.hk_music_cop.demo.jandi.dto.response.ConnectInfo;
@@ -10,7 +10,7 @@ import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse;
 import com.hk_music_cop.demo.jandi.util.converter.connectInfo.ConnectInfoConverterComposite;
 import com.hk_music_cop.demo.lottery.application.LotteryService;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
-import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryDetailResponse;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryView;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryViewList;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryWinner;
@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 class JandiMessageFactoryImplTest {
 
 	@Mock
-	private JandiSuccessResponseGenerator jandiSuccessResponseGenerator;
+	private JandiResponseGenerator jandiResponseGenerator;
 	@Mock
 	private ScheduleService scheduleService;
 	@Mock
@@ -73,7 +73,7 @@ class JandiMessageFactoryImplTest {
 
 		when(scheduleService.getWeekTodo(targetDate)).thenReturn(weeklySchedule);
 		when(connectInfoConverter.convertList(weeklySchedule)).thenReturn(connectInfoList);
-		when(jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList))
+		when(jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList))
 				.thenReturn(expectedResponse);
 
 		// when
@@ -100,7 +100,7 @@ class JandiMessageFactoryImplTest {
 
 		when(scheduleService.getWeekTodo(targetDate)).thenReturn(emptySchedule);
 		when(connectInfoConverter.convertList(emptySchedule)).thenReturn(Collections.emptyList());
-		when(jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.JANDI_SCHEDULE_EMPTY, Collections.emptyList()))
+		when(jandiResponseGenerator.createSuccessResponse(ResponseCode.JANDI_SCHEDULE_EMPTY, Collections.emptyList()))
 				.thenReturn(expectedResponse);
 
 		// when
@@ -108,7 +108,7 @@ class JandiMessageFactoryImplTest {
 
 		// then
 		assertThat(response).isEqualTo(expectedResponse);
-		verify(jandiSuccessResponseGenerator).createSuccessResponse(
+		verify(jandiResponseGenerator).createSuccessResponse(
 				ResponseCode.JANDI_SCHEDULE_EMPTY,
 				Collections.emptyList()
 		);
@@ -136,7 +136,7 @@ class JandiMessageFactoryImplTest {
 
 		when(scheduleService.getDayTodo(targetDate)).thenReturn(dailySchedule);
 		when(connectInfoConverter.convertList(dailySchedule)).thenReturn(connectInfoList);
-		when(jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList))
+		when(jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList))
 				.thenReturn(expectedResponse);
 
 		// when
@@ -163,7 +163,7 @@ class JandiMessageFactoryImplTest {
 
 		when(lotteryService.drawLotteryWinner()).thenReturn(winner);
 		when(connectInfoConverter.convert(winner)).thenReturn(winnerInfo);
-		when(jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.OK, winnerInfo))
+		when(jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, winnerInfo))
 				.thenReturn(expectedResponse);
 
 		// when
@@ -193,7 +193,7 @@ class JandiMessageFactoryImplTest {
 		);
 
 		when(connectInfoConverter.convert(infoRequest)).thenReturn(userInfo);
-		when(jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.OK, userInfo))
+		when(jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, userInfo))
 				.thenReturn(expectedResponse);
 
 		// when
@@ -216,7 +216,7 @@ class JandiMessageFactoryImplTest {
 				List.of(new ConnectInfo(null, ResponseCode.CREATED.getMessage(), null))
 		);
 
-		when(jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.CREATED))
+		when(jandiResponseGenerator.createSuccessResponse(ResponseCode.CREATED))
 				.thenReturn(expectedResponse);
 
 		// when
@@ -231,12 +231,12 @@ class JandiMessageFactoryImplTest {
 	@DisplayName("추첨 목록 조회")
 	void lotteryListMessage() {
 		// given
-		List<LotteryResponse> lotteryResponses = List.of(
-				new LotteryResponse("추첨1", "position1", LocalDateTime.now(), 1L, 1L),
-				new LotteryResponse("추첨2", "position2", LocalDateTime.now(), 2L, 1L)
+		List<LotteryDetailResponse> lotteryDetailRespons = List.of(
+				new LotteryDetailResponse("추첨1", "position1", LocalDateTime.now(), 1L, 1L),
+				new LotteryDetailResponse("추첨2", "position2", LocalDateTime.now(), 2L, 1L)
 		);
 
-		List<LotteryView> lotteryViews = lotteryResponses.stream()
+		List<LotteryView> lotteryViews = lotteryDetailRespons.stream()
 				.map(LotteryView::from)
 				.toList();
 
@@ -253,11 +253,11 @@ class JandiMessageFactoryImplTest {
 		);
 
 		when(connectInfoConverter.convertList(viewList)).thenReturn(connectInfoList);
-		when(jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList))
+		when(jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList))
 				.thenReturn(expectedResponse);
 
 		// when
-		JandiWebhookResponse response = jandiMessageFactory.lotteryListMessage(lotteryResponses);
+		JandiWebhookResponse response = jandiMessageFactory.lotteryListMessage(lotteryDetailRespons);
 
 		// then
 		assertThat(response).isEqualTo(expectedResponse);

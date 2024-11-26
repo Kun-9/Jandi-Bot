@@ -1,6 +1,7 @@
 package com.hk_music_cop.demo.unit.jandi.application;
 
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomUndefinedCommand;
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.jandi.application.JandiCommandServiceImpl;
 import com.hk_music_cop.demo.jandi.application.JandiMessageFactory;
@@ -8,9 +9,10 @@ import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookRequest;
 import com.hk_music_cop.demo.jandi.dto.response.ConnectInfo;
 import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse;
 import com.hk_music_cop.demo.lottery.application.LotteryService;
+import com.hk_music_cop.demo.lottery.common.enums.Position;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
-import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryDetailResponse;
 import com.hk_music_cop.demo.member.application.MemberService;
 import com.hk_music_cop.demo.member.dto.request.JoinRequest;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
@@ -297,9 +299,9 @@ class JandiCommandServiceImplTest {
 				"[추첨 리스트 조회]"
 		);
 
-		List<LotteryResponse> lotteryResponses = List.of(
-				new LotteryResponse("추첨1", "포지션1", LocalDateTime.now(), 1L, 1L),
-				new LotteryResponse("추첨2", "포지션2", LocalDateTime.now(), 2L, 1L)
+		List<LotteryDetailResponse> lotteryDetailRespons = List.of(
+				new LotteryDetailResponse("추첨일", "이사", LocalDateTime.now(), 1L, 1L),
+				new LotteryDetailResponse("추첨ㅇ;", "주임", LocalDateTime.now(), 2L, 1L)
 		);
 
 		JandiWebhookResponse expectedResponse = new JandiWebhookResponse(
@@ -310,8 +312,8 @@ class JandiCommandServiceImplTest {
 
 		when(memberService.validationUserIdExist("user@email.com")).thenReturn(true);
 		when(memberService.jandiLogin(any())).thenReturn(LOGIN_MEMBER);
-		when(lotteryService.getAllLottery()).thenReturn(lotteryResponses);
-		when(jandiMessageFactory.lotteryListMessage(lotteryResponses)).thenReturn(expectedResponse);
+		when(lotteryService.getAllLottery()).thenReturn(lotteryDetailRespons);
+		when(jandiMessageFactory.lotteryListMessage(lotteryDetailRespons)).thenReturn(expectedResponse);
 
 		// when
 		JandiWebhookResponse response = jandiCommandService.executeCommand(request);
@@ -319,7 +321,7 @@ class JandiCommandServiceImplTest {
 		// then
 		assertThat(response).isEqualTo(expectedResponse);
 		verify(lotteryService).getAllLottery();
-		verify(jandiMessageFactory).lotteryListMessage(lotteryResponses);
+		verify(jandiMessageFactory).lotteryListMessage(lotteryDetailRespons);
 	}
 
 	@Test
@@ -334,7 +336,7 @@ class JandiCommandServiceImplTest {
 		// when & then
 		assertThatThrownBy(() -> jandiCommandService.executeCommand(request))
 				.isInstanceOf(CustomUndefinedCommand.class)
-				.hasFieldOrPropertyWithValue("responseCode", ResponseCode.UNDEFINED_COMMAND);
+				.hasFieldOrPropertyWithValue("errorCode", ErrorCode.UNDEFINED_COMMAND);
 	}
 
 	private JandiWebhookRequest createRequest(JandiWebhookRequest.Writer writer, String data) {

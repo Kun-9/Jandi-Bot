@@ -1,4 +1,6 @@
-package com.hk_music_cop.demo.lottery.dto;
+package com.hk_music_cop.demo.lottery.dto.response;
+
+import com.hk_music_cop.demo.lottery.common.enums.Position;
 
 public record Lottery(Long lotteryId, String lotteryName, String position) {
 

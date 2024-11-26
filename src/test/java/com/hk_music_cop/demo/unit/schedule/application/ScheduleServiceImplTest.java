@@ -1,13 +1,12 @@
 package com.hk_music_cop.demo.unit.schedule.application;
 
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomUndefinedCommand;
-import com.hk_music_cop.demo.global.common.response.ResponseCode;
+import com.hk_music_cop.demo.global.common.message.ValidationMessageUtil;
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
 import com.hk_music_cop.demo.googleCloud.googleSheet.GoogleSheetProperties;
 import com.hk_music_cop.demo.googleCloud.googleSheet.repository.GoogleSheetAPI;
 import com.hk_music_cop.demo.schedule.application.ScheduleServiceImpl;
 import com.hk_music_cop.demo.schedule.domain.WeeklySchedule;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +21,8 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ScheduleServiceImplTest {
 
@@ -106,6 +106,6 @@ class ScheduleServiceImplTest {
 		// when & then
 		assertThatThrownBy(() -> scheduleService.validateHoliday(weekend))
 				.isInstanceOf(CustomUndefinedCommand.class)
-				.hasFieldOrPropertyWithValue("responseCode", ResponseCode.UNDEFINED_COMMAND);
+				.hasFieldOrPropertyWithValue("errorCode", ErrorCode.UNDEFINED_COMMAND);
 	}
 }

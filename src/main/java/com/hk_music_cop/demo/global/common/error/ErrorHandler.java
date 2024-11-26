@@ -3,7 +3,6 @@ package com.hk_music_cop.demo.global.common.error;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hk_music_cop.demo.global.common.response.ErrorCode;
 import com.hk_music_cop.demo.global.common.response.ErrorResponse;
-import com.hk_music_cop.demo.global.common.response.ErrorCode;
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +59,7 @@ public class ErrorHandler {
 
 		ErrorResponse<?> errorResponse = handleException(e, code);
 
-		response.setStatus(errorResponse.getStatus());
+		response.setStatus(errorResponse.status());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 

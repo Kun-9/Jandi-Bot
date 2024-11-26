@@ -2,24 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hk_music_cop.demo.lottery.repository.LotteryRepository">
 
-    <select id="findAll" resultType="LotteryResponse">
+    <select id="findAll" resultType="LotteryDetailResponse">
         SELECT "lottery_id", "member_id" AS createdMemberId, "lottery_name", "position", "created_date"
         FROM lottery
     </select>
 
-    <select id="findByLotteryId" parameterType="Long" resultType="LotteryResponse">
+    <select id="findByLotteryId" parameterType="Long" resultType="LotteryDetailResponse">
         SELECT "lottery_id", member_id AS createdMemberId, "lottery_name", "position", "created_date"
         FROM lottery
         WHERE lottery_id = #{lotteryId}
     </select>
 
-    <select id="findByName" parameterType="String" resultType="LotteryResponse">
+    <select id="findByName" parameterType="String" resultType="LotteryDetailResponse">
         SELECT lottery_id, member_id AS createdMemberId, lottery_name, position, created_date
         FROM lottery
         WHERE lottery_name = #{name}
     </select>
 
-    <select id="createLottery" parameterType="LotteryRequest" resultType="Long">
+    <select id="createLottery" parameterType="LotteryDetailResponse" resultType="Long">
         INSERT INTO lottery ("member_id", "lottery_name", "position")
         VALUES (#{memberId}, #{lotteryName}, #{position})
         RETURNING lottery_id

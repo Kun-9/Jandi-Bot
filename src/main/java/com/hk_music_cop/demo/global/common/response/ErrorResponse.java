@@ -1,5 +1,6 @@
 package com.hk_music_cop.demo.global.common.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hk_music_cop.demo.global.common.error.ValidationError;
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
 import lombok.Builder;
@@ -12,17 +13,16 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * @param status    상태 코드
+ * @param code      성공,실패 코드
+ * @param message   응답 메시지
+ * @param timestamp 응답 시간
+ * @param error     에러 데이터
+ */
 @Builder
-@Getter
-@RequiredArgsConstructor
-public class ErrorResponse<T> {
-	private final int status;           // 상태 코드
-	private final String code;          // 성공,실패 코드
-	private final String message;       // 응답 메시지
-	private final LocalDateTime timestamp;  // 응답 시간
-	private final T error;              // 에러 오브젝트
-
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public record ErrorResponse<T>(int status, String code, String message, LocalDateTime timestamp, T error) {
 	// 응답 객체 생성 (데이터 없는 경우)
 	public static ErrorResponse<Void> from(ErrorCode code) {
 		return ErrorResponse.<Void>builder()

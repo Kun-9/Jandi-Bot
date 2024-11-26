@@ -1,8 +1,8 @@
 package com.hk_music_cop.demo.integration.lottery.repository;
 
-import com.hk_music_cop.demo.lottery.dto.LotterySimple;
-import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
+import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryDetailResponse;
 import com.hk_music_cop.demo.lottery.repository.LotteryRepository;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,7 +50,7 @@ class LotteryRepositoryTest {
 	@Test
 	void findByLotteryId() {
 		// when
-		LotteryResponse findLottery = lotteryRepository.findByLotteryId(testLotteryId).get();
+		LotteryDetailResponse findLottery = lotteryRepository.findByLotteryId(testLotteryId).get();
 
 		// then
 		assertThat(findLottery.getLotteryId()).isEqualTo(testLotteryId);
@@ -60,11 +60,11 @@ class LotteryRepositoryTest {
 	@Test
 	void editLottery() {
 		// given
-		LotterySimple editLottery = new LotterySimple("edit", "editPos");
+		LotteryResponse editLottery = new LotteryResponse("edit", "이사");
 
 		// when & then
-		int i = lotteryRepository.editLottery(testLotteryId, LotterySimple.from(editLottery));
-		LotteryResponse findEditObject = lotteryRepository.findByLotteryId(testLotteryId).get();
+		int i = lotteryRepository.editLottery(testLotteryId, LotteryResponse.from(editLottery));
+		LotteryDetailResponse findEditObject = lotteryRepository.findByLotteryId(testLotteryId).get();
 
 		assertThat(i).isEqualTo(1);
 		assertThat(findEditObject)
@@ -78,7 +78,7 @@ class LotteryRepositoryTest {
 	void deleteLottery() {
 		// when
 		int i = lotteryRepository.deleteLottery(testLotteryId);
-		Optional<LotteryResponse> findLottery = lotteryRepository.findByLotteryId(testLotteryId);
+		Optional<LotteryDetailResponse> findLottery = lotteryRepository.findByLotteryId(testLotteryId);
 
 		// then
 		assertThat(i).isEqualTo(1);
@@ -89,9 +89,9 @@ class LotteryRepositoryTest {
 	void findAll() {
 		// given
 		List<LotteryRequest> requests = Arrays.asList(
-				new LotteryRequest(5L, "test1", "testPos1"),
-				new LotteryRequest(5L, "test2", "testPos2"),
-				new LotteryRequest(5L, "test3", "testPos3")
+				new LotteryRequest(5L, "testabcl", "주임"),
+				new LotteryRequest(5L, "testabcll", "이사"),
+				new LotteryRequest(5L, "testabclll", "과장")
 		);
 
 		requests.forEach(lotteryRepository::createLottery);
@@ -101,7 +101,7 @@ class LotteryRepositoryTest {
 		).toList();
 
 		// when
-		List<LotteryResponse> findLotteryList = lotteryRepository.findAll();
+		List<LotteryDetailResponse> findLotteryList = lotteryRepository.findAll();
 
 		// then
 		assertThat(findLotteryList)

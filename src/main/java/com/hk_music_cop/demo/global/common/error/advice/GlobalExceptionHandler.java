@@ -16,7 +16,6 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.security.sasl.AuthenticationException;
 import java.sql.SQLException;
@@ -36,7 +35,7 @@ public class GlobalExceptionHandler {
 		ErrorResponse<?> apiResponse = errorHandler.handleCustomException(e);
 
 		return ResponseEntity
-				.status(apiResponse.getStatus())
+				.status(apiResponse.status())
 				.body(apiResponse);
 	}
 
@@ -48,7 +47,7 @@ public class GlobalExceptionHandler {
 		ErrorResponse<?> response = errorHandler.handleException(e, ErrorCode.DATABASE_ERROR);
 
 		return ResponseEntity
-				.status(response.getStatus())
+				.status(response.status())
 				.body(response);
 	}
 
@@ -60,7 +59,7 @@ public class GlobalExceptionHandler {
 		ErrorResponse<?> apiResponse = errorHandler.handleException(e, ErrorCode.UNDEFINED_COMMAND);
 
 		return ResponseEntity
-				.status(apiResponse.getStatus())
+				.status(apiResponse.status())
 				.body(apiResponse);
 	}
 
@@ -88,7 +87,7 @@ public class GlobalExceptionHandler {
 		ErrorResponse<?> response = errorHandler.handleException(e, ErrorCode.SECURITY_ERROR);
 
 		return ResponseEntity
-				.status(response.getStatus())
+				.status(response.status())
 				.body(response);
 	}
 
@@ -99,7 +98,7 @@ public class GlobalExceptionHandler {
 		ErrorResponse<List<ValidationError>> response = errorHandler.handleValidationException(e);
 
 		return ResponseEntity
-				.status(response.getStatus())
+				.status(response.status())
 				.body(response);
 	}
 
@@ -110,7 +109,7 @@ public class GlobalExceptionHandler {
 		ErrorResponse<?> response = errorHandler.handleException(e, ErrorCode.UNKNOWN_ERROR);
 
 		return ResponseEntity
-				.status(response.getStatus())
+				.status(response.status())
 				.body(response);
 	}
 }

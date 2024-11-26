@@ -35,7 +35,7 @@ public class MemberController {
 		ApiResponse<TokenResponse> response = ApiResponse.of(ResponseCode.LOGIN_SUCCESS, tokenResponse);
 
 		return ResponseEntity
-				.status(response.getStatus())
+				.status(response.status())
 				.body(response);
 	}
 
@@ -47,7 +47,7 @@ public class MemberController {
 		ApiResponse<Void> response = ApiResponse.from(ResponseCode.MEMBER_JOIN_SUCCESS);
 
 		return ResponseEntity
-				.status(response.getStatus())
+				.status(response.status())
 				.body(response);
 	}
 
@@ -58,7 +58,7 @@ public class MemberController {
 		ApiResponse<Void> response = ApiResponse.from(ResponseCode.LOGOUT_SUCCESS);
 
 		return ResponseEntity
-				.status(response.getStatus())
+				.status(response.status())
 				.body(response);
 	}
 }

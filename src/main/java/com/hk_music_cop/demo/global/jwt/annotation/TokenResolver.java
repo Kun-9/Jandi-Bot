@@ -36,7 +36,7 @@ public class TokenResolver implements HandlerMethodArgumentResolver {
 			token = tokenExtractor.extractRefreshTokenFromRequest(request);
 		}
 
-		if (token.isBlank()) {
+		if (token == null || token.isBlank()) {
 			throw new CustomEmptyTokenException("'" + tokenAnnotation.type().name() + " token'이 없습니다.");
 		}
 

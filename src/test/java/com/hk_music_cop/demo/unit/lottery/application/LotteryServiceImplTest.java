@@ -1,10 +1,10 @@
 package com.hk_music_cop.demo.unit.lottery.application;
 
 import com.hk_music_cop.demo.global.common.error.exceptions.*;
-import com.hk_music_cop.demo.global.common.response.ResponseCode;
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
 import com.hk_music_cop.demo.lottery.application.LotteryServiceImpl;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
-import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryDetailResponse;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryWinner;
 import com.hk_music_cop.demo.lottery.repository.LotteryRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -37,9 +37,9 @@ class LotteryServiceImplTest {
 	@DisplayName("추첨 당첨자 선정 - 성공")
 	void drawLotteryWinner_Success() {
 		// given
-		List<LotteryResponse> lotteryList = List.of(
-				new LotteryResponse("추첨1", "포지션1", LocalDateTime.now(), 1L, 1L),
-				new LotteryResponse("추첨2", "포지션2", LocalDateTime.now(), 2L, 1L)
+		List<LotteryDetailResponse> lotteryList = List.of(
+				new LotteryDetailResponse("추첨일", "주임", LocalDateTime.now(), 1L, 1L),
+				new LotteryDetailResponse("추첨이", "이사", LocalDateTime.now(), 2L, 1L)
 		);
 
 		when(lotteryRepository.findAll()).thenReturn(lotteryList);
@@ -49,8 +49,8 @@ class LotteryServiceImplTest {
 
 		// then
 		assertThat(winner).isNotNull();
-		assertThat(winner.lotteryName()).isIn("추첨1", "추첨2");
-		assertThat(winner.position()).isIn("포지션1", "포지션2");
+		assertThat(winner.lotteryName()).isIn("추첨일", "추첨이");
+		assertThat(winner.position()).isIn("주임", "이사");
 		verify(lotteryRepository).findAll();
 	}
 
@@ -63,14 +63,14 @@ class LotteryServiceImplTest {
 		// when & then
 		assertThatThrownBy(() -> lotteryService.drawLotteryWinner())
 				.isInstanceOf(CustomLotteryNotFoundException.class)
-				.hasFieldOrPropertyWithValue("responseCode", ResponseCode.LOTTERY_NOT_FOUND);
+				.hasFieldOrPropertyWithValue("errorCode", ErrorCode.LOTTERY_NOT_FOUND);
 	}
 
 	@Test
 	@DisplayName("추첨 등록 - 성공")
 	void registerLottery_Success() {
 		// given
-		LotteryRequest request = new LotteryRequest(1L, "새로운추첨", "포지션");
+		LotteryRequest request = new LotteryRequest(1L, "새로운추첨", "주임");
 		when(lotteryRepository.existsByName("새로운추첨")).thenReturn(false);
 		when(lotteryRepository.createLottery(request)).thenReturn(1L);
 
@@ -87,27 +87,27 @@ class LotteryServiceImplTest {
 	@DisplayName("추첨 등록 - 중복 이름")
 	void registerLottery_DuplicateName() {
 		// given
-		LotteryRequest request = new LotteryRequest(1L, "중복추첨", "포지션");
+		LotteryRequest request = new LotteryRequest(1L, "중복추첨", "주임");
 		when(lotteryRepository.existsByName("중복추첨")).thenReturn(true);
 
 		// when & then
 		assertThatThrownBy(() -> lotteryService.registerLottery(request))
 				.isInstanceOf(CustomDuplicatedNameException.class)
-				.hasFieldOrPropertyWithValue("responseCode", ResponseCode.DUPLICATE_NAME);
+				.hasFieldOrPropertyWithValue("errorCode", ErrorCode.DUPLICATE_NAME);
 	}
 
 	@Test
 	@DisplayName("추첨 등록 - DB 에러")
 	void registerLottery_DatabaseError() {
 		// given
-		LotteryRequest request = new LotteryRequest(1L, "새로운추첨", "포지션");
+		LotteryRequest request = new LotteryRequest(1L, "새로운추첨", "주임");
 		when(lotteryRepository.existsByName("새로운추첨")).thenReturn(false);
 		when(lotteryRepository.createLottery(request)).thenReturn(0L);
 
 		// when & then
 		assertThatThrownBy(() -> lotteryService.registerLottery(request))
 				.isInstanceOf(CustomException.class)
-				.hasFieldOrPropertyWithValue("responseCode", ResponseCode.DATABASE_CREATE_ERROR);
+				.hasFieldOrPropertyWithValue("errorCode", ErrorCode.DATABASE_CREATE_ERROR);
 	}
 
 	@Test
@@ -116,7 +116,7 @@ class LotteryServiceImplTest {
 		// given
 		String lotteryName = "삭제추첨";
 		Long memberId = 1L;
-		LotteryResponse lottery = new LotteryResponse(lotteryName, "포지션", LocalDateTime.now(), 1L, memberId);
+		LotteryDetailResponse lottery = new LotteryDetailResponse(lotteryName, "주임", LocalDateTime.now(), 1L, memberId);
 
 		when(lotteryRepository.findByName(lotteryName)).thenReturn(Optional.of(lottery));
 		when(lotteryRepository.isCreatedBy(memberId, 1L)).thenReturn(true);
@@ -143,7 +143,7 @@ class LotteryServiceImplTest {
 		// when & then
 		assertThatThrownBy(() -> lotteryService.deleteLottery(memberId, lotteryName))
 				.isInstanceOf(CustomLotteryNotFoundException.class)
-				.hasFieldOrPropertyWithValue("responseCode", ResponseCode.LOTTERY_NOT_FOUND);
+				.hasFieldOrPropertyWithValue("errorCode", ErrorCode.LOTTERY_NOT_FOUND);
 	}
 
 	@Test
@@ -152,7 +152,7 @@ class LotteryServiceImplTest {
 		// given
 		String lotteryName = "삭제추첨";
 		Long memberId = 1L;
-		LotteryResponse lottery = new LotteryResponse(lotteryName, "포지션", LocalDateTime.now(), 1L, 2L);
+		LotteryDetailResponse lottery = new LotteryDetailResponse(lotteryName, "이사", LocalDateTime.now(), 1L, 2L);
 
 		when(lotteryRepository.findByName(lotteryName)).thenReturn(Optional.of(lottery));
 		when(lotteryRepository.isCreatedBy(memberId, 1L)).thenReturn(false);
@@ -160,22 +160,22 @@ class LotteryServiceImplTest {
 		// when & then
 		assertThatThrownBy(() -> lotteryService.deleteLottery(memberId, lotteryName))
 				.isInstanceOf(CustomUnauthorizedException.class)
-				.hasFieldOrPropertyWithValue("responseCode", ResponseCode.UNAUTHORIZED);
+				.hasFieldOrPropertyWithValue("errorCode", ErrorCode.UNAUTHORIZED);
 	}
 
 	@Test
 	@DisplayName("전체 추첨 조회 - 성공")
 	void getAllLottery_Success() {
 		// given
-		List<LotteryResponse> lotteryList = List.of(
-				new LotteryResponse("추첨1", "포지션1", LocalDateTime.now(), 1L, 1L),
-				new LotteryResponse("추첨2", "포지션2", LocalDateTime.now(), 2L, 1L)
+		List<LotteryDetailResponse> lotteryList = List.of(
+				new LotteryDetailResponse("추첨일", "이사", LocalDateTime.now(), 1L, 1L),
+				new LotteryDetailResponse("추첨이", "주임", LocalDateTime.now(), 2L, 1L)
 		);
 
 		when(lotteryRepository.findAll()).thenReturn(lotteryList);
 
 		// when
-		List<LotteryResponse> result = lotteryService.getAllLottery();
+		List<LotteryDetailResponse> result = lotteryService.getAllLottery();
 
 		// then
 		assertThat(result).hasSize(2);
@@ -193,6 +193,6 @@ class LotteryServiceImplTest {
 		// when & then
 		assertThatThrownBy(() -> lotteryService.getAllLottery())
 				.isInstanceOf(CustomNotFoundException.class)
-				.hasFieldOrPropertyWithValue("responseCode", ResponseCode.NOT_FOUND);
+				.hasFieldOrPropertyWithValue("errorCode", ErrorCode.NOT_FOUND);
 	}
 }

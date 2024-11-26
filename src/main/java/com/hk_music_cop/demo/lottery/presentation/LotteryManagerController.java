@@ -3,9 +3,9 @@ package com.hk_music_cop.demo.lottery.presentation;
 import com.hk_music_cop.demo.global.common.response.ApiResponse;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.lottery.application.LotteryService;
-import com.hk_music_cop.demo.lottery.dto.request.LotteryTargetRequest;
+import com.hk_music_cop.demo.lottery.dto.request.LotteryDeleteRequest;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryDetailResponse;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
-import com.hk_music_cop.demo.lottery.dto.LotterySimple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,17 +22,17 @@ public class LotteryManagerController {
 	private final LotteryService lotteryService;
 
 	@GetMapping("/remove")
-	public ResponseEntity<ApiResponse<LotterySimple>> drawLottery(@RequestBody LotteryTargetRequest request) {
+	public ResponseEntity<ApiResponse<LotteryResponse>> drawLottery(@RequestBody LotteryDeleteRequest request) {
 
 		String targetName = request.lotteryName();
-		LotteryResponse target = lotteryService.findByName(targetName);
+		LotteryDetailResponse target = lotteryService.findByName(targetName);
 
 		lotteryService.deleteLotteryByManager(targetName);
 
-		ApiResponse<LotterySimple> response = ApiResponse.of(ResponseCode.LOTTERY_DELETE_SUCCESS, LotterySimple.from(target));
+		ApiResponse<LotteryResponse> response = ApiResponse.of(ResponseCode.LOTTERY_DELETE_SUCCESS, LotteryResponse.from(target));
 
 		return ResponseEntity
-				.status(response.getStatus())
+				.status(response.status())
 				.body(response);
 	}
 }

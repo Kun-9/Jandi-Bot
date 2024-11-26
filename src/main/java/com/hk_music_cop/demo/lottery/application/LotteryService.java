@@ -2,7 +2,7 @@ package com.hk_music_cop.demo.lottery.application;
 
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
-import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryDetailResponse;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryUpdateLog;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryWinner;
 
@@ -20,7 +20,7 @@ public interface LotteryService {
 
 	LotteryUpdateLog updateLottery(Long memberId, LotteryUpdateRequest lottery);
 
-	List<LotteryResponse> getAllLottery();
+	List<LotteryDetailResponse> getAllLottery();
 
 	void validateExistByName(String name);
 
@@ -31,5 +31,5 @@ public interface LotteryService {
 
 	void validateDuplicateName(String name);
 
-	LotteryResponse findByName(String name);
+	LotteryDetailResponse findByName(String name);
 }

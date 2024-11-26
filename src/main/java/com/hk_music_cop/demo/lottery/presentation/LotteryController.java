@@ -6,11 +6,11 @@ import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.global.security.common.CustomUser;
 import com.hk_music_cop.demo.lottery.application.LotteryService;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryCreateRequest;
-import com.hk_music_cop.demo.lottery.dto.request.LotteryTargetRequest;
+import com.hk_music_cop.demo.lottery.dto.request.LotteryDeleteRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryDetailResponse;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
-import com.hk_music_cop.demo.lottery.dto.LotterySimple;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryUpdateLog;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryWinner;
 import com.hk_music_cop.demo.member.application.MemberService;
@@ -37,7 +37,7 @@ public class LotteryController {
 		ApiResponse<LotteryWinner> response = ApiResponse.of(ResponseCode.OK, winner);
 
 		return ResponseEntity
-				.status(response.getStatus())
+				.status(response.status())
 				.body(response);
 	}
 
@@ -53,28 +53,28 @@ public class LotteryController {
 		ApiResponse<LotteryUpdateLog> response = ApiResponse.of(ResponseCode.UPDATED, lotteryUpdateLog);
 
 		return ResponseEntity
-				.status(response.getStatus())
+				.status(response.status())
 				.body(response);
 	}
 
 	@GetMapping
-	public ResponseEntity<ApiResponse<List<LotterySimple>>> getAllLotteries() {
-		List<LotteryResponse> allLottery = lotteryService.getAllLottery();
+	public ResponseEntity<ApiResponse<List<LotteryResponse>>> getAllLotteries() {
+		List<LotteryDetailResponse> allLottery = lotteryService.getAllLottery();
 
-		List<LotterySimple> list = allLottery
+		List<LotteryResponse> list = allLottery
 				.stream()
-				.map(LotterySimple::from)
+				.map(LotteryResponse::from)
 				.toList();
 
-		ApiResponse<List<LotterySimple>> response = ApiResponse.of(ResponseCode.OK, list);
+		ApiResponse<List<LotteryResponse>> response = ApiResponse.of(ResponseCode.OK, list);
 
 		return ResponseEntity
-				.status(response.getStatus())
+				.status(response.status())
 				.body(response);
 	}
 
 	@PostMapping("remove")
-	public ResponseEntity<ApiResponse<LotterySimple>> deleteLottery(@RequestBody LotteryTargetRequest deleteRequest, @AuthenticationPrincipal UserDetails userDetails) {
+	public ResponseEntity<ApiResponse<LotteryResponse>> deleteLottery(@RequestBody LotteryDeleteRequest deleteRequest, @AuthenticationPrincipal UserDetails userDetails) {
 
 		String targetName = deleteRequest.lotteryName();
 
@@ -82,32 +82,31 @@ public class LotteryController {
 
 		MemberResponse byUserId = memberService.findByUserId(userId);
 
-		LotteryResponse targetLottery = lotteryService.findByName(targetName);
+		LotteryDetailResponse targetLottery = lotteryService.findByName(targetName);
 
 		lotteryService.deleteLottery(byUserId.getMemberId(), targetName);
 
 
-		ApiResponse<LotterySimple> response = ApiResponse.of(ResponseCode.LOTTERY_DELETE_SUCCESS, LotterySimple.from(targetLottery));
+		ApiResponse<LotteryResponse> response = ApiResponse.of(ResponseCode.LOTTERY_DELETE_SUCCESS, LotteryResponse.from(targetLottery));
 
 		return ResponseEntity
-				.status(response.getStatus())
+				.status(response.status())
 				.body(response);
 	}
 
 	@PostMapping
-	public ResponseEntity<ApiResponse<LotterySimple>> createLottery(@RequestBody LotteryCreateRequest lotteryCreateRequest, @AuthenticationPrincipal UserDetails userDetails) {
+	public ResponseEntity<ApiResponse<LotteryResponse>> createLottery(@RequestBody LotteryCreateRequest lotteryCreateRequest, @AuthenticationPrincipal UserDetails userDetails) {
 		String userId = userDetails.getUsername();
 		MemberResponse byUserId = memberService.findByUserId(userId);
 
 		LotteryRequest request = LotteryRequest.of(byUserId.getMemberId(), lotteryCreateRequest);
 		lotteryService.registerLottery(request);
 
-		LotteryResponse createdLottery = lotteryService.findByName(request.lotteryName());
-		ApiResponse<LotterySimple> response = ApiResponse.of(ResponseCode.LOTTERY_CREATE_SUCCESS, LotterySimple.from(createdLottery));
+		LotteryDetailResponse createdLottery = lotteryService.findByName(request.lotteryName());
+		ApiResponse<LotteryResponse> response = ApiResponse.of(ResponseCode.LOTTERY_CREATE_SUCCESS, LotteryResponse.from(createdLottery));
 
 		return ResponseEntity
-				.status(response.getStatus())
+				.status(response.status())
 				.body(response);
 	}
-
 }

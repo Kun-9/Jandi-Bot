@@ -4,7 +4,7 @@ import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse;
 import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
-import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryDetailResponse;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,5 +24,5 @@ public interface JandiMessageFactory {
 
 	JandiWebhookResponse updateLotteryMessage(Long memberId, LotteryUpdateRequest request);
 
-	JandiWebhookResponse lotteryListMessage(List<LotteryResponse> lotteryResponseList);
+	JandiWebhookResponse lotteryListMessage(List<LotteryDetailResponse> lotteryDetailResponseList);
 }

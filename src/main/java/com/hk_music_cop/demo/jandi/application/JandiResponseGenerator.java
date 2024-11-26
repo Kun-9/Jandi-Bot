@@ -1,6 +1,5 @@
 package com.hk_music_cop.demo.jandi.application;
 
-import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.jandi.dto.response.ConnectInfo;
 import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse;
@@ -10,7 +9,7 @@ import java.util.List;
 /**
  * 잔디 웹훅 응답 생성을 위한 인터페이스
  */
-public interface JandiSuccessResponseGenerator {
+public interface JandiResponseGenerator {
 
 	/**
 	 * 성공 응답 생성 (단일 ConnectInfo)

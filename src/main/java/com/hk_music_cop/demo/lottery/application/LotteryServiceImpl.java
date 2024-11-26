@@ -1,12 +1,11 @@
 package com.hk_music_cop.demo.lottery.application;
 
 import com.hk_music_cop.demo.global.common.response.ErrorCode;
-import com.hk_music_cop.demo.global.common.response.ErrorCode;
 import com.hk_music_cop.demo.global.common.error.exceptions.*;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryDetailResponse;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
-import com.hk_music_cop.demo.lottery.dto.LotterySimple;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryUpdateLog;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryWinner;
 import com.hk_music_cop.demo.lottery.repository.LotteryRepository;
@@ -25,13 +24,13 @@ public class LotteryServiceImpl implements LotteryService {
 	private final LotteryRepository lotteryRepository;
 
 	@Override
-	public LotteryResponse findByName(String name) {
+	public LotteryDetailResponse findByName(String name) {
 		return lotteryRepository.findByName(name)
 				.orElseThrow(CustomLotteryNotFoundException::new);
 	}
 
 	public LotteryWinner drawLotteryWinner() {
-		List<LotteryResponse> personList = lotteryRepository.findAll();
+		List<LotteryDetailResponse> personList = lotteryRepository.findAll();
 
 		if (personList.isEmpty()) {
 			throw new CustomLotteryNotFoundException("추첨리스트가 존재하지 않습니다.");
@@ -40,7 +39,7 @@ public class LotteryServiceImpl implements LotteryService {
 		return LotteryWinner.from(getRandom(personList));
 	}
 
-	private LotteryResponse getRandom(List<LotteryResponse> personList) {
+	private LotteryDetailResponse getRandom(List<LotteryDetailResponse> personList) {
 		return personList.get(rand.nextInt(personList.size()));
 	}
 
@@ -58,7 +57,7 @@ public class LotteryServiceImpl implements LotteryService {
 
 	@Override
 	public void deleteLottery(Long memberId, String lotteryName) {
-		LotteryResponse targetLottery = findByName(lotteryName);
+		LotteryDetailResponse targetLottery = findByName(lotteryName);
 
 		validateCreator(memberId, targetLottery.getLotteryId());
 
@@ -69,7 +68,7 @@ public class LotteryServiceImpl implements LotteryService {
 
 	@Override
 	public void deleteLotteryByManager(String lotteryName) {
-		LotteryResponse targetLottery = findByName(lotteryName);
+		LotteryDetailResponse targetLottery = findByName(lotteryName);
 
 		boolean result = lotteryRepository.deleteLottery(targetLottery.getLotteryId()) == 1;
 		if (!result) throw new CustomException(ErrorCode.DATABASE_DELETE_ERROR);
@@ -80,7 +79,7 @@ public class LotteryServiceImpl implements LotteryService {
 	@Override
 	public LotteryUpdateLog updateLottery(Long memberId, LotteryUpdateRequest lottery) {
 
-		LotteryResponse targetLottery = findByName(lottery.targetName());
+		LotteryDetailResponse targetLottery = findByName(lottery.targetName());
 
 		// 변경가능한 값인지 확인
 //		validatePossibleUpdate(LotterySimple.from(lottery), LotterySimple.from(targetLottery));
@@ -88,17 +87,17 @@ public class LotteryServiceImpl implements LotteryService {
 		// 권한 확인 (요청자가 생성자인지)
 		validateCreator(memberId, targetLottery.getLotteryId());
 
-		if (lotteryRepository.editLottery(targetLottery.getLotteryId(), LotterySimple.from(lottery)) != 1)
+		if (lotteryRepository.editLottery(targetLottery.getLotteryId(), LotteryResponse.from(lottery)) != 1)
 			throw new CustomException(ErrorCode.DATABASE_UPDATE_ERROR);
 
-		LotteryUpdateLog lotteryUpdateLog = LotteryUpdateLog.of(LotterySimple.from(targetLottery), LotterySimple.from(lottery));
+		LotteryUpdateLog lotteryUpdateLog = LotteryUpdateLog.of(LotteryResponse.from(targetLottery), LotteryResponse.from(lottery));
 
 		log.info("[Lottery 변경] memberId : {}, log : {}" , memberId, lotteryUpdateLog);
 
 		return lotteryUpdateLog;
 	}
 
-	private void validatePossibleUpdate(LotterySimple lotteryTarget, LotterySimple lotteryToUpdate) {
+	private void validatePossibleUpdate(LotteryResponse lotteryTarget, LotteryResponse lotteryToUpdate) {
 		// 변경하고자 하는 로터리와, 업데이트할 로터리의 이름이 같은지 확인
 		if (lotteryToUpdate.lotteryName().equals(lotteryTarget.lotteryName())) {
 			// 포지션도 동일하다면, 동일한 로터리 오류 발생
@@ -115,7 +114,7 @@ public class LotteryServiceImpl implements LotteryService {
 		return lotteryRepository.existsByName(lotteryName);
 	}
 
-	private void validateEquals(LotterySimple lottery, LotterySimple lotteryTarget) {
+	private void validateEquals(LotteryResponse lottery, LotteryResponse lotteryTarget) {
 		if (lotteryTarget.equals(lottery)) throw new CustomException(ErrorCode.LOTTERY_EQUALS);
 	}
 
@@ -146,8 +145,8 @@ public class LotteryServiceImpl implements LotteryService {
 	}
 
 	@Override
-	public List<LotteryResponse> getAllLottery() {
-		List<LotteryResponse> list = lotteryRepository.findAll();
+	public List<LotteryDetailResponse> getAllLottery() {
+		List<LotteryDetailResponse> list = lotteryRepository.findAll();
 		if (list.isEmpty()) {
 			throw new CustomNotFoundException("추첨 리스트가 존재하지 않습니다.");
 		}

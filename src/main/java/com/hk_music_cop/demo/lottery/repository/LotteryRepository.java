@@ -1,8 +1,8 @@
 package com.hk_music_cop.demo.lottery.repository;
 
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
+import com.hk_music_cop.demo.lottery.dto.response.LotteryDetailResponse;
 import com.hk_music_cop.demo.lottery.dto.response.LotteryResponse;
-import com.hk_music_cop.demo.lottery.dto.LotterySimple;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,15 +14,15 @@ public interface LotteryRepository {
 
 	Long createLottery(LotteryRequest lotteryRequest);
 
-	Optional<LotteryResponse> findByLotteryId(Long lotteryId);
+	Optional<LotteryDetailResponse> findByLotteryId(Long lotteryId);
 
-	Optional<LotteryResponse> findByName(String name);
+	Optional<LotteryDetailResponse> findByName(String name);
 
-	int editLottery(@Param("targetId") Long targetId, @Param("lottery") LotterySimple lottery);
+	int editLottery(@Param("targetId") Long targetId, @Param("lottery") LotteryResponse lottery);
 
 	int deleteLottery(Long lotteryId);
 
-	List<LotteryResponse> findAll();
+	List<LotteryDetailResponse> findAll();
 
 	boolean existsByName(String name);
 
