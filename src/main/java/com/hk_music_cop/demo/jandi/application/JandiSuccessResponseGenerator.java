@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 잔디 웹훅 응답 생성을 위한 인터페이스
  */
-public interface JandiResponseGenerator {
+public interface JandiSuccessResponseGenerator {
 
 	/**
 	 * 성공 응답 생성 (단일 ConnectInfo)
@@ -35,18 +35,5 @@ public interface JandiResponseGenerator {
 	 */
 	JandiWebhookResponse createSuccessResponse(ResponseCode responseCode);
 
-	/**
-	 * 커스텀 에러 응답 생성
-	 * @param e 커스텀 예외
-	 * @return 잔디 웹훅 응답
-	 */
-	JandiWebhookResponse createCustomErrorResponse(CustomException e);
 
-	/**
-	 * 일반 에러 응답 생성
-	 * @param e 예외
-	 * @param code 응답 코드
-	 * @return 잔디 웹훅 응답
-	 */
-	JandiWebhookResponse createErrorResponse(Exception e, ResponseCode code);
 }

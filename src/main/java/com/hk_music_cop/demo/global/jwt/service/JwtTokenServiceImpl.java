@@ -1,5 +1,6 @@
 package com.hk_music_cop.demo.global.jwt.service;
 
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomExpiredRefreshTokenException;
@@ -56,7 +57,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 					new UsernamePasswordAuthenticationToken(userId, password));
 
 		} catch (BadCredentialsException e) {
-			throw new CustomException(ResponseCode.LOGIN_FAIL);
+			throw new CustomException(ErrorCode.LOGIN_FAIL);
 		}
 
 		return authenticate;

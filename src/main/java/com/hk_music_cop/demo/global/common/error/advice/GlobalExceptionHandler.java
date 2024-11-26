@@ -1,8 +1,8 @@
 package com.hk_music_cop.demo.global.common.error.advice;
 
 import com.hk_music_cop.demo.global.common.error.ValidationError;
-import com.hk_music_cop.demo.global.common.response.ApiResponse;
-import com.hk_music_cop.demo.global.common.response.ResponseCode;
+import com.hk_music_cop.demo.global.common.response.ErrorResponse;
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
 import com.hk_music_cop.demo.global.common.error.ErrorHandler;
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +31,9 @@ public class GlobalExceptionHandler {
 
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	@ExceptionHandler(CustomException.class)
-	public ResponseEntity<ApiResponse<?>> handleApiCustomException(CustomException e) {
+	public ResponseEntity<ErrorResponse<?>> handleApiCustomException(CustomException e) {
 
-		ApiResponse<?> apiResponse = errorHandler.handleCustomException(e);
+		ErrorResponse<?> apiResponse = errorHandler.handleCustomException(e);
 
 		return ResponseEntity
 				.status(apiResponse.getStatus())
@@ -43,9 +43,9 @@ public class GlobalExceptionHandler {
 	// SQL, DB 오류
 	@Order(1)
 	@ExceptionHandler({SQLException.class, DataAccessException.class})
-	public ResponseEntity<ApiResponse<?>> handleApiDBException(SQLException e) {
+	public ResponseEntity<ErrorResponse<?>> handleApiDBException(SQLException e) {
 
-		ApiResponse<?> response = errorHandler.handleException(e, ResponseCode.DATABASE_ERROR);
+		ErrorResponse<?> response = errorHandler.handleException(e, ErrorCode.DATABASE_ERROR);
 
 		return ResponseEntity
 				.status(response.getStatus())
@@ -55,9 +55,9 @@ public class GlobalExceptionHandler {
 	// URL 경로, 쿼리파라미터 타입 변환 실패
 	@Order(1)
 	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public ResponseEntity<ApiResponse<?>> handleApiParamException(HttpMessageNotReadableException e) {
+	public ResponseEntity<ErrorResponse<?>> handleApiParamException(HttpMessageNotReadableException e) {
 
-		ApiResponse<?> apiResponse = errorHandler.handleException(e, ResponseCode.UNDEFINED_COMMAND);
+		ErrorResponse<?> apiResponse = errorHandler.handleException(e, ErrorCode.UNDEFINED_COMMAND);
 
 		return ResponseEntity
 				.status(apiResponse.getStatus())
@@ -67,9 +67,9 @@ public class GlobalExceptionHandler {
 //	// ResponseBody 파싱 실패
 //	@Order(1)
 //	@ExceptionHandler(MethodArgumentNotValidException.class)
-//	public ResponseEntity<ApiResponse<?>> handleFormatException(MethodArgumentNotValidException e) {
+//	public ResponseEntity<ErrorResponse<?>> handleFormatException(MethodArgumentNotValidException e) {
 //
-//		ApiResponse<?> response = errorHandler.handleException(e, ResponseCode.INCORRECT_FORMAT);
+//		ErrorResponse<?> response = errorHandler.handleException(e, ErrorCode.INCORRECT_FORMAT);
 //
 //		return ResponseEntity
 //				.status(response.getStatus())
@@ -83,9 +83,9 @@ public class GlobalExceptionHandler {
 			AccessDeniedException.class,
 			InternalAuthenticationServiceException.class}
 	)
-	public ResponseEntity<ApiResponse<?>> handleFormatException(Exception e) {
+	public ResponseEntity<ErrorResponse<?>> handleFormatException(Exception e) {
 
-		ApiResponse<?> response = errorHandler.handleException(e, ResponseCode.SECURITY_ERROR);
+		ErrorResponse<?> response = errorHandler.handleException(e, ErrorCode.SECURITY_ERROR);
 
 		return ResponseEntity
 				.status(response.getStatus())
@@ -94,9 +94,9 @@ public class GlobalExceptionHandler {
 
 	@Order(1)
 	@ExceptionHandler({MethodArgumentNotValidException.class})
-	public ResponseEntity<ApiResponse<List<ValidationError>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+	public ResponseEntity<ErrorResponse<List<ValidationError>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 
-		ApiResponse<List<ValidationError>> response = errorHandler.handleValidationException(e);
+		ErrorResponse<List<ValidationError>> response = errorHandler.handleValidationException(e);
 
 		return ResponseEntity
 				.status(response.getStatus())
@@ -106,8 +106,8 @@ public class GlobalExceptionHandler {
 	// 이외의 나머지 오류
 	@Order(Ordered.LOWEST_PRECEDENCE)
 	@ExceptionHandler(RuntimeException.class)
-	public ResponseEntity<ApiResponse<?>> handleApiException(RuntimeException e) {
-		ApiResponse<?> response = errorHandler.handleException(e, ResponseCode.UNKNOWN_ERROR);
+	public ResponseEntity<ErrorResponse<?>> handleApiException(RuntimeException e) {
+		ErrorResponse<?> response = errorHandler.handleException(e, ErrorCode.UNKNOWN_ERROR);
 
 		return ResponseEntity
 				.status(response.getStatus())

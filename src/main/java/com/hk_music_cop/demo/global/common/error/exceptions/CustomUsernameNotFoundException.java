@@ -1,13 +1,13 @@
 package com.hk_music_cop.demo.global.common.error.exceptions;
 
-import com.hk_music_cop.demo.global.common.response.ResponseCode;
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
 
 public class CustomUsernameNotFoundException extends CustomException {
 	public CustomUsernameNotFoundException() {
-		super(ResponseCode.USERNAME_NOT_FOUND);
+		super(ErrorCode.USERNAME_NOT_FOUND);
 	}
 
 	public CustomUsernameNotFoundException(String detail) {
-		super(ResponseCode.USERNAME_NOT_FOUND, detail);
+		super(ErrorCode.USERNAME_NOT_FOUND, detail);
 	}
 }

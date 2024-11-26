@@ -1,6 +1,7 @@
 package com.hk_music_cop.demo.lottery.application;
 
-import com.hk_music_cop.demo.global.common.response.ResponseCode;
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
 import com.hk_music_cop.demo.global.common.error.exceptions.*;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryRequest;
 import com.hk_music_cop.demo.lottery.dto.request.LotteryUpdateRequest;
@@ -50,7 +51,7 @@ public class LotteryServiceImpl implements LotteryService {
 
 		Long lotteryId = lotteryRepository.createLottery(lotteryRequest);
 		if (lotteryId == 0)
-			throw new CustomException(ResponseCode.DATABASE_CREATE_ERROR);
+			throw new CustomException(ErrorCode.DATABASE_CREATE_ERROR);
 
 		return lotteryId;
 	}
@@ -62,7 +63,7 @@ public class LotteryServiceImpl implements LotteryService {
 		validateCreator(memberId, targetLottery.getLotteryId());
 
 		boolean result = lotteryRepository.deleteLottery(targetLottery.getLotteryId()) == 1;
-		if (!result) throw new CustomException(ResponseCode.DATABASE_DELETE_ERROR);
+		if (!result) throw new CustomException(ErrorCode.DATABASE_DELETE_ERROR);
 
 	}
 
@@ -71,7 +72,7 @@ public class LotteryServiceImpl implements LotteryService {
 		LotteryResponse targetLottery = findByName(lotteryName);
 
 		boolean result = lotteryRepository.deleteLottery(targetLottery.getLotteryId()) == 1;
-		if (!result) throw new CustomException(ResponseCode.DATABASE_DELETE_ERROR);
+		if (!result) throw new CustomException(ErrorCode.DATABASE_DELETE_ERROR);
 
 		log.info("[관리자 권한으로 삭제] : {}", lotteryName);
 	}
@@ -88,7 +89,7 @@ public class LotteryServiceImpl implements LotteryService {
 		validateCreator(memberId, targetLottery.getLotteryId());
 
 		if (lotteryRepository.editLottery(targetLottery.getLotteryId(), LotterySimple.from(lottery)) != 1)
-			throw new CustomException(ResponseCode.DATABASE_UPDATE_ERROR);
+			throw new CustomException(ErrorCode.DATABASE_UPDATE_ERROR);
 
 		LotteryUpdateLog lotteryUpdateLog = LotteryUpdateLog.of(LotterySimple.from(targetLottery), LotterySimple.from(lottery));
 
@@ -102,11 +103,11 @@ public class LotteryServiceImpl implements LotteryService {
 		if (lotteryToUpdate.lotteryName().equals(lotteryTarget.lotteryName())) {
 			// 포지션도 동일하다면, 동일한 로터리 오류 발생
 			if (lotteryToUpdate.position().equals(lotteryTarget.position()))
-				throw new CustomException(ResponseCode.LOTTERY_EQUALS);
+				throw new CustomException(ErrorCode.LOTTERY_EQUALS);
 		} else {
 			// 이름이 같지 않은데, 존재하는 이름이라면 오류 발생
 			if (validationExistByName(lotteryTarget.lotteryName()))
-				throw new CustomException(ResponseCode.LOTTERY_DUPLICATE_NAME);
+				throw new CustomException(ErrorCode.LOTTERY_DUPLICATE_NAME);
 		}
 	}
 
@@ -115,7 +116,7 @@ public class LotteryServiceImpl implements LotteryService {
 	}
 
 	private void validateEquals(LotterySimple lottery, LotterySimple lotteryTarget) {
-		if (lotteryTarget.equals(lottery)) throw new CustomException(ResponseCode.LOTTERY_EQUALS);
+		if (lotteryTarget.equals(lottery)) throw new CustomException(ErrorCode.LOTTERY_EQUALS);
 	}
 
 	@Override

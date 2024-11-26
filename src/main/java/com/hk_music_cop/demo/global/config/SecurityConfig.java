@@ -1,5 +1,6 @@
 package com.hk_music_cop.demo.global.config;
 
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.global.security.filter.JwtAuthenticationFilter;
 import com.hk_music_cop.demo.global.common.error.ErrorHandler;
@@ -64,7 +65,7 @@ public class SecurityConfig {
 
 	private AuthenticationEntryPoint getAuthenticationEntryPoint() {
 		return (request, response, e) ->
-				errorHandler.handleExceptionDirect(response, e, ResponseCode.UNAUTHORIZED);
+				errorHandler.handleExceptionDirect(response, e, ErrorCode.UNAUTHORIZED);
 	}
 
 	@Bean

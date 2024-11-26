@@ -1,13 +1,13 @@
 package com.hk_music_cop.demo.global.common.error.exceptions;
 
-import com.hk_music_cop.demo.global.common.response.ResponseCode;
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
 
 public class CustomUnknownRoleException extends CustomException {
 	public CustomUnknownRoleException() {
-		super(ResponseCode.UNKNOWN_ROLE);
+		super(ErrorCode.UNKNOWN_ROLE);
 	}
 
 	public CustomUnknownRoleException(String detail) {
-		super(ResponseCode.UNKNOWN_ROLE, detail);
+		super(ErrorCode.UNKNOWN_ROLE, detail);
 	}
 }

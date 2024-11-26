@@ -2,7 +2,7 @@ package com.hk_music_cop.demo.unit.jandi.application;
 
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.jandi.application.JandiMessageFactoryImpl;
-import com.hk_music_cop.demo.jandi.application.JandiResponseGenerator;
+import com.hk_music_cop.demo.jandi.application.JandiSuccessResponseGenerator;
 import com.hk_music_cop.demo.jandi.dto.request.JandiUserInfoRequest;
 import com.hk_music_cop.demo.jandi.dto.request.JandiWebhookRequest;
 import com.hk_music_cop.demo.jandi.dto.response.ConnectInfo;
@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 class JandiMessageFactoryImplTest {
 
 	@Mock
-	private JandiResponseGenerator jandiResponseGenerator;
+	private JandiSuccessResponseGenerator jandiSuccessResponseGenerator;
 	@Mock
 	private ScheduleService scheduleService;
 	@Mock
@@ -73,7 +73,7 @@ class JandiMessageFactoryImplTest {
 
 		when(scheduleService.getWeekTodo(targetDate)).thenReturn(weeklySchedule);
 		when(connectInfoConverter.convertList(weeklySchedule)).thenReturn(connectInfoList);
-		when(jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList))
+		when(jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList))
 				.thenReturn(expectedResponse);
 
 		// when
@@ -100,7 +100,7 @@ class JandiMessageFactoryImplTest {
 
 		when(scheduleService.getWeekTodo(targetDate)).thenReturn(emptySchedule);
 		when(connectInfoConverter.convertList(emptySchedule)).thenReturn(Collections.emptyList());
-		when(jandiResponseGenerator.createSuccessResponse(ResponseCode.JANDI_SCHEDULE_EMPTY, Collections.emptyList()))
+		when(jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.JANDI_SCHEDULE_EMPTY, Collections.emptyList()))
 				.thenReturn(expectedResponse);
 
 		// when
@@ -108,7 +108,7 @@ class JandiMessageFactoryImplTest {
 
 		// then
 		assertThat(response).isEqualTo(expectedResponse);
-		verify(jandiResponseGenerator).createSuccessResponse(
+		verify(jandiSuccessResponseGenerator).createSuccessResponse(
 				ResponseCode.JANDI_SCHEDULE_EMPTY,
 				Collections.emptyList()
 		);
@@ -136,7 +136,7 @@ class JandiMessageFactoryImplTest {
 
 		when(scheduleService.getDayTodo(targetDate)).thenReturn(dailySchedule);
 		when(connectInfoConverter.convertList(dailySchedule)).thenReturn(connectInfoList);
-		when(jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList))
+		when(jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList))
 				.thenReturn(expectedResponse);
 
 		// when
@@ -163,7 +163,7 @@ class JandiMessageFactoryImplTest {
 
 		when(lotteryService.drawLotteryWinner()).thenReturn(winner);
 		when(connectInfoConverter.convert(winner)).thenReturn(winnerInfo);
-		when(jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, winnerInfo))
+		when(jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.OK, winnerInfo))
 				.thenReturn(expectedResponse);
 
 		// when
@@ -193,7 +193,7 @@ class JandiMessageFactoryImplTest {
 		);
 
 		when(connectInfoConverter.convert(infoRequest)).thenReturn(userInfo);
-		when(jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, userInfo))
+		when(jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.OK, userInfo))
 				.thenReturn(expectedResponse);
 
 		// when
@@ -216,7 +216,7 @@ class JandiMessageFactoryImplTest {
 				List.of(new ConnectInfo(null, ResponseCode.CREATED.getMessage(), null))
 		);
 
-		when(jandiResponseGenerator.createSuccessResponse(ResponseCode.CREATED))
+		when(jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.CREATED))
 				.thenReturn(expectedResponse);
 
 		// when
@@ -253,7 +253,7 @@ class JandiMessageFactoryImplTest {
 		);
 
 		when(connectInfoConverter.convertList(viewList)).thenReturn(connectInfoList);
-		when(jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList))
+		when(jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList))
 				.thenReturn(expectedResponse);
 
 		// when

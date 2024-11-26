@@ -1,13 +1,13 @@
 package com.hk_music_cop.demo.global.common.error.exceptions;
 
-import com.hk_music_cop.demo.global.common.response.ResponseCode;
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
 
 public class CustomLotteryNotFoundException extends CustomException {
 	public CustomLotteryNotFoundException() {
-		super(ResponseCode.LOTTERY_NOT_FOUND);
+		super(ErrorCode.LOTTERY_NOT_FOUND);
 	}
 
 	public CustomLotteryNotFoundException(String detail) {
-		super(ResponseCode.LOTTERY_NOT_FOUND, detail);
+		super(ErrorCode.LOTTERY_NOT_FOUND, detail);
 	}
 }

@@ -1,6 +1,5 @@
 package com.hk_music_cop.demo.jandi.application;
 
-import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.jandi.config.JandiProperties;
 import com.hk_music_cop.demo.jandi.dto.response.ConnectInfo;
@@ -16,7 +15,7 @@ import static com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse.with
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class JandiResponseGeneratorImpl implements JandiResponseGenerator {
+public class JandiSuccessResponseGeneratorImpl implements JandiSuccessResponseGenerator {
 
 	private final JandiProperties jandiProperties;
 
@@ -36,27 +35,6 @@ public class JandiResponseGeneratorImpl implements JandiResponseGenerator {
 	public JandiWebhookResponse createSuccessResponse(ResponseCode responseCode) {
 		JandiWebhookResponse response = withoutConnectInfo(jandiProperties.title().successTitle(), jandiProperties.color().successColor());
 		ConnectInfo connectInfo = new ConnectInfo(responseCode.getMessage(), responseCode.getCode(), null);
-
-		return response.withConnectInfo(connectInfo);
-	}
-
-
-	public JandiWebhookResponse createCustomErrorResponse(CustomException e) {
-		log.error("jandi custom Error : ", e);
-
-		ResponseCode code = e.getResponseCode();
-
-		JandiWebhookResponse response = withoutConnectInfo(jandiProperties.title().failTitle(), jandiProperties.color().failColor());
-		ConnectInfo connectInfo = new ConnectInfo(e.getMessage(), code.getCode(), null);
-
-		return response.withConnectInfo(connectInfo);
-	}
-
-	public JandiWebhookResponse createErrorResponse(Exception e, ResponseCode code) {
-		log.error("jandi Error : ", e);
-
-		JandiWebhookResponse response = withoutConnectInfo(jandiProperties.title().failTitle(), jandiProperties.color().failColor());
-		ConnectInfo connectInfo = new ConnectInfo(code.getMessage(), code.getCode(), null);
 
 		return response.withConnectInfo(connectInfo);
 	}

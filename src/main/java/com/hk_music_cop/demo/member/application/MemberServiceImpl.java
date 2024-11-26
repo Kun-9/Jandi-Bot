@@ -1,7 +1,7 @@
 package com.hk_music_cop.demo.member.application;
 
 import com.hk_music_cop.demo.global.common.error.exceptions.*;
-import com.hk_music_cop.demo.global.common.response.ResponseCode;
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
 import com.hk_music_cop.demo.member.dto.request.JoinRequest;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import com.hk_music_cop.demo.member.repository.MemberRepository;
@@ -51,7 +51,7 @@ public class MemberServiceImpl implements MemberService {
 
 		// 비밀번호가 같지 않으면
 		if (!findMember.getPassword().equals(joinRequest.getPassword())) {
-			throw new CustomException(ResponseCode.LOGIN_FAIL);
+			throw new CustomException(ErrorCode.LOGIN_FAIL);
 		}
 
 		return findMember;

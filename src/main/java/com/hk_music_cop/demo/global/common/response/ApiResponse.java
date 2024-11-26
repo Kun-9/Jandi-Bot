@@ -44,18 +44,6 @@ public class ApiResponse<T> {
 				.build();
 	}
 
-	// CustomException 응답
-	public static ApiResponse<Void> from(CustomException e) {
-		ResponseCode code = e.getResponseCode();
-		return ApiResponse.<Void>builder()
-				.code(code.getCode())
-				.message(e.getMessage())
-				.status(code.getStatus())
-				.timestamp(LocalDateTime.now())
-				.build();
-	}
-
-
 	public ApiResponse<Void> withMessage(String message) {
 		return ApiResponse.<Void>builder()
 				.code(this.code)
@@ -75,17 +63,4 @@ public class ApiResponse<T> {
 				.build();
 	}
 
-	public static ApiResponse<List<ValidationError>> validationError(MethodArgumentNotValidException e) {
-
-		BindingResult bindingResult = e.getBindingResult();
-		List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-
-		List<ValidationError> errors = ValidationError.from(fieldErrors);
-
-		return ApiResponse.<List<ValidationError>>builder()
-				.status(e.getStatusCode().value())
-				.error(errors)
-				.timestamp(LocalDateTime.now())
-				.build();
-	}
 }

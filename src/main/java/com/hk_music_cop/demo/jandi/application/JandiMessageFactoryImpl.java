@@ -27,7 +27,7 @@ import java.util.List;
 @Component
 public class JandiMessageFactoryImpl implements JandiMessageFactory {
 
-	private final JandiResponseGenerator jandiResponseGenerator;
+	private final JandiSuccessResponseGenerator jandiSuccessResponseGenerator;
 	private final ScheduleService scheduleService;
 	private final LotteryService lotteryService;
 	private final ConnectInfoConverterComposite connectInfoConverter;
@@ -43,7 +43,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 		if (connectInfoList == null || connectInfoList.isEmpty())
 			code = ResponseCode.JANDI_SCHEDULE_EMPTY;
 
-		return jandiResponseGenerator.createSuccessResponse(code, connectInfoList);
+		return jandiSuccessResponseGenerator.createSuccessResponse(code, connectInfoList);
 	}
 
 	@Override
@@ -54,9 +54,9 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 
 		// 일정 리스트가 비었다면 일정이 비었다고 반환
 		if (connectInfo == null || connectInfo.isEmpty())
-			return jandiResponseGenerator.createSuccessResponse(ResponseCode.JANDI_SCHEDULE_EMPTY);
+			return jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.JANDI_SCHEDULE_EMPTY);
 
-		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfo);
+		return jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfo);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 
 		ConnectInfo connectInfo = connectInfoConverter.convert(winner);
 
-		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfo);
+		return jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfo);
 	}
 
 	@Override
@@ -74,27 +74,27 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 		JandiUserInfoRequest infoRequest = JandiUserInfoRequest.from(jandiWebhookRequest);
 
 		ConnectInfo connectInfo = connectInfoConverter.convert(infoRequest);
-		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfo);
+		return jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfo);
 	}
 
 	@Override
 	public JandiWebhookResponse registerLotteryMessage(LotteryRequest lotteryRequest) {
 		lotteryService.registerLottery(lotteryRequest);
-		return jandiResponseGenerator.createSuccessResponse(ResponseCode.CREATED);
+		return jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.CREATED);
 	}
 
 	@Override
 	public JandiWebhookResponse deleteLotteryMessage(LotteryRequest lotteryRequest) {
 		lotteryService.deleteLottery(lotteryRequest.memberId(), lotteryRequest.lotteryName());
 
-		return jandiResponseGenerator.createSuccessResponse(ResponseCode.LOTTERY_DELETE_SUCCESS);
+		return jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.LOTTERY_DELETE_SUCCESS);
 	}
 
 	@Override
 	public JandiWebhookResponse updateLotteryMessage(Long memberId, LotteryUpdateRequest request) {
 		lotteryService.updateLottery(memberId, request);
 
-		return jandiResponseGenerator.createSuccessResponse(ResponseCode.UPDATED);
+		return jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.UPDATED);
 	}
 
 	@Override
@@ -108,6 +108,6 @@ public class JandiMessageFactoryImpl implements JandiMessageFactory {
 
 		List<ConnectInfo> connectInfoList = connectInfoConverter.convertList(LotteryViewList.from(lotteryViewList));
 
-		return jandiResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList);
+		return jandiSuccessResponseGenerator.createSuccessResponse(ResponseCode.OK, connectInfoList);
 	}
 }

@@ -1,13 +1,13 @@
 package com.hk_music_cop.demo.global.common.error.exceptions;
 
-import com.hk_music_cop.demo.global.common.response.ResponseCode;
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
 
 public class CustomUnauthorizedException extends CustomException {
 	public CustomUnauthorizedException() {
-		super(ResponseCode.UNAUTHORIZED);
+		super(ErrorCode.UNAUTHORIZED);
 	}
 
 	public CustomUnauthorizedException(String detail) {
-		super(ResponseCode.UNAUTHORIZED, detail);
+		super(ErrorCode.UNAUTHORIZED, detail);
 	}
 }

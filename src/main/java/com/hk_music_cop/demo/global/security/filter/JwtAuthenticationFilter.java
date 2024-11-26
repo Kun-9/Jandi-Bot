@@ -1,5 +1,6 @@
 package com.hk_music_cop.demo.global.security.filter;
 
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.global.common.error.ErrorHandler;
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomExpiredRefreshTokenException;
@@ -63,6 +64,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private void handleAuthError(HttpServletResponse response, Exception e) throws IOException {
 		// 사용자에게 권한없음 오류 반환
-		errorHandler.handleExceptionDirect(response, e, ResponseCode.UNAUTHENTICATED);
+		errorHandler.handleExceptionDirect(response, e, ErrorCode.UNAUTHENTICATED);
 	}
 }

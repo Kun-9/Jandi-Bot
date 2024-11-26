@@ -24,7 +24,7 @@ public class ErrorResponse<T> {
 
 
 	// 응답 객체 생성 (데이터 없는 경우)
-	public static ErrorResponse<Void> from(ResponseCode code) {
+	public static ErrorResponse<Void> from(ErrorCode code) {
 		return ErrorResponse.<Void>builder()
 				.code(code.getCode())
 				.message(code.getMessage())
@@ -35,7 +35,7 @@ public class ErrorResponse<T> {
 
 	// CustomException 응답
 	public static ErrorResponse<Void> from(CustomException e) {
-		ResponseCode code = e.getResponseCode();
+		ErrorCode code = e.getErrorCode();
 		return ErrorResponse.<Void>builder()
 				.code(code.getCode())
 				.message(e.getMessage())
@@ -43,7 +43,6 @@ public class ErrorResponse<T> {
 				.timestamp(LocalDateTime.now())
 				.build();
 	}
-
 
 	public ErrorResponse<Void> withMessage(String message) {
 		return ErrorResponse.<Void>builder()
@@ -55,7 +54,7 @@ public class ErrorResponse<T> {
 	}
 
 	// 메시지 추가
-	public static ErrorResponse<Void> error(ResponseCode code, String message) {
+	public static ErrorResponse<Void> error(ErrorCode code, String message) {
 		return ErrorResponse.<Void>builder()
 				.code(code.getCode())
 				.status(code.getStatus())

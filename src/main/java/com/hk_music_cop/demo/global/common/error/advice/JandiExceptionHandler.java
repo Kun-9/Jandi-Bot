@@ -1,8 +1,9 @@
 package com.hk_music_cop.demo.global.common.error.advice;
 
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
+import com.hk_music_cop.demo.global.common.response.ErrorCode;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
-import com.hk_music_cop.demo.jandi.application.JandiResponseGenerator;
+import com.hk_music_cop.demo.jandi.application.JandiErrorResponseGenerator;
 import com.hk_music_cop.demo.jandi.dto.response.JandiWebhookResponse;
 import com.hk_music_cop.demo.jandi.presentation.JandiWebhookController;
 import lombok.RequiredArgsConstructor;
@@ -17,18 +18,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class JandiExceptionHandler {
 
-	private final JandiResponseGenerator jandiResponseGenerator;
+	private final JandiErrorResponseGenerator jandiErrorResponseGenerator;
 
 	@ExceptionHandler(CustomException.class)
 	public JandiWebhookResponse handelJandiCustomException(CustomException e) {
-		return jandiResponseGenerator.createCustomErrorResponse(e);
+		return jandiErrorResponseGenerator.createCustomErrorResponse(e);
 	}
 
 	@ExceptionHandler(Exception.class)
 	public JandiWebhookResponse handelJandiException(Exception e) {
 		System.out.println("JandiExceptionHandler.handelJandiException");
 
-		return jandiResponseGenerator.createErrorResponse(e, ResponseCode.UNKNOWN_ERROR);
+		return jandiErrorResponseGenerator.createErrorResponse(e, ErrorCode.UNKNOWN_ERROR);
 	}
 }
 
