@@ -34,10 +34,9 @@ public interface JwtTokenService {
 	 * - 리프레시 토큰을 삭제
 	 *
 	 * @param accessToken 현재 액세스 토큰
-	 * @param refreshToken 현재 리프레시 토큰
 	 * @return boolean 로그아웃 성공 여부
 	 */
-	boolean logout(String accessToken, String refreshToken);
+	boolean logout(String accessToken);
 
 	/**
 	 * 주어진 액세스 토큰이 블랙리스트에 있는지 확인합니다.

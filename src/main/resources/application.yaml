@@ -12,6 +12,7 @@ spring:
       port: 6379
       password: ${REDIS_PWD}
 
+
 server:
   servlet:
     encoding:

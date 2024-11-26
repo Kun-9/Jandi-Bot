@@ -40,14 +40,11 @@ public class SecurityConfig {
 				.sessionManagement(session -> session
 						.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				)
-				.addFilterBefore(
-						jwtAuthenticationFilter,
-						UsernamePasswordAuthenticationFilter.class
-				)
 				.authorizeHttpRequests(auth -> auth
 								.requestMatchers("/jandi/**").permitAll()
 								.requestMatchers("/api/lottery/**").permitAll()
 								.requestMatchers("/api/member/**").permitAll()
+								.requestMatchers("/api/member/join").permitAll()
 								.requestMatchers("/api/schedule/**").permitAll()
 								.requestMatchers("/auth/**").permitAll()
 						        .requestMatchers("/api/manager/**").hasRole(Role.getRoleName(Role.ROLE_MANAGER))
@@ -55,7 +52,12 @@ public class SecurityConfig {
 								.requestMatchers(HttpMethod.POST,"/api/lottery/remove/**").authenticated()
 								.requestMatchers(HttpMethod.POST,"/api/lottery/**").authenticated()
 								.anyRequest().authenticated()
-				).exceptionHandling(exception -> exception.authenticationEntryPoint(getAuthenticationEntryPoint()));
+				)
+				.addFilterBefore(
+						jwtAuthenticationFilter,
+						UsernamePasswordAuthenticationFilter.class
+				)
+				.exceptionHandling(exception -> exception.authenticationEntryPoint(getAuthenticationEntryPoint()));
 
 		return http.build();
 	}

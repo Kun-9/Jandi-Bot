@@ -102,11 +102,10 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 	}
 
 	@Override
-	public boolean logout(String accessToken, String refreshToken) {
+	public boolean logout(String accessToken) {
 
 		// 모든 토큰 검증
 		jwtTokenProvider.validateToken(accessToken);
-		jwtTokenProvider.validateToken(refreshToken);
 
 		// AccessToken jti 추출
 		Claims accessTokenClaims = jwtTokenProvider.getClaims(accessToken);
@@ -115,16 +114,19 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 		CustomUser customUser = (CustomUser) accessTokenAuthentication.getPrincipal();
 		String userId = customUser.getUsername();
 
+		// 해당 회원의 Refresh token 삭제
+		jwtTokenRepository.deleteRefreshToken(userId);
+
 		// 남은 시간 계산
 		long remainTime = calculateRemainTime(accessTokenClaims);
-
-		log.info("remainTime : {}", remainTime);
 
 		// 현재 AT를 REDIS 블랙리스트에 추가
 		jwtTokenRepository.addBlacklist(userId, accessToken, remainTime);
 
 		// REDIS에서 RT 삭제
 		jwtTokenRepository.deleteRefreshToken(userId);
+
+		log.info("'{}' 로그아웃", userId);
 
 		return true;
 	}

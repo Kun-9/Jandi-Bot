@@ -9,9 +9,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -21,7 +24,7 @@ public class ErrorHandler {
 	private final ObjectMapper objectMapper;
 
 	// 모든 에러 처리
-	public ApiResponse<?> handleException(Exception e, ResponseCode code) {
+	public ApiResponse<Void> handleException(Exception e, ResponseCode code) {
 		log.error("error occurred: ", e);
 
 		return ApiResponse.from(code);
@@ -34,10 +37,18 @@ public class ErrorHandler {
 		return ApiResponse.from(e);
 	}
 
-	public ApiResponse<?> handleCustomExceptionWithMessage(CustomException e, String message) {
+	public ApiResponse<Void> handleCustomExceptionWithMessage(CustomException e) {
 		log.error("error occurred: ", e);
 
-		return ApiResponse.error(e.getResponseCode(), message);
+		return ApiResponse.from(e);
+	}
+
+	public ApiResponse<List<ValidationError>> handleValidationException(
+			MethodArgumentNotValidException e
+	) {
+		log.error("error occurred: ", e);
+
+		return ApiResponse.validationError(e);
 	}
 
 	public void handleExceptionDirect(
@@ -45,6 +56,8 @@ public class ErrorHandler {
 			Exception e,
 			ResponseCode code
 	) throws IOException {
+		log.error("error occurred: ", e);
+
 		ApiResponse<?> apiResponse = handleException(e, code);
 
 		response.setStatus(apiResponse.getStatus());

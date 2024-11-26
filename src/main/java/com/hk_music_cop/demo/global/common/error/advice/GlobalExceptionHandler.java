@@ -1,5 +1,6 @@
 package com.hk_music_cop.demo.global.common.error.advice;
 
+import com.hk_music_cop.demo.global.common.error.ValidationError;
 import com.hk_music_cop.demo.global.common.response.ApiResponse;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
 import com.hk_music_cop.demo.global.common.error.ErrorHandler;
@@ -12,12 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.security.sasl.AuthenticationException;
 import java.sql.SQLException;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -61,17 +64,17 @@ public class GlobalExceptionHandler {
 				.body(apiResponse);
 	}
 
-	// ResponseBody 파싱 실패
-	@Order(1)
-	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
-	public ResponseEntity<ApiResponse<?>> handleFormatException(MethodArgumentTypeMismatchException e) {
-
-		ApiResponse<?> response = errorHandler.handleException(e, ResponseCode.INCORRECT_FORMAT);
-
-		return ResponseEntity
-				.status(response.getStatus())
-				.body(response);
-	}
+//	// ResponseBody 파싱 실패
+//	@Order(1)
+//	@ExceptionHandler(MethodArgumentNotValidException.class)
+//	public ResponseEntity<ApiResponse<?>> handleFormatException(MethodArgumentNotValidException e) {
+//
+//		ApiResponse<?> response = errorHandler.handleException(e, ResponseCode.INCORRECT_FORMAT);
+//
+//		return ResponseEntity
+//				.status(response.getStatus())
+//				.body(response);
+//	}
 
 	// Security 관련 예외
 	@Order(1)
@@ -83,6 +86,17 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiResponse<?>> handleFormatException(Exception e) {
 
 		ApiResponse<?> response = errorHandler.handleException(e, ResponseCode.SECURITY_ERROR);
+
+		return ResponseEntity
+				.status(response.getStatus())
+				.body(response);
+	}
+
+	@Order(1)
+	@ExceptionHandler({MethodArgumentNotValidException.class})
+	public ResponseEntity<ApiResponse<List<ValidationError>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+
+		ApiResponse<List<ValidationError>> response = errorHandler.handleValidationException(e);
 
 		return ResponseEntity
 				.status(response.getStatus())

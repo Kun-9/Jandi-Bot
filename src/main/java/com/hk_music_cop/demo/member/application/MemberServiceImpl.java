@@ -2,7 +2,7 @@ package com.hk_music_cop.demo.member.application;
 
 import com.hk_music_cop.demo.global.common.error.exceptions.*;
 import com.hk_music_cop.demo.global.common.response.ResponseCode;
-import com.hk_music_cop.demo.member.dto.request.JoinReqeust;
+import com.hk_music_cop.demo.member.dto.request.JoinRequest;
 import com.hk_music_cop.demo.member.dto.response.MemberResponse;
 import com.hk_music_cop.demo.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +17,9 @@ public class MemberServiceImpl implements MemberService {
 	private final PasswordEncoder passwordEncoder;
 
 	@Override
-	public Long join(JoinReqeust joinReqeust) {
-		String userId = joinReqeust.getUserId();
-		String username = joinReqeust.getName();
+	public Long join(JoinRequest joinRequest) {
+		String userId = joinRequest.getUserId();
+		String username = joinRequest.getName();
 
 		// 이미 아이디가 존재할 때
 		if (validationUserIdExist(userId)) {
@@ -31,16 +31,16 @@ public class MemberServiceImpl implements MemberService {
 			throw new CustomDuplicatedNameException(username);
 		}
 
-		return memberRepository.join(new JoinReqeust(
-				joinReqeust.getName(),
-				joinReqeust.getUserId(),
-				passwordEncoder.encode(joinReqeust.getPassword())
+		return memberRepository.join(new JoinRequest(
+				joinRequest.getName(),
+				joinRequest.getUserId(),
+				passwordEncoder.encode(joinRequest.getPassword())
 		));
 	}
 
 	@Override
-	public MemberResponse jandiLogin(JoinReqeust joinReqeust) {
-		String userId = joinReqeust.getUserId();
+	public MemberResponse jandiLogin(JoinRequest joinRequest) {
+		String userId = joinRequest.getUserId();
 
 		// 존재하지 않으면
 		if (!validationUserIdExist(userId)) {
@@ -50,7 +50,7 @@ public class MemberServiceImpl implements MemberService {
 		MemberResponse findMember = findByUserId(userId);
 
 		// 비밀번호가 같지 않으면
-		if (!findMember.getPassword().equals(joinReqeust.getPassword())) {
+		if (!findMember.getPassword().equals(joinRequest.getPassword())) {
 			throw new CustomException(ResponseCode.LOGIN_FAIL);
 		}
 

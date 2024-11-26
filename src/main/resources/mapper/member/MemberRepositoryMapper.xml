@@ -23,7 +23,7 @@
         WHERE member_id = #{memberId}
     </select>
 
-    <select id="join" parameterType="MemberRequest" resultType="Long">
+    <select id="join" parameterType="JoinRequest" resultType="Long">
         INSERT INTO members (user_id, password, name)
         VALUES (#{userId}, #{password}, #{name})
         RETURNING member_id
