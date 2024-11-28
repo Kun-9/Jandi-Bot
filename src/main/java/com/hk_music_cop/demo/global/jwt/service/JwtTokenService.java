@@ -4,6 +4,7 @@ import com.hk_music_cop.demo.global.common.error.exceptions.CustomException;
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomExpiredRefreshTokenException;
 import com.hk_music_cop.demo.global.jwt.dto.TokenResponse;
 import com.hk_music_cop.demo.member.dto.request.LoginRequest;
+import com.hk_music_cop.demo.member.dto.response.LoginResponse;
 
 /**
  * JWT 토큰 관련 비즈니스 로직을 처리하는 서비스 인터페이스
@@ -14,10 +15,10 @@ public interface JwtTokenService {
 	 * 사용자 로그인을 처리하고 JWT 토큰을 발급합니다.
 	 *
 	 * @param loginRequest 로그인 요청 정보 (사용자 ID, 비밀번호)
-	 * @return TokenResponse 액세스 토큰과 리프레시 토큰이 포함된 응답 객체
+	 * @return LoginResponse 유저 정보와 토큰정보가 포함된 응답 객체
 	 * @throws CustomException 로그인 실패 시 발생 (잘못된 자격 증명)
 	 */
-	TokenResponse login(LoginRequest loginRequest);
+	LoginResponse login(LoginRequest loginRequest);
 
 	/**
 	 * 리프레시 토큰을 사용하여 새로운 액세스 토큰과 리프레시 토큰을 발급합니다.

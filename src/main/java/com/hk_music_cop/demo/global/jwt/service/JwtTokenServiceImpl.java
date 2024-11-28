@@ -10,6 +10,10 @@ import com.hk_music_cop.demo.global.jwt.config.JwtProperties;
 import com.hk_music_cop.demo.global.jwt.dto.TokenResponse;
 import com.hk_music_cop.demo.global.jwt.repository.JwtTokenRepository;
 import com.hk_music_cop.demo.member.dto.request.LoginRequest;
+import com.hk_music_cop.demo.member.dto.response.LoginResponse;
+import com.hk_music_cop.demo.member.dto.response.MemberInfo;
+import com.hk_music_cop.demo.member.dto.response.MemberResponse;
+import com.hk_music_cop.demo.member.repository.MemberRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,19 +34,23 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final JwtTokenRepository jwtTokenRepository;
 	private final JwtProperties jwtProperties;
+	private final MemberRepository memberRepository;
 
 	@Override
-	public TokenResponse login(LoginRequest loginRequest) {
+	public LoginResponse login(LoginRequest loginRequest) {
 		Authentication authentication = getAuthenticationFromLogin(loginRequest);
 
 		String userId = loginRequest.userId();
+
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		TokenResponse tokenResponse = jwtTokenProvider.createToken(authentication);
 
 		String refreshToken = tokenResponse.refreshToken();
 		addRefreshToken(userId, refreshToken);
 
-		return tokenResponse;
+		MemberInfo memberInfo = MemberInfo.from(memberRepository.findByUserId(userId));
+
+		return LoginResponse.of(memberInfo, tokenResponse);
 	}
 
 	private Authentication getAuthenticationFromLogin(LoginRequest loginRequest) {

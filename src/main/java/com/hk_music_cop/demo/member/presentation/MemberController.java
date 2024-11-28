@@ -10,6 +10,7 @@ import com.hk_music_cop.demo.global.jwt.dto.TokenResponse;
 import com.hk_music_cop.demo.member.application.MemberService;
 import com.hk_music_cop.demo.member.dto.request.LoginRequest;
 import com.hk_music_cop.demo.member.dto.request.JoinRequest;
+import com.hk_music_cop.demo.member.dto.response.LoginResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +30,10 @@ public class MemberController {
 	private final JwtTokenService jwtTokenService;
 
 	@PostMapping("login")
-	public ResponseEntity<ApiResponse<TokenResponse>> login(@RequestBody LoginRequest loginRequest) {
-		TokenResponse tokenResponse = jwtTokenService.login(loginRequest);
+	public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody LoginRequest loginRequest) {
+		LoginResponse loginResponse = jwtTokenService.login(loginRequest);
 
-		ApiResponse<TokenResponse> response = ApiResponse.of(ResponseCode.LOGIN_SUCCESS, tokenResponse);
+		ApiResponse<LoginResponse> response = ApiResponse.of(ResponseCode.LOGIN_SUCCESS, loginResponse);
 
 		return ResponseEntity
 				.status(response.status())
