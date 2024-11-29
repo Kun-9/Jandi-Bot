@@ -7,3 +7,4 @@ public interface JandiCommandService {
 
 	JandiWebhookResponse executeCommand(JandiWebhookRequest request);
 }
+

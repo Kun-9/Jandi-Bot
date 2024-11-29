@@ -1,7 +1,6 @@
 package com.hk_music_cop.demo.unit.schedule.application;
 
 import com.hk_music_cop.demo.global.common.error.exceptions.CustomUndefinedCommand;
-import com.hk_music_cop.demo.global.common.message.ValidationMessageUtil;
 import com.hk_music_cop.demo.global.common.response.ErrorCode;
 import com.hk_music_cop.demo.googleCloud.googleSheet.GoogleSheetProperties;
 import com.hk_music_cop.demo.googleCloud.googleSheet.repository.GoogleSheetAPI;

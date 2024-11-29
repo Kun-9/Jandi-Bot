@@ -17,6 +17,15 @@ public class MemberServiceImpl implements MemberService {
 	private final PasswordEncoder passwordEncoder;
 
 	@Override
+	public MemberResponse findMemberWithRoleByUserId(String userId) {
+		MemberResponse user = findByUserId(userId);
+
+		MemberResponse memberResponse = user.withRoles(memberRepository.findRolesByUserId(userId));
+
+		return memberResponse;
+	}
+
+	@Override
 	public Long join(JoinRequest joinRequest) {
 		String userId = joinRequest.getUserId();
 		String username = joinRequest.getName();
@@ -56,6 +65,8 @@ public class MemberServiceImpl implements MemberService {
 
 		return findMember;
 	}
+
+
 
 	@Override
 	public MemberResponse findByMemberId(Long memberId) {

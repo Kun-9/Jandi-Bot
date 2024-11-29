@@ -19,4 +19,6 @@ public interface MemberService {
 	void validateUserIdExist(String userId);
 
 	boolean isUsernameExist(String username);
+
+	MemberResponse findMemberWithRoleByUserId(String userId);
 }

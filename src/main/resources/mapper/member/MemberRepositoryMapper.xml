@@ -23,6 +23,13 @@
         WHERE member_id = #{memberId}
     </select>
 
+    <select id="findRolesByUserId" parameterType="String" resultType="String">
+        SELECT role_name
+        FROM member_roles mr
+        JOIN roles r ON mr."role_id" = r."role_id"
+        WHERE member_id = (SELECT members.member_id FROM members WHERE members.user_id = #{userId});
+    </select>
+
     <select id="join" parameterType="JoinRequest" resultType="Long">
         INSERT INTO members (user_id, password, name)
         VALUES (#{userId}, #{password}, #{name})

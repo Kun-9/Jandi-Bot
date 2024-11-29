@@ -9,6 +9,7 @@ import com.hk_music_cop.demo.global.jwt.domain.JwtTokenProvider;
 import com.hk_music_cop.demo.global.jwt.config.JwtProperties;
 import com.hk_music_cop.demo.global.jwt.dto.TokenResponse;
 import com.hk_music_cop.demo.global.jwt.repository.JwtTokenRepository;
+import com.hk_music_cop.demo.member.application.MemberService;
 import com.hk_music_cop.demo.member.dto.request.LoginRequest;
 import com.hk_music_cop.demo.member.dto.response.LoginResponse;
 import com.hk_music_cop.demo.member.dto.response.MemberInfo;
@@ -35,6 +36,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 	private final JwtTokenRepository jwtTokenRepository;
 	private final JwtProperties jwtProperties;
 	private final MemberRepository memberRepository;
+	private final MemberService memberService;
 
 	@Override
 	public LoginResponse login(LoginRequest loginRequest) {
@@ -48,7 +50,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 		String refreshToken = tokenResponse.refreshToken();
 		addRefreshToken(userId, refreshToken);
 
-		MemberInfo memberInfo = MemberInfo.from(memberRepository.findByUserId(userId));
+		MemberInfo memberInfo = MemberInfo.from(memberService.findMemberWithRoleByUserId(userId));
 
 		return LoginResponse.of(memberInfo, tokenResponse);
 	}

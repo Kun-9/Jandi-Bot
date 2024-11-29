@@ -23,6 +23,7 @@ public class MemberResponse {
 	}
 
 	public MemberResponse withRoles(List<String> roles) {
-		return new MemberResponse(this.userId, this.password, roles);
+		return new MemberResponse(this.memberId, this.userId, this.name, this.password, this.createdDate, roles, this.enabled);
 	}
+
 }
